@@ -1,27 +1,14 @@
 # Roadmap
 ## Plan tentativo de historias de usuario
-### 1. **Gestión de Dispositivos**
-#### Registro de dispositivos  
+### 1. **Gestión de Dispositivos** 
 - **Como** administrador del sistema  
 - **Quiero** registrar,editar y eliminar sensores o actuadores en el sistema  
 - **Para** gestionar y monitorear los dispositivos utilizados en la producción hortícola vinculándolo a su tipo correspondiente, actualizar su ubicación, modelo o tipo en caso de cambios y mantener el sistema actualizado y libre de información obsoleta
 
 ### 2. **Gestión de Tipos de Sensores y Actuadores**
-#### Registro de tipos de sensores o actuadores
 - **Como** administrador del sistema  
-- **Quiero** registrar nuevos tipos de sensores con su descripcion y unidad de medida o actuadores con su tipo (on.off o multinivel)
-- **Para** definir qué sensores o actuadores se pueden utilizar en el sistema   
-
-#### Actualizar la información de un tipo de sensor o actuador
-- **Como** Administrador, 
-- **Quiero** modificar la información de un tipo de sensor o actuador 
--  **Para** Actualizar la información de un dispositivo sensor o actuador
-
-#### Eliminar un tipo de sensor o actuador 
--  **Como** Administrador, 
-- **Quiero** eliminar un tipo de sensor o actuador 
--  **Para** evitar información obsoleta en el sistema.
-
+- **Quiero** registrar, editar o eliminar nuevos tipos de sensores o actuadores
+- **Para** definir qué sensores o actuadores se pueden utilizar en el sistema, actualizar la información de un dispositivo sensor o actuador y evitar información obsoleta en el sistema.
 
 ### 3. **Gestión de Usuarios y Accesos**
 #### Registro de usuarios  
@@ -60,27 +47,15 @@
 
 ## Backlog de iteración
 ## Iteración 1
-### 1. **Gestión de Dispositivos**
-#### Registro de dispositivos  
+### 1. **Gestión de Dispositivos** 
 - **Como** administrador del sistema  
 - **Quiero** registrar,editar y eliminar sensores o actuadores en el sistema  
 - **Para** gestionar y monitorear los dispositivos utilizados en la producción hortícola vinculándolo a su tipo correspondiente, actualizar su ubicación, modelo o tipo en caso de cambios y mantener el sistema actualizado y libre de información obsoleta
 
 ### 2. **Gestión de Tipos de Sensores y Actuadores**
-#### Registro de tipos de sensores o actuadores
 - **Como** administrador del sistema  
-- **Quiero** registrar nuevos tipos de sensores con su descripcion y unidad de medida o actuadores con su tipo (on.off o multinivel)
-- **Para** definir qué sensores o actuadores se pueden utilizar en el sistema  
- 
-#### Actualizar la información de un tipo de sensor o actuador
-- **Como** Administrador, 
-- **Quiero** modificar la información de un tipo de sensor o actuador 
--  **Para** Actualizar la información de un dispositivo sensor o actuador
-
-#### Eliminar un tipo de sensor o actuador 
--  **Como** Administrador, 
-- **Quiero** eliminar un tipo de sensor o actuador 
--  **Para** evitar información obsoleta en el sistema.
+- **Quiero** registrar, editar o eliminar nuevos tipos de sensores o actuadores
+- **Para** definir qué sensores o actuadores se pueden utilizar en el sistema, actualizar la información de un dispositivo sensor o actuador y evitar información obsoleta en el sistema.
 
 ### 3. **Gestión de Usuarios y Accesos**
 #### Registro de usuarios  
