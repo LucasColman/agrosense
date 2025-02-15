@@ -24,13 +24,8 @@
 ### 4. **Monitoreo y Almacenamiento de Datos**
 #### Captura y almacenamiento de mediciones  
 - **Como** usuario del sistema  
-- **Quiero** que las mediciones de los sensores se capturen y almacenen automáticamente  
+- **Quiero** que las mediciones de los sensores se capturen y almacenen  
 - **Para** poder analizarlas y tomar decisiones informadas sobre la producción hortícola  
-
-####  Registro de fecha y hora de medición  
-- **Como** usuario del sistema  
-- **Quiero** que cada medición incluya la fecha y hora de registro  
-- **Para** conocer cuándo se realizó la medición y analizar tendencias en el tiempo  
 
 ####  Registro de cambios en los actuadores  
 - **Como** usuario del sistema  
@@ -41,7 +36,7 @@
 ### 5. **Visualización de Datos**
 #### Dashboard de monitoreo  
 - **Como** usuario del sistema  
-- **Quiero** visualizar un dashboard con datos de sensores y actuadores
+- **Quiero** visualizar datos de sensores y actuadores
 - **Para** monitorear el estado actual de la producción hortícola  
 ---
 
