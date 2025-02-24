@@ -19,4 +19,8 @@ public class DatoSensor {
 
     @Column(nullable = false)
     LocalDateTime fechaHora;
+
+    @ManyToOne
+    @JoinColumn(name = "sensor_id", nullable = false)
+    Sensor sensor;
 }

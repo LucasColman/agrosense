@@ -16,4 +16,7 @@ public class Sensor extends Dispositivo{
 
     @ManyToMany(mappedBy = "tiposSensores")
     List<TipoSensor> tiposSensores;
+
+    @OneToMany
+    List<DatoSensor> datosSensor;
 }
