@@ -1,4 +1,4 @@
-package com.unam.agrosense;
+package com.unam.agrosense.model;
 
 import jakarta.persistence.*;
 import lombok.*;
