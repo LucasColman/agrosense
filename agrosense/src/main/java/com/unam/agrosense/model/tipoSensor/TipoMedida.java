@@ -1,4 +1,4 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.tipoSensor;
 
 public enum TipoMedida {
     TEMPERATURA,

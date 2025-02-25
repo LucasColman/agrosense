@@ -5,22 +5,23 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "DatoSensor")
+@Entity
 @Table(name = "datos_sensores")
 @Getter @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class DatoSensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    float valor;
+    private Double valor;
 
     @Column(nullable = false)
-    LocalDateTime fechaHora;
+    private LocalDateTime fechaHora;
 
     @ManyToOne
     @JoinColumn(name = "sensor_id", nullable = false)
-    Sensor sensor;
+    private Sensor sensor;
 }

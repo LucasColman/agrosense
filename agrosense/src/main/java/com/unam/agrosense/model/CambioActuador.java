@@ -7,8 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "cambios_actuadores")
-@Getter
-@Setter
+@Getter @Setter @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -16,7 +15,6 @@ public class CambioActuador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @Column(name = "estado_anterior", nullable = false)
     private String estadoAnterior;
@@ -27,7 +25,7 @@ public class CambioActuador {
     @Column(name = "fecha_cambio", nullable = false)
     private LocalDateTime fechaCambio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "actuador_id")
     private Actuador actuador;
 

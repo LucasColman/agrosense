@@ -1,5 +1,6 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.tipoActuador;
 
+import com.unam.agrosense.model.Actuador;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tipos_actuadores")
-@Getter @Setter
+@Getter @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class TipoActuador {
@@ -23,6 +24,8 @@ public class TipoActuador {
     )
     private List<Actuador> actuadores;
 
-    private String tipo; //On-off, MultiNivel, etc
+    // Este atributo se refiere al comportamiento que tiene el actuador On-off, MultiNivel, etc
+    @Enumerated(EnumType.STRING)
+    private Comportamiento comportamiento;
 
 }

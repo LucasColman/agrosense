@@ -1,30 +1,30 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.tipoSensor;
 
+import com.unam.agrosense.model.Sensor;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-@Entity(name = "TipoSensor")
+@Entity
 @Table(name = "tipos_sensores")
 @Getter @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
-
+@EqualsAndHashCode(of = "id")
 public class TipoSensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
         name = "sensores_x_tipos_sensores",
         joinColumns = @JoinColumn(name = "tipo_sensor_id"),
         inverseJoinColumns = @JoinColumn(name = "sensor_id")
     )
-    @Column(nullable = false)
-    List<Sensor> sensores;
+    private List<Sensor> sensores;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    TipoMedida tipoMedida;
+    private TipoMedida tipoMedida;
 }
