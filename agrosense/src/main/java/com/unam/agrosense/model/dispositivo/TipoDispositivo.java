@@ -1,4 +1,4 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.dispositivo;
 
 public enum TipoDispositivo {
     SENSOR,
