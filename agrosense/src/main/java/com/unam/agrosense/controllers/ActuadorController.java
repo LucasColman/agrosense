@@ -2,8 +2,6 @@ package com.unam.agrosense.controllers;
 
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
-import com.unam.agrosense.model.sensor.SensorDto;
-import com.unam.agrosense.model.sensor.SensorResponseDto;
 import com.unam.agrosense.services.ActuadorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +40,8 @@ public class ActuadorController {
 
         return ResponseEntity.ok(actuadorResponseDto);
     }
+
+
     // ELIMINAR UN ACTUADOR
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarActuador(@PathVariable Long id) {
@@ -55,13 +55,14 @@ public class ActuadorController {
     @GetMapping("/{id}")
     public ResponseEntity<ActuadorResponseDto> obtenerActuador(@PathVariable Long id) {
         ActuadorResponseDto actuadorResponseDto = actuadorService.obteneractuador(id);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(actuadorResponseDto);
     }
+
     // OBTENER TODOS LOS ACTUADORES
     @GetMapping
     public ResponseEntity<List<ActuadorResponseDto>> obtenerActuadores() {
-        List<ActuadorResponseDto> actuadorResponseDtos = actuadorService.obtenerActuadores();
+        List<ActuadorResponseDto> actuadorResponseDto = actuadorService.obtenerActuadores();
 
-        return ResponseEntity.ok(actuadorResponseDtos);
+        return ResponseEntity.ok(actuadorResponseDto);
     }
 }

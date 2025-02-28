@@ -20,6 +20,8 @@ public interface SensorRepository extends JpaRepository<Sensor, Long> {
 
     List<Sensor> findByActivoTrue();
 
+    List<Sensor> findAllByActivoTrue();
+
     boolean existsByIdAndActivoTrue(Long id);
 
     boolean existsByNombreAndActivoTrue(String nombre);

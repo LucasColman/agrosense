@@ -28,11 +28,15 @@ public class ActuadorService {
 
 
     //CREAR UN ACTUADOR
-    public ActuadorResponseDto crearActuador(ActuadorDto actuadorDto){
+    @Transactional
+    public ActuadorResponseDto crearActuador(ActuadorDto actuadorDto) {
         List<TipoActuador> tiposDeActuadores = tipoActuadorRepository.findAllById(actuadorDto.idsTipoActuador());
+
+        if (actuadorRepository.existsByNombreAndActivoTrue(actuadorDto.nombre())) {
+            throw new RuntimeException("El actuador ya existe");
+        }
 
         Actuador actuador = new Actuador();
-
         actuador.setNombre(actuadorDto.nombre());
         actuador.setModelo(actuadorDto.modelo());
         actuador.setLatitud(actuadorDto.latitud());
@@ -40,6 +44,7 @@ public class ActuadorService {
         actuador.setDescripcion(actuadorDto.descripcion());
         actuador.setTipoDispositivo(actuadorDto.tipo());
         actuador.getTiposActuadores().addAll(tiposDeActuadores);
+        tiposDeActuadores.forEach(tipoActuador -> tipoActuador.getActuadores().add(actuador));
 
         actuadorRepository.save(actuador);
 
@@ -55,12 +60,16 @@ public class ActuadorService {
         );
 
     }
+
     //ACTUALIZAR UN ACTUADOR
-    public ActuadorResponseDto actualizarActuador(Long id, ActuadorDto actuadorDto){
+    @Transactional
+    public ActuadorResponseDto actualizarActuador(Long id, ActuadorDto actuadorDto) {
         Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
 
-        List<TipoActuador> tiposDeActuadores = tipoActuadorRepository.findAllById(actuadorDto.idsTipoActuador());
+        List<TipoActuador> tiposDeActuadores = actuadorDto.idsTipoActuador() != null ?
+                tipoActuadorRepository.findAllById(actuadorDto.idsTipoActuador()) :
+                List.of();
 
         actuador.setNombre(actuadorDto.nombre());
         actuador.setModelo(actuadorDto.modelo());
@@ -68,10 +77,18 @@ public class ActuadorService {
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
         actuador.setTipoDispositivo(actuadorDto.tipo());
-        actuador.getTiposActuadores().clear();
-        actuador.getTiposActuadores().addAll(tiposDeActuadores);
 
+        if (!tiposDeActuadores.isEmpty()) {
+            actuador.getTiposActuadores().forEach(
+                    tipoActuador -> tipoActuador.getActuadores().remove(actuador)
+            );
+            actuador.getTiposActuadores().clear();
 
+            tiposDeActuadores.forEach(tipoActuador -> {
+                actuador.getTiposActuadores().add(tipoActuador);
+                tipoActuador.getActuadores().add(actuador);
+            });
+        }
         actuadorRepository.save(actuador);
 
         return new ActuadorResponseDto(
@@ -85,16 +102,22 @@ public class ActuadorService {
                 actuador.getTiposActuadores()
         );
     }
+
 
     //ELIMINAR UN ACTUADOR
     @Transactional
-    public void eliminarActuador(Long id){
+    public void eliminarActuador(Long id) {
+        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new EntityNotFoundException("El actuador no existe"));
 
-        if(!actuadorRepository.existsByIdAndActivoTrue(id)) {
-            throw new RuntimeException("El actuador no existe");
-        }
         actuadorRepository.softDelete(id);
+        for (TipoActuador tipoActuador : actuador.getTiposActuadores()) {
+            tipoActuador.getActuadores().remove(actuador);
+        }
+        actuador.getTiposActuadores().clear();
+
     }
+
 
     //OBTENER UN ACTUADOR
     public ActuadorResponseDto obteneractuador(Long id) {
@@ -130,5 +153,4 @@ public class ActuadorService {
                 ))
                 .toList();
     }
-
 }
