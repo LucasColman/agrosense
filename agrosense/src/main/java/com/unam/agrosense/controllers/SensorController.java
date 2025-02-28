@@ -51,7 +51,7 @@ public class SensorController {
     @GetMapping("/{id}")
     public ResponseEntity<SensorResponseDto> obtenerSensor(@PathVariable Long id) {
         SensorResponseDto sensorResponseDto = sensorService.obtenerSensor(id);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(sensorResponseDto);
     }
 
     // OBTENER TODOS LOS SENSORES

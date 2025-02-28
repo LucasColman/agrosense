@@ -21,4 +21,6 @@ public interface ActuadorRepository extends JpaRepository<Actuador, Long> {
     boolean existsByIdAndActivoTrue(Long id);
 
     List<Actuador> findByActivoTrue();
+
+    boolean existsByNombreAndActivoTrue(String nombre);
 }

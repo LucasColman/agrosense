@@ -26,4 +26,8 @@ public class Actuador extends Dispositivo {
     public void addTipoActuador(TipoActuador tipoActuador) {
         this.tiposActuadores.add(tipoActuador);
     }
+
+    public void removeTipoActuador(TipoActuador tipoActuador) {
+        this.tiposActuadores.remove(tipoActuador);
+    }
 }
