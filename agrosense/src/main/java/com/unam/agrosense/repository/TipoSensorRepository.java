@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface TipoSensorRepository extends JpaRepository<TipoSensor, Long> {
 
 
-    boolean existsByNombre(String nombre);
+
 
 }

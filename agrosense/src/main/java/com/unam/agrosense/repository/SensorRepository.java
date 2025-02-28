@@ -21,4 +21,8 @@ public interface SensorRepository extends JpaRepository<Sensor, Long> {
     List<Sensor> findByActivoTrue();
 
     boolean existsByIdAndActivoTrue(Long id);
+
+    boolean existsByNombreAndActivoTrue(String nombre);
+
+
 }

@@ -1,5 +1,6 @@
 package com.unam.agrosense.model;
 
+import com.unam.agrosense.model.actuador.Actuador;
 import jakarta.persistence.*;
 import lombok.*;
 
