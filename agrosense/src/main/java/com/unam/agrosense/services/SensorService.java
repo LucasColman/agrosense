@@ -30,6 +30,11 @@ public class SensorService {
 
        List<TipoSensor> tiposDeSensores = tipoSensorRepository.findAllById(sensorDto.idsTipoSensor());
 
+       //Verifico quue el sensor no exista
+        if(sensorRepository.existsByNombreAndActivoTrue(sensorDto.nombre())) {
+            throw new RuntimeException("El sensor ya existe");
+        }
+
         Sensor sensor = new Sensor(); // Se crea un sensor vacio
         sensor.setNombre(sensorDto.nombre());
         sensor.setModelo(sensorDto.modelo());
@@ -37,10 +42,9 @@ public class SensorService {
         sensor.setLongitud(sensorDto.longitud());
         sensor.setDescripcion(sensorDto.descripcion());
         sensor.setTipoDispositivo(sensorDto.tipo());
+        sensor.getTiposSensores().addAll(tiposDeSensores);
+        tiposDeSensores.forEach(tipoSensor -> tipoSensor.getSensores().add(sensor));
 
-        if(!tiposDeSensores.isEmpty()){
-            sensor.getTiposSensores().forEach(sensor::addTipoSensor); // Se agregan los tipos de sensores al sensor
-        }
 
         sensorRepository.save(sensor);
 
@@ -59,7 +63,7 @@ public class SensorService {
     //Actualizar un sensor
     @Transactional
     public SensorResponseDto actualizarSensor(Long id, SensorDto sensorDto) {
-        Sensor sensor = sensorRepository.findById(id)
+        Sensor sensor = sensorRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(EntityNotFoundException::new);
 
        List<TipoSensor> tiposDeSensores = tipoSensorRepository.findAllById(sensorDto.idsTipoSensor());
@@ -70,9 +74,8 @@ public class SensorService {
         sensor.setLongitud(sensorDto.longitud());
         sensor.setDescripcion(sensorDto.descripcion());
         sensor.setTipoDispositivo(sensorDto.tipo());
-        if(!tiposDeSensores.isEmpty()){
-            sensor.getTiposSensores().forEach(sensor::addTipoSensor); // Se agregan los tipos de sensores al sensor
-        }
+        sensor.getTiposSensores().addAll(tiposDeSensores);
+        tiposDeSensores.forEach(tipoSensor -> tipoSensor.getSensores().add(sensor));
         sensorRepository.save(sensor);
 
         return new SensorResponseDto(
@@ -89,10 +92,16 @@ public class SensorService {
     //Eliminar un sensor
     @Transactional
     public void eliminarSensor(Long id) {
-        if(!sensorRepository.existsByIdAndActivoTrue(id)) {
-            throw new RuntimeException("El sensor no existe");
-        }
+        Sensor sensor = sensorRepository.findByIdAndActivoTrue(id).
+                orElseThrow(() -> new EntityNotFoundException("El sensor no existe"));
+
         sensorRepository.softDelete(id);
+
+        for(TipoSensor tipoSensor : sensor.getTiposSensores()) {
+            tipoSensor.getSensores().remove(sensor);
+        }
+        sensor.getTiposSensores().clear();
+
     }
     //Obtener un sensor
     public SensorResponseDto obtenerSensor(Long id) {

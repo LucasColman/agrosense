@@ -14,16 +14,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/sensores")
 public class SensorController {
 
     private final SensorService sensorService;
-    private final TipoSensorService tipoSensorService;
 
     public SensorController(SensorService sensorService, TipoSensorService tipoSensorService) {
         this.sensorService = sensorService;
-        this.tipoSensorService = tipoSensorService;
     }
 
 

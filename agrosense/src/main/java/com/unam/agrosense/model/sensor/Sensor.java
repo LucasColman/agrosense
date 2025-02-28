@@ -6,6 +6,7 @@ import com.unam.agrosense.model.tipoSensor.TipoSensor;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,7 +19,7 @@ import java.util.List;
 public class Sensor extends Dispositivo {
 
     @ManyToMany(mappedBy = "sensores")
-    private List<TipoSensor> tiposSensores;
+    private List<TipoSensor> tiposSensores = new ArrayList<>();
 
     @OneToMany(mappedBy = "sensor",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DatoSensor> datosSensor;

@@ -1,4 +1,4 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.actuador;
 
 
 import com.unam.agrosense.model.CambioActuador;
@@ -7,6 +7,7 @@ import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,9 +18,12 @@ import java.util.List;
 public class Actuador extends Dispositivo {
 
     @ManyToMany(mappedBy = "actuadores")
-    private List<TipoActuador> tiposActuadores;
+    private List<TipoActuador> tiposActuadores = new ArrayList<>();
 
     @OneToMany(mappedBy = "actuador",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CambioActuador> cambiosActuador;
 
+    public void addTipoActuador(TipoActuador tipoActuador) {
+        this.tiposActuadores.add(tipoActuador);
+    }
 }

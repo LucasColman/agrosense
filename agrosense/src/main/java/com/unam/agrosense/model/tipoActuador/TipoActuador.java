@@ -1,6 +1,6 @@
 package com.unam.agrosense.model.tipoActuador;
 
-import com.unam.agrosense.model.Actuador;
+import com.unam.agrosense.model.actuador.Actuador;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +16,15 @@ public class TipoActuador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String descripcion;
+
+    // Este atributo se refiere al comportamiento que tiene el actuador On-off, MultiNivel, etc
+    @Enumerated(EnumType.STRING)
+    private Comportamiento comportamiento;
+
+
+
     @ManyToMany
     @JoinTable(
             name = "actuadores_x_tipos_actuadores",
@@ -24,8 +33,6 @@ public class TipoActuador {
     )
     private List<Actuador> actuadores;
 
-    // Este atributo se refiere al comportamiento que tiene el actuador On-off, MultiNivel, etc
-    @Enumerated(EnumType.STRING)
-    private Comportamiento comportamiento;
+
 
 }

@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Inheritance(strategy = InheritanceType.JOINED)
-@Builder
 public abstract class Dispositivo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +32,7 @@ public abstract class Dispositivo {
     @Enumerated(EnumType.STRING)
     private TipoDispositivo tipoDispositivo;
 
-    private Boolean activo;
+    private Boolean activo = true;
 
 }
 
