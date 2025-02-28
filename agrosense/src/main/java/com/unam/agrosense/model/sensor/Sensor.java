@@ -1,4 +1,4 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.sensor;
 
 import com.unam.agrosense.model.DatoSensor;
 import com.unam.agrosense.model.dispositivo.Dispositivo;
@@ -14,6 +14,7 @@ import java.util.List;
 @Getter @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Builder
 public class Sensor extends Dispositivo {
 
     @ManyToMany(mappedBy = "sensores")
@@ -21,4 +22,8 @@ public class Sensor extends Dispositivo {
 
     @OneToMany(mappedBy = "sensor",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DatoSensor> datosSensor;
+
+    public void addTipoSensor(TipoSensor tipoSensor) {
+        this.tiposSensores.add(tipoSensor);
+    }
 }

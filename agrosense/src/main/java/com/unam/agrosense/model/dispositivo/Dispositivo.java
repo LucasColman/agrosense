@@ -9,10 +9,14 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Builder
 public abstract class Dispositivo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "nombre", nullable = false)
+    private String nombre;
 
     @Column(name = "modelo", nullable = false)
     private String modelo;
@@ -28,6 +32,9 @@ public abstract class Dispositivo {
 
     @Enumerated(EnumType.STRING)
     private TipoDispositivo tipoDispositivo;
+
+    private Boolean activo;
+
 }
 
 

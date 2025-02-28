@@ -1,6 +1,6 @@
 package com.unam.agrosense.model.tipoSensor;
 
-import com.unam.agrosense.model.Sensor;
+import com.unam.agrosense.model.sensor.Sensor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,4 +27,6 @@ public class TipoSensor {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoMedida tipoMedida;
+
+    private boolean activo;
 }

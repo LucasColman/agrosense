@@ -1,7 +1,8 @@
-package com.unam.agrosense;
+package com.unam.agrosense.services;
 
 import com.unam.agrosense.model.tipoSensor.TipoMedida;
 import com.unam.agrosense.model.tipoSensor.TipoSensor;
+import com.unam.agrosense.repository.TipoSensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
