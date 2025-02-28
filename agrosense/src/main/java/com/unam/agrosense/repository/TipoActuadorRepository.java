@@ -1,4 +1,4 @@
-package com.unam.agrosense;
+package com.unam.agrosense.repository;
 
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import org.springframework.data.jpa.repository.JpaRepository;

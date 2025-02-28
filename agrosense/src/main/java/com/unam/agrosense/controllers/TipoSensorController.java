@@ -1,7 +1,8 @@
-package com.unam.agrosense;
+package com.unam.agrosense.controllers;
 
 import com.unam.agrosense.model.tipoSensor.TipoMedida;
 import com.unam.agrosense.model.tipoSensor.TipoSensor;
+import com.unam.agrosense.services.TipoSensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

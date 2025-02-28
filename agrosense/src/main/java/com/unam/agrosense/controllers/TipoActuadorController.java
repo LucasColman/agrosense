@@ -1,5 +1,6 @@
-package com.unam.agrosense;
+package com.unam.agrosense.controllers;
 
+import com.unam.agrosense.services.TipoActuadorService;
 import com.unam.agrosense.model.tipoActuador.Comportamiento;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import org.springframework.beans.factory.annotation.Autowired;
