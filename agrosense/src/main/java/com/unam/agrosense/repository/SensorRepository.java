@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface SensorRepository extends JpaRepository<Sensor, Long> {
-    @Modifying // Necesario para realizar modificaciones en la base de datos
+    @Modifying
     @Query("UPDATE Sensor s SET s.activo = false WHERE s.id = :id")
     void softDelete(Long id);
 
