@@ -5,7 +5,11 @@ import com.unam.agrosense.model.usuario.UsuarioResponseDto;
 import com.unam.agrosense.model.usuario.Usuario;
 import com.unam.agrosense.model.usuario.UsuarioDto;
 import com.unam.agrosense.repository.UsuarioRepository;
+import com.unam.agrosense.security.SecurityConfiguration;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,14 +20,18 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    private final SecurityConfiguration securityConfiguration;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, SecurityConfiguration securityConfiguration) {
         this.usuarioRepository = usuarioRepository;
+        this.securityConfiguration = securityConfiguration;
     }
 
 
     //CREAR USUARIO
     @Transactional
     public UsuarioResponseDto crearUsuario(UsuarioDto usuarioDto){
+        PasswordEncoder bCrypt = securityConfiguration.passwordEncoder();
 
         if (usuarioRepository.existsByEmail(usuarioDto.email())) {
             throw new RuntimeException("El usuario ya existe");
@@ -32,14 +40,15 @@ public class UsuarioService {
         Usuario usuario= new Usuario();
         usuario.setUsername(usuarioDto.username());
         usuario.setEmail(usuarioDto.email());
-        usuario.setPassword(usuarioDto.password());
-
+        usuario.setRol(usuarioDto.rol());
+        usuario.setPassword(bCrypt.encode(usuarioDto.password()));
         usuarioRepository.save(usuario);
 
         return new UsuarioResponseDto(
                 usuario.getId(),
                 usuario.getUsername(),
-                usuario.getEmail()
+                usuario.getEmail(),
+                usuario.getRol()
         );
     }
     // ACTUALIZAR USUARIO
@@ -57,7 +66,8 @@ public class UsuarioService {
         return new UsuarioResponseDto(
                 usuario.getId(),
                 usuario.getUsername(),
-                usuario.getEmail()
+                usuario.getEmail(),
+                usuario.getRol()
         );
 
     }
@@ -76,7 +86,8 @@ public class UsuarioService {
         return new UsuarioResponseDto(
                 usuario.getId(),
                 usuario.getUsername(),
-                usuario.getEmail()
+                usuario.getEmail(),
+                usuario.getRol()
         );
     }
     // BUSCAR TODOS LOS USUARIOS
@@ -86,7 +97,8 @@ public class UsuarioService {
                 .map(usuario -> new UsuarioResponseDto(
                         usuario.getId(),
                         usuario.getUsername(),
-                        usuario.getEmail()
+                        usuario.getEmail(),
+                        usuario.getRol()
                 ))
                 .toList();
     }
