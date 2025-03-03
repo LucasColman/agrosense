@@ -5,6 +5,7 @@ import com.unam.agrosense.model.usuario.UsuarioResponseDto;
 import com.unam.agrosense.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -16,12 +17,13 @@ import java.util.List;
 public class UsuarioController {
     private final UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioService usuarioService) {
+
+    public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
         this.usuarioService = usuarioService;
     }
 
     //REGISTRAR USUARIO
-    @PostMapping
+    @PostMapping("/registro")
     public ResponseEntity<UsuarioResponseDto> registrarUsuario(@RequestBody @Valid UsuarioDto usuarioDto, UriComponentsBuilder uriComponentsBuilder){
         UsuarioResponseDto usuarioResponseDto = usuarioService.crearUsuario(usuarioDto);
 
