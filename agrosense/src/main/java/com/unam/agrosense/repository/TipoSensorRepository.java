@@ -10,7 +10,8 @@ import java.util.Optional;
 @Repository
 public interface TipoSensorRepository extends JpaRepository<TipoSensor, Long> {
 
+    Optional<TipoSensor> findByIdAndActivoTrue(Long id);
 
-
+    List<TipoSensor> findByActivoTrue();
 
 }

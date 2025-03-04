@@ -2,27 +2,33 @@ package com.unam.agrosense.controllers;
 
 import com.unam.agrosense.model.tipoSensor.TipoMedida;
 import com.unam.agrosense.model.tipoSensor.TipoSensor;
+import com.unam.agrosense.model.tipoSensor.TipoSensorResponseDto;
 import com.unam.agrosense.services.TipoSensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/tipos-sensores")
 public class TipoSensorController {
     @Autowired
     private TipoSensorService tipoSensorService;
 
-    @PostMapping
-    public ResponseEntity<TipoSensor> registrarTipoSensor(@RequestBody TipoSensor tipoSensor) {
+    @PostMapping("/store")
+    public ResponseEntity<TipoSensor> registrarTipoSensor(@ModelAttribute TipoSensor tipoSensor) {
         return ResponseEntity.ok(tipoSensorService.registrarTipoSensor(tipoSensor));
     }
 
     @GetMapping
-    public ResponseEntity<List<TipoSensor>> obtenerTiposSensores() {
-        return ResponseEntity.ok(tipoSensorService.obtenerTiposSensores());
+    public String listarTiposSensores(Model model) {
+        List<TipoSensorResponseDto> tiposSensores = tipoSensorService.obtenerTiposSensores();
+        model.addAttribute("tiposSensores", tiposSensores);
+        model.addAttribute("tiposMedidas", TipoMedida.values());
+        return "dispositivos/TipoSensores";
     }
 
     @GetMapping("/{id}")
