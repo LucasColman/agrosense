@@ -8,11 +8,13 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.unam.agrosense.model.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenService {
@@ -25,6 +27,10 @@ public class TokenService {
                     .withIssuer("agrosense")
                     .withSubject(usuario.getUsername())
                     .withClaim("id", usuario.getId())
+                    .withClaim("rol", usuario.getRol().name())
+                    .withClaim("authorities", usuario.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.toList()))
                     .withExpiresAt(getExpiresAt())
                     .sign(algorithm);
         } catch (JWTCreationException exception){

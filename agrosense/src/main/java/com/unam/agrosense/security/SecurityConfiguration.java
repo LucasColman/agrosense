@@ -1,6 +1,9 @@
 package com.unam.agrosense.security;
 
 
+import com.unam.agrosense.model.usuario.Rol;
+import com.unam.agrosense.model.usuario.Usuario;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -35,34 +38,35 @@ public class SecurityConfiguration {
 
                     //permitir acceso a estos endpoints solo a usuarios con rol ADMIN
                     req.requestMatchers(HttpMethod.POST,
-                            "/sensores",
-                            "/actuadores",
-                            "/tipos-sensores",
-                            "/tipos-actuadores",
-                            "/usuarios").hasRole("ADMIN");
+                            "/sensores/store",
+                            "/actuadores/store",
+                            "/tipos-sensores/store",
+                            "/tipos-actuadores/store",
+                            "/sensores/**",
+                            "/usuarios").permitAll();
 
                     req.requestMatchers(HttpMethod.PUT,
-                            "/sensores/**",
+                            "/sensores/edit/**",
                             "/actuadores/**",
                             "/tipos-sensores/**",
                             "/tipos-actuadores/**",
-                            "/usuarios/**").hasRole("ADMIN");
+                            "/usuarios/**").permitAll();
 
                     req.requestMatchers(HttpMethod.DELETE,
                             "/sensores/**",
                             "/actuadores/**",
                             "/tipos-sensores/**",
-                            "/tipos-actuadores/**",
-                            "/usuarios/**").hasRole("ADMIN");
+                            "/tipos-actuadores",
+                            "/usuarios/**").permitAll();
 
-                    req.requestMatchers(HttpMethod.GET,"/usuarios/**").hasAnyRole("ADMIN");
+                    req.requestMatchers(HttpMethod.GET,"/usuarios/**").permitAll();
 
                     // Endpoints para administradores y usuarios
                     req.requestMatchers(HttpMethod.GET,
                             "/sensores/**",
                             "/actuadores",
                             "/tipos-sensores",
-                            "/tipos-actuadores").hasAnyRole("ADMIN", "USER");
+                            "/tipos-actuadores").permitAll();
 
                     //Todos los demás endpoints requieren autenticación
                     req.anyRequest().authenticated();
@@ -71,6 +75,7 @@ public class SecurityConfiguration {
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
