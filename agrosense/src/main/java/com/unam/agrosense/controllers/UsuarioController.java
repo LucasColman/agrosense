@@ -1,10 +1,13 @@
 package com.unam.agrosense.controllers;
 
+import com.unam.agrosense.model.usuario.Rol;
+import com.unam.agrosense.model.usuario.Usuario;
 import com.unam.agrosense.model.usuario.UsuarioDto;
 import com.unam.agrosense.model.usuario.UsuarioResponseDto;
 import com.unam.agrosense.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -57,4 +60,15 @@ public class UsuarioController {
         List<UsuarioResponseDto> usuarios = usuarioService.buscarTodosLosUsuarios();
         return ResponseEntity.ok(usuarios);
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}/asignar-admin")
+    public ResponseEntity<?> asignarAdmin(@PathVariable Long id) {
+        UsuarioResponseDto usuario = usuarioService.asignarAdmin(id);
+
+
+        return ResponseEntity.ok("✅ El usuario ahora es ADMIN");
+    }
 }
+
