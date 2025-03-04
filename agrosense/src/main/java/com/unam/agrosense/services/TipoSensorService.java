@@ -2,6 +2,7 @@ package com.unam.agrosense.services;
 
 import com.unam.agrosense.model.tipoSensor.TipoMedida;
 import com.unam.agrosense.model.tipoSensor.TipoSensor;
+import com.unam.agrosense.model.tipoSensor.TipoSensorResponseDto;
 import com.unam.agrosense.repository.TipoSensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,17 @@ public class TipoSensorService {
         return tipoSensorRepository.save(tipoSensor);
     }
 
-    public List<TipoSensor> obtenerTiposSensores() {
-        return tipoSensorRepository.findAll();
+    public List<TipoSensorResponseDto> obtenerTiposSensores() {
+        List<TipoSensor> tiposSensores = tipoSensorRepository.findByActivoTrue();
+        return tiposSensores.stream()
+                .map(tipo -> new TipoSensorResponseDto(
+                    tipo.getId(),
+                    tipo.getNombre(),
+                    tipo.getTipoMedida(),
+                    tipo.isActivo(),
+                    tipo.getSensores()
+                ))
+                .toList();
     }
 
     public Optional<TipoSensor> obtenerTipoSensor(Long id) {

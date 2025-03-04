@@ -2,29 +2,35 @@ package com.unam.agrosense.controllers;
 
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
+import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.services.ActuadorService;
+import com.unam.agrosense.services.TipoActuadorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/actuadores")
 public class ActuadorController {
 
     private final ActuadorService actuadorService;
+    private final TipoActuadorService tipoActuadorService;
 
-    public ActuadorController(ActuadorService actuadorService) {
+    public ActuadorController(ActuadorService actuadorService, TipoActuadorService tipoActuadorService) {
         this.actuadorService = actuadorService;
+        this.tipoActuadorService = tipoActuadorService;
     }
 
 
     //REGISTRAR UN ACTUADOR
-    @PostMapping
-    public ResponseEntity<ActuadorResponseDto> registrarActuador(@RequestBody @Valid ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
+    @PostMapping("/store")
+    public ResponseEntity<ActuadorResponseDto> registrarActuador(@ModelAttribute ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
 
         ActuadorResponseDto actuadorResponseDto = actuadorService.crearActuador(actuadorDto);
 
@@ -43,7 +49,7 @@ public class ActuadorController {
 
 
     // ELIMINAR UN ACTUADOR
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> eliminarActuador(@PathVariable Long id) {
         actuadorService.eliminarActuador(id);
         return ResponseEntity.noContent().build();
@@ -60,9 +66,11 @@ public class ActuadorController {
 
     // OBTENER TODOS LOS ACTUADORES
     @GetMapping
-    public ResponseEntity<List<ActuadorResponseDto>> obtenerActuadores() {
-        List<ActuadorResponseDto> actuadorResponseDto = actuadorService.obtenerActuadores();
-
-        return ResponseEntity.ok(actuadorResponseDto);
+    public String listarSensores(Model model) {
+        List<ActuadorResponseDto> actuadores = actuadorService.obtenerActuadores();
+        model.addAttribute("actuadores", actuadores);
+        model.addAttribute("tiposDispositivo", TipoDispositivo.values());
+        model.addAttribute("tiposActuadores", tipoActuadorService.obtenerTiposActuadores());
+        return "dispositivos/Actuadores";
     }
 }

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tipo de Actuadores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-3">Tipos de Actuadores</h1>
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#newTipoActuadorModal">
+        Nuevo Tipo de Actuador
+    </button>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Comportamiento</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tipo : ${tiposActuadores}">
+            <td th:text="${tipo.id}"></td>
+            <td th:text="${tipo.comportamiento}"></td>
+            <td th:text="${tipo.descripcion}"></td>
+            <td>
+                <button class="btn btn-sm btn-warning edit-sensor-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editTipoActuadorModal"
+                        th:data-id="${tipo.id}"
+                        th:data-comportamiento="${tipo.comportamiento}"
+                        th:data-descripcion="${tipo.descripcion}">
+                    Editar
+                </button>
+                <button class="btn btn-danger btn-sm delete-sensor-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteTipoActuadorModal"
+                        th:data-id="${tipo.id}">
+                    Eliminar
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal para agregar Tipo de Actuador -->
+<div class="modal fade" id="newTipoActuadorModal" tabindex="-1" aria-labelledby="modalNewTipoActuador" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalNewTipoActuador">Nuevo Tipo de Actuador</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/tipos-actuadores/store}" method="post" th:object="${tipo}">
+                    <div class="mb-3">
+                        <label for="tipo-descripcion" class="col-form-label">Descripción:</label>
+                        <input type="text" class="form-control" id="tipo-descripcion" name="descripcion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comportamiento" class="col-form-label">Comportamiento:</label>
+                        <select id="comportamiento" name="comportamiento" class="form-select" aria-label="Select de comportamiento">
+                            <option selected>Seleccione el comportamiento</option>
+                            <option th:each="comportamiento : ${comportamientos}" th:value="${comportamiento}" th:text="${comportamiento}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar Tipo de Actuador -->
+<div class="modal fade" id="editTipoActuadorModal" tabindex="-1" aria-labelledby="modalEditTipoActuador" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalEditTipoActuador">Editar Tipo de Actuador</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editTipoActuadorForm" th:action="@{/tipos-actuadores/edit}" method="post">
+                    <div class="mb-3">
+                        <label for="tipo-descripcion-edit" class="col-form-label">Descripción:</label>
+                        <textarea class="form-control" id="tipo-descripcion-edit" name="descripcion"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comportamiento-edit" class="col-form-label">Comportamiento:</label>
+                        <select id="comportamiento-edit" name="comportamiento" class="form-select" aria-label="Select de comportamiento">
+                            <option th:each="comportamiento : ${comportamientos}" th:value="${comportamiento}" th:text="${comportamiento}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteTipoActuadorModal" tabindex="-1" aria-labelledby="modalDeleteTipoActuador" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalDeleteTipoActuador">Confirmar Eliminación</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar este tipo de actuador?</p>
+                <input type="hidden" id="tipoActuador-id-delete">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-btn">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".edit-sensor-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const id = this.getAttribute("data-id");
+                const comportamiento = this.getAttribute("data-comportamiento");
+                const descripcion = this.getAttribute("data-descripcion");
+
+                // Asignar correctamente los valores a los campos
+                document.getElementById("tipo-descripcion-edit").value = descripcion;
+                document.getElementById("comportamiento-edit").value = comportamiento;
+
+                // Establecer la acción del formulario
+                document.getElementById("editTipoActuadorForm").setAttribute("action", `/tipos-actuadores/edit/${id}`);
+            });
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let tipoActuadorIdToDelete = null;
+
+        // Capturar el clic en los botones de eliminar y abrir el modal
+        document.querySelectorAll(".delete-sensor-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                tipoActuadorIdToDelete = this.getAttribute("data-id");
+                document.getElementById("tipoActuador-id-delete").value = tipoActuadorIdToDelete;
+            });
+        });
+
+        // Confirmar eliminación cuando el usuario haga clic en el botón del modal
+        document.getElementById("confirm-delete-btn").addEventListener("click", function () {
+            if (tipoActuadorIdToDelete) {
+                fetch(`/tipos-actuadores/delete/${tipoActuadorIdToDelete}`, { method: "DELETE" })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload(); // Recargar la página si la eliminación es exitosa
+                        } else {
+                            alert("Error al eliminar el tipo de actuador");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>
