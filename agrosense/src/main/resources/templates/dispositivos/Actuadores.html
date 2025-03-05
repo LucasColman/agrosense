@@ -18,7 +18,6 @@
                 <th>Descripcion</th>
                 <th>Latitud</th>
                 <th>Longitud</th>
-                <th>Tipo de Dispositivo</th>
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -30,7 +29,6 @@
                 <td th:text="${actuador.descripcion}"></td>
                 <td th:text="${actuador.latitud}"></td>
                 <td th:text="${actuador.longitud}"></td>
-                <td th:text="${actuador.tipo()}"> </td>
                 <td>
                     <button class="btn btn-sm btn-warning edit-actuador-btn"
                             data-bs-toggle="modal"
@@ -41,7 +39,7 @@
                             th:data-latitud="${actuador.latitud}"
                             th:data-longitud="${actuador.longitud}"
                             th:data-descripcion="${actuador.descripcion}"
-                            th:data-tipo="${actuador.tipo}">
+                            th:data-tipos-actuadores="${actuador.tiposDeActuadores.![id]}">
                         Editar
                     </button>
                     <button class="btn btn-danger btn-sm delete-actuador-btn"
@@ -86,15 +84,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="tipoDispositivo" class="col-form-label">Tipo de dispositivo:</label>
-                                <select id="tipoDispositivo" name="tipoDispositivo" class="form-select" aria-label="Select Tipo de dispositivo">
-                                    <option selected>Seleccione el tipo de dispositivo</option>
-                                    <option th:each="tipo : ${tiposDispositivo}" th:value="${tipo}" th:text="${tipo}"></option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="tipoActuador" class="col-form-label">Tipo de sensor:</label>
+                                <label for="tipoActuador" class="col-form-label">Tipo de actuador:</label>
                                 <select id="tipoActuador" name="idsTipoActuador" class="form-select" multiple>
                                     <option selected>Seleccione el tipo de actuador</option>
                                     <option th:each="tipo : ${tiposActuadores}" th:value="${tipo.id}" th:text="${tipo.descripcion}"></option>
@@ -120,7 +110,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="#" th:action="@{/actuadores/store}" method="post" th:object="${actuador}">
+                        <form action="#" th:action="@{/actuadores/edit}" method="post" th:object="${actuador}">
                             <div class="mb-3">
                                 <label for="actuador-name-edit" class="col-form-label">Nombre:</label>
                                 <input type="text" class="form-control" id="actuador-name-edit">
@@ -143,10 +133,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="tipoDispositivo-edit" class="col-form-label">Tipo de dispositivo:</label>
-                                <select id="tipoDispositivo-edit" name="tipoDispositivo-edit" class="form-select" aria-label="Select Tipo de dispositivo">
-                                    <option selected>Seleccione el tipo de dispositivo</option>
-                                    <option th:each="tipo : ${tiposDispositivo}" th:value="${tipo}" th:text="${tipo}"></option>
+                                <label for="tipoActuador-edit" class="col-form-label">Tipos de actuador asociados:</label>
+                                <select id="tipoActuador-edit" name="idsTipoActuador" class="form-select" multiple>
+                                    <option th:each="tipo : ${actuadores}" th:value="${tipo.id}" th:text="${tipo.tiposDeActuadores}"></option>
                                 </select>
                             </div>
                         </form>

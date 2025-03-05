@@ -3,6 +3,7 @@ package com.unam.agrosense.controllers;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
+import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import com.unam.agrosense.services.ActuadorService;
 import com.unam.agrosense.services.TipoActuadorService;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,7 +32,7 @@ public class ActuadorController {
 
     //REGISTRAR UN ACTUADOR
     @PostMapping("/store")
-    public ResponseEntity<ActuadorResponseDto> registrarActuador(@ModelAttribute ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<ActuadorResponseDto> registrarActuador(@ModelAttribute @Valid ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
 
         ActuadorResponseDto actuadorResponseDto = actuadorService.crearActuador(actuadorDto);
 
@@ -66,11 +68,19 @@ public class ActuadorController {
 
     // OBTENER TODOS LOS ACTUADORES
     @GetMapping
-    public String listarSensores(Model model) {
+    public String listarActuadores(Model model) {
         List<ActuadorResponseDto> actuadores = actuadorService.obtenerActuadores();
+
+
         model.addAttribute("actuadores", actuadores);
         model.addAttribute("tiposDispositivo", TipoDispositivo.values());
         model.addAttribute("tiposActuadores", tipoActuadorService.obtenerTiposActuadores());
         return "dispositivos/Actuadores";
+    }
+
+
+    @GetMapping("/cantidad")
+    public ResponseEntity<Integer> cantidadDeActuadores() {
+        return ResponseEntity.ok().body(actuadorService.cantidadDeActuadores());
     }
 }

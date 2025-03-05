@@ -18,8 +18,6 @@ public record SensorDto(
         String longitud,
         @NotBlank
         String descripcion,
-        @NotNull
-        TipoDispositivo tipo,
         List<Long> idsTipoSensor
 ) {
 }

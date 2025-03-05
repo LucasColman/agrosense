@@ -20,7 +20,6 @@ public record ActuadorResponseDto(
 
         String descripcion,
 
-        TipoDispositivo tipo,
-        List<TipoActuador> tiposDeActuador
+        List<TipoActuador> tiposDeActuadores
 ) {
 }
