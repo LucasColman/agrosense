@@ -33,6 +33,8 @@ public class SecurityConfiguration {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
 
+                    req.anyRequest().permitAll();
+
 //                    req.requestMatchers("/login","/signup","/dashboard", "/css/**", "/js/**").permitAll();
 //
 //                    //permitir acceso a estos endpoints sin autenticación
@@ -65,8 +67,6 @@ public class SecurityConfiguration {
 //                            "/tipos-actuadores/**",
 //                            "/usuarios/**").permitAll();
 
-                    //Todos los demás endpoints requieren autenticación
-                    req.anyRequest().permitAll();
 
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -75,13 +75,13 @@ public class SecurityConfiguration {
 
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
 
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

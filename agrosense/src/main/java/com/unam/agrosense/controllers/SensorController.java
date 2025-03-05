@@ -58,13 +58,23 @@ public class SensorController {
         return ResponseEntity.ok(sensorResponseDto);
     }
 
-    // OBTENER TODOS LOS SENSORES
+//    @GetMapping
+//    public ResponseEntity<List<SensorResponseDto>> listarSensores() {
+//        List<SensorResponseDto> sensores =  sensorService.obtenerSensores();
+//        return ResponseEntity.ok().body(sensores);
+//   }
+
+    @GetMapping("/cantidad")
+    public ResponseEntity<Integer> cantidadDeSensores() {
+        return ResponseEntity.ok().body(sensorService.cantidadDeSensores());
+    }
+
     @GetMapping
     public String listarSensores(Model model) {
         List<SensorResponseDto> sensores = sensorService.obtenerSensores();
         model.addAttribute("sensores", sensores);
         model.addAttribute("tiposDispositivo", TipoDispositivo.values());
         model.addAttribute("tiposSensores", tipoSensorService.obtenerTiposSensores());
-        return "dispositivos/Sensores";
+        return "/dispositivos/Sensores";
     }
 }

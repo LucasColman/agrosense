@@ -3,6 +3,7 @@ package com.unam.agrosense.services;
 import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
+import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.model.sensor.Sensor;
 import com.unam.agrosense.model.sensor.SensorResponseDto;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
@@ -42,7 +43,7 @@ public class ActuadorService {
         actuador.setLatitud(actuadorDto.latitud());
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
-        actuador.setTipoDispositivo(actuadorDto.tipo());
+        actuador.setTipoDispositivo(TipoDispositivo.ACTUADOR);
         actuador.getTiposActuadores().addAll(tiposDeActuadores);
         tiposDeActuadores.forEach(tipoActuador -> tipoActuador.getActuadores().add(actuador));
 
@@ -55,7 +56,6 @@ public class ActuadorService {
                 actuador.getLatitud(),
                 actuador.getLongitud(),
                 actuador.getDescripcion(),
-                actuador.getTipoDispositivo(),
                 actuador.getTiposActuadores()
         );
 
@@ -76,7 +76,6 @@ public class ActuadorService {
         actuador.setLatitud(actuadorDto.latitud());
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
-        actuador.setTipoDispositivo(actuadorDto.tipo());
 
         if (!tiposDeActuadores.isEmpty()) {
             actuador.getTiposActuadores().forEach(
@@ -98,7 +97,6 @@ public class ActuadorService {
                 actuador.getLatitud(),
                 actuador.getLongitud(),
                 actuador.getDescripcion(),
-                actuador.getTipoDispositivo(),
                 actuador.getTiposActuadores()
         );
     }
@@ -131,7 +129,6 @@ public class ActuadorService {
                 actuador.getLatitud(),
                 actuador.getLongitud(),
                 actuador.getDescripcion(),
-                actuador.getTipoDispositivo(),
                 actuador.getTiposActuadores()
         );
 
@@ -148,9 +145,15 @@ public class ActuadorService {
                         actuador.getLatitud(),
                         actuador.getLongitud(),
                         actuador.getDescripcion(),
-                        actuador.getTipoDispositivo(),
                         actuador.getTiposActuadores()
                 ))
                 .toList();
+    }
+
+    public int cantidadDeActuadores() {
+        var actuatorCount = 0;
+        List<Actuador> actuadores =  actuadorRepository.findAllByActivoTrue();
+        actuatorCount = actuadores.size();
+        return actuatorCount;
     }
 }

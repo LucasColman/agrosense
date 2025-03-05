@@ -20,6 +20,7 @@ public class TipoActuadorService {
     @Autowired
     private TipoActuadorRepository tipoActuadorRepository;
 
+    @Transactional
     public TipoActuador registrarTipoActuador(TipoActuador tipoActuador) {
         return tipoActuadorRepository.save(tipoActuador);
     }
@@ -51,7 +52,7 @@ public class TipoActuadorService {
     @Transactional
     public void eliminarTipoActuador(Long id) {
         TipoActuador tipoActuador = tipoActuadorRepository.findByIdAndActivoTrue(id).
-                orElseThrow(() -> new EntityNotFoundException("El tipo de actuador no existe"));
+                orElseThrow(() -> new EntityNotFoundException("El tipoDispositivo de actuador no existe"));
 
         tipoActuadorRepository.softDelete(id);
 

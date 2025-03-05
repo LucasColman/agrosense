@@ -39,7 +39,7 @@
                                 th:data-latitud="${sensor.latitud}"
                                 th:data-longitud="${sensor.longitud}"
                                 th:data-descripcion="${sensor.descripcion}"
-                                th:data-tipos-sensores="${sensor.tiposDeSensores.![id]}">
+                                th:data-tipos-sensores="${sensor.tiposDeSensores[#ids]}">
                                 Editar
                         </button>
                         <button class="btn btn-danger btn-sm delete-sensor-btn"
@@ -82,13 +82,6 @@
                             <div class="mb-3">
                                 <label for="sensor-descripcion" class="col-form-label">Descripción:</label>
                                 <textarea class="form-control" id="sensor-descripcion" name="descripcion"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tipoDispositivo" class="col-form-label">Tipo de dispositivo:</label>
-                                <select id="tipoDispositivo" name="tipoDispositivo" class="form-select">
-                                    <option selected>Seleccione el tipo de dispositivo</option>
-                                    <option th:each="tipo : ${tiposDispositivo}" th:value="${tipo}" th:text="${tipo}"></option>
-                                </select>
                             </div>
 
                             <div class="mb-3">
@@ -143,7 +136,7 @@
                                 <textarea class="form-control" id="sensor-descripcion-edit" name="descripcion"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="tipoSensor-edit" class="col-form-label">Tipo de sensor:</label>
+                                <label for="tipoSensor-edit" class="col-form-label">Tipos de sensor asociados:</label>
                                 <select id="tipoSensor-edit" name="idsTipoSensor" class="form-select" multiple>
                                     <option th:each="tipo : ${tiposSensores}" th:value="${tipo.id}" th:text="${tipo.nombre}"></option>
                                 </select>
@@ -187,6 +180,8 @@
                     const latitud = this.getAttribute("data-latitud");
                     const longitud = this.getAttribute("data-longitud");
                     const descripcion = this.getAttribute("data-descripcion");
+                    const tiposSensores = this.getAttribute("data-tipos-sensores").split(',');
+
 
                     document.getElementById("sensor-id-edit").value = id;
                     document.getElementById("sensor-name-edit").value = nombre;
@@ -194,6 +189,11 @@
                     document.getElementById("sensor-latitud-edit").value = latitud;
                     document.getElementById("sensor-longitud-edit").value = longitud;
                     document.getElementById("sensor-descripcion-edit").value = descripcion;
+
+                    const tipoSensorSelect = document.getElementById("tipoSensor-edit");
+                    Array.from(tipoSensorSelect.options).forEach(option => {
+                        option.selected = tiposSensores.includes(option.value);
+                    });
 
                     // Establecer la acción del formulario
                     document.getElementById("editSensorForm").setAttribute("action", `/sensores/edit/${id}`);

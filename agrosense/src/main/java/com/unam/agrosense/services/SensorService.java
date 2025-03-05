@@ -1,5 +1,6 @@
 package com.unam.agrosense.services;
 
+import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.model.sensor.Sensor;
 import com.unam.agrosense.model.sensor.SensorDto;
 import com.unam.agrosense.model.sensor.SensorResponseDto;
@@ -41,7 +42,7 @@ public class SensorService {
         sensor.setLatitud(sensorDto.latitud());
         sensor.setLongitud(sensorDto.longitud());
         sensor.setDescripcion(sensorDto.descripcion());
-        sensor.setTipoDispositivo(sensorDto.tipo());
+        sensor.setTipoDispositivo(TipoDispositivo.SENSOR);
         sensor.getTiposSensores().addAll(tiposDeSensores);
         tiposDeSensores.forEach(tipoSensor -> tipoSensor.getSensores().add(sensor));
 
@@ -73,7 +74,6 @@ public class SensorService {
         sensor.setLatitud(sensorDto.latitud());
         sensor.setLongitud(sensorDto.longitud());
         sensor.setDescripcion(sensorDto.descripcion());
-        sensor.setTipoDispositivo(sensorDto.tipo());
         if (!tiposDeSensores.isEmpty()) {
             sensor.getTiposSensores().forEach(
                     tipoSensor -> tipoSensor.getSensores().remove(sensor)
@@ -143,6 +143,13 @@ public class SensorService {
                         sensor.getTiposSensores()
                 ))
                 .toList();
+    }
+
+    public int cantidadDeSensores() {
+        var sensorCount = 0;
+        List<Sensor> sensores =  sensorRepository.findAllByActivoTrue();
+        sensorCount = sensores.size();
+        return sensorCount;
     }
 
 }
