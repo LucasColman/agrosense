@@ -39,7 +39,7 @@
                                 th:data-latitud="${sensor.latitud}"
                                 th:data-longitud="${sensor.longitud}"
                                 th:data-descripcion="${sensor.descripcion}"
-                                th:data-tipos-sensores="${sensor.tiposDeSensores[#ids]}">
+                                th:data-tipos-sensores="${sensor.tiposDeSensores.![id]}">
                                 Editar
                         </button>
                         <button class="btn btn-danger btn-sm delete-sensor-btn"
@@ -199,6 +199,36 @@
                     document.getElementById("editSensorForm").setAttribute("action", `/sensores/edit/${id}`);
                 });
             });
+        });
+
+        document.getElementById("editSensorForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita que el formulario se envíe de la forma tradicional
+
+            const id = document.getElementById("sensor-id-edit").value;
+            const sensorData = {
+                nombre: document.getElementById("sensor-name-edit").value,
+                modelo: document.getElementById("sensor-modelo-edit").value,
+                latitud: parseFloat(document.getElementById("sensor-latitud-edit").value),
+                longitud: parseFloat(document.getElementById("sensor-longitud-edit").value),
+                descripcion: document.getElementById("sensor-descripcion-edit").value,
+                idsTipoSensor: Array.from(document.getElementById("tipoSensor-edit").selectedOptions).map(opt => opt.value)
+            };
+
+            fetch(`/sensores/edit/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(sensorData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload(); // Recargar la página si la actualización fue exitosa
+                    } else {
+                        alert("Error al actualizar el sensor");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
         });
 
         document.addEventListener("DOMContentLoaded", function () {
