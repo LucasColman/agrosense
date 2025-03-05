@@ -33,43 +33,40 @@ public class SecurityConfiguration {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
 
-                    //permitir acceso a estos endpoints sin autenticación
-                    req.requestMatchers(HttpMethod.POST, "/auth","/usuarios/registro").permitAll();
-
-                    //permitir acceso a estos endpoints solo a usuarios con rol ADMIN
-                    req.requestMatchers(HttpMethod.POST,
-                            "/sensores/store",
-                            "/actuadores/store",
-                            "/tipos-sensores/store",
-                            "/tipos-actuadores/store",
-                            "/sensores/**",
-                            "/usuarios").permitAll();
-
-                    req.requestMatchers(HttpMethod.PUT,
-                            "/sensores/edit/**",
-                            "/actuadores/**",
-                            "/tipos-sensores/**",
-                            "/tipos-actuadores/**",
-                            "/usuarios/**").permitAll();
-
-                    req.requestMatchers(HttpMethod.DELETE,
-                            "/sensores/**",
-                            "/actuadores/**",
-                            "/tipos-sensores/**",
-                            "/tipos-actuadores",
-                            "/usuarios/**").permitAll();
-
-                    req.requestMatchers(HttpMethod.GET,"/usuarios/**").permitAll();
-
-                    // Endpoints para administradores y usuarios
-                    req.requestMatchers(HttpMethod.GET,
-                            "/sensores/**",
-                            "/actuadores",
-                            "/tipos-sensores",
-                            "/tipos-actuadores").permitAll();
+//                    req.requestMatchers("/login","/signup","/dashboard", "/css/**", "/js/**").permitAll();
+//
+//                    //permitir acceso a estos endpoints sin autenticación
+//                    req.requestMatchers(HttpMethod.POST, "/auth","/usuarios/registro").permitAll();
+//
+//
+//                    req.requestMatchers(HttpMethod.GET,
+//                            "/sensores/**",
+//                            "/actuadores",
+//                            "/tipos-sensores/**",
+//                            "/tipos-actuadores/**",
+//                            "/usuarios/**").permitAll();
+//
+//                    req.requestMatchers(HttpMethod.POST,
+//                            "/sensores/**",
+//                            "/actuadores/**",
+//                            "/tipos-sensores/**",
+//                            "/tipos-actuadores/**").permitAll();
+//
+//                    req.requestMatchers(HttpMethod.PUT,
+//                            "/sensores/**",
+//                            "/actuadores/**",
+//                            "/tipos-sensores/**",
+//                            "/tipos-actuadores/**").permitAll();
+//
+//                    req.requestMatchers(HttpMethod.DELETE,
+//                            "/sensores/**",
+//                            "/actuadores/**",
+//                            "/tipos-sensores/delete/**",
+//                            "/tipos-actuadores/**",
+//                            "/usuarios/**").permitAll();
 
                     //Todos los demás endpoints requieren autenticación
-                    req.anyRequest().authenticated();
+                    req.anyRequest().permitAll();
 
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

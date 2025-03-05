@@ -1,4 +1,4 @@
-package com.unam.agrosense.cors;
+package com.unam.agrosense.config.cors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

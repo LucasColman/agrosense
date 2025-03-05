@@ -30,7 +30,7 @@ public class SensorController {
 
     //Registrar UN SENSOR
     @PostMapping("/store")
-    public ResponseEntity<SensorResponseDto> registrarSensor(@ModelAttribute SensorDto sensorDto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<SensorResponseDto> registrarSensor(@ModelAttribute @Valid SensorDto sensorDto, UriComponentsBuilder uriBuilder) {
         SensorResponseDto sensorResponseDto = sensorService.crearSensor(sensorDto);
 
         URI url = uriBuilder.path("/sensores/{id}").buildAndExpand(sensorResponseDto.id()).toUri();

@@ -1,11 +1,14 @@
 package com.unam.agrosense.services;
 
+import com.unam.agrosense.model.sensor.Sensor;
 import com.unam.agrosense.model.tipoSensor.TipoMedida;
 import com.unam.agrosense.model.tipoSensor.TipoSensor;
 import com.unam.agrosense.model.tipoSensor.TipoSensorResponseDto;
 import com.unam.agrosense.repository.TipoSensorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +18,12 @@ public class TipoSensorService {
     @Autowired
     private TipoSensorRepository tipoSensorRepository;
 
+    @Transactional
     public TipoSensor registrarTipoSensor(TipoSensor tipoSensor) {
         return tipoSensorRepository.save(tipoSensor);
     }
 
+    @Transactional
     public List<TipoSensorResponseDto> obtenerTiposSensores() {
         List<TipoSensor> tiposSensores = tipoSensorRepository.findByActivoTrue();
         return tiposSensores.stream()
@@ -32,21 +37,33 @@ public class TipoSensorService {
                 .toList();
     }
 
+    @Transactional
     public Optional<TipoSensor> obtenerTipoSensor(Long id) {
         return tipoSensorRepository.findById(id);
     }
 
-    public TipoSensor actualizarTipoMedida(Long id, TipoMedida nuevaMedida) {
-        return tipoSensorRepository.findById(id).map(tipoSensor -> {
-            tipoSensor.setTipoMedida(nuevaMedida);
-            return tipoSensorRepository.save(tipoSensor);
-        }).orElseThrow(() -> new IllegalArgumentException("Tipo de sensor no encontrado"));
-    }
 
+    @Transactional
+    public TipoSensor actualizarTipoSensor(Long id, TipoSensor tipoSensor) {
+        TipoSensor tipoSensorActual = tipoSensorRepository.findByIdAndActivoTrue(id).
+                orElseThrow(() -> new EntityNotFoundException("El tipo de sensor no existe"));
+
+        tipoSensorActual.setNombre(tipoSensor.getNombre());
+        tipoSensorActual.setTipoMedida(tipoSensor.getTipoMedida());
+        tipoSensorActual.setActivo(tipoSensor.isActivo());
+
+        return tipoSensorRepository.save(tipoSensorActual);
+    }
+    @Transactional
     public void eliminarTipoSensor(Long id) {
-        if(!tipoSensorRepository.existsById(id)) {
-            throw new RuntimeException("El tipo de sensor no existe");
+        TipoSensor tipoSensor = tipoSensorRepository.findByIdAndActivoTrue(id).
+                orElseThrow(() -> new EntityNotFoundException("El tipo de sensor no existe"));
+
+        tipoSensorRepository.softDelete(id);
+
+        for (Sensor sensor : tipoSensor.getSensores()) {
+            sensor.getTiposSensores().remove(tipoSensor);
         }
-        tipoSensorRepository.deleteById(id);
+        tipoSensor.getSensores().clear();
     }
 }
