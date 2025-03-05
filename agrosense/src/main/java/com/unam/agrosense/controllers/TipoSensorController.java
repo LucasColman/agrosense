@@ -1,9 +1,11 @@
 package com.unam.agrosense.controllers;
 
+import com.unam.agrosense.model.sensor.SensorDto;
 import com.unam.agrosense.model.tipoSensor.TipoMedida;
 import com.unam.agrosense.model.tipoSensor.TipoSensor;
 import com.unam.agrosense.model.tipoSensor.TipoSensorResponseDto;
 import com.unam.agrosense.services.TipoSensorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,14 +40,12 @@ public class TipoSensorController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}/tipo-medida")
-    public ResponseEntity<TipoSensor> actualizarTipoMedida(
-            @PathVariable Long id,
-            @RequestBody TipoMedida nuevaMedida) {
-        return ResponseEntity.ok(tipoSensorService.actualizarTipoMedida(id, nuevaMedida));
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<TipoSensor> actualizarTipoSensor(@ModelAttribute @Valid TipoSensor tipoSensor, @PathVariable Long id) {
+        return ResponseEntity.ok(tipoSensorService.actualizarTipoSensor(id, tipoSensor));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> eliminarTipoSensor(@PathVariable Long id) {
         tipoSensorService.eliminarTipoSensor(id);
         return ResponseEntity.noContent().build();

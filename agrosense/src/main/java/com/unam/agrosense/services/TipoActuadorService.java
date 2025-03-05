@@ -1,5 +1,6 @@
 package com.unam.agrosense.services;
 
+import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.sensor.Sensor;
 import com.unam.agrosense.model.tipoActuador.Comportamiento;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
@@ -50,13 +51,13 @@ public class TipoActuadorService {
     @Transactional
     public void eliminarTipoActuador(Long id) {
         TipoActuador tipoActuador = tipoActuadorRepository.findByIdAndActivoTrue(id).
-                orElseThrow(() -> new EntityNotFoundException("El sensor no existe"));
+                orElseThrow(() -> new EntityNotFoundException("El tipo de actuador no existe"));
 
-        tipoActuador.getActuadores().clear();
-        tipoActuadorRepository.save(tipoActuador);
-        
         tipoActuadorRepository.softDelete(id);
 
+        for (Actuador actuador : tipoActuador.getActuadores()) {
+            actuador.getTiposActuadores().remove(tipoActuador);
+        }
+        tipoActuador.getActuadores().clear();
     }
-
 }
