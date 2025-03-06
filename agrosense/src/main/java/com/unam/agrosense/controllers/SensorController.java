@@ -39,7 +39,7 @@ public class SensorController {
 
     // ACTUALIZAR UN SENSOR
     @PutMapping("/edit/{id}")
-    public ResponseEntity<SensorResponseDto> actualizarSensor(@ModelAttribute @Valid SensorDto sensorDto, @PathVariable Long id) {
+    public ResponseEntity<SensorResponseDto> actualizarSensor(@ModelAttribute @RequestBody @Valid SensorDto sensorDto, @PathVariable Long id) {
         SensorResponseDto sensorResponseDto = sensorService.actualizarSensor(id, sensorDto);
         return ResponseEntity.ok(sensorResponseDto);
     }

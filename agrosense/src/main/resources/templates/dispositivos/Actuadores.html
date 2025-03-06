@@ -39,7 +39,8 @@
                             th:data-latitud="${actuador.latitud}"
                             th:data-longitud="${actuador.longitud}"
                             th:data-descripcion="${actuador.descripcion}"
-                            th:data-tipos-actuadores="${actuador.tiposDeActuadores.![id]}">
+                            th:data-tipos-actuadores="${#strings.listJoin(actuador.tiposDeActuadores.![id], ',')}"
+                    >
                         Editar
                     </button>
                     <button class="btn btn-danger btn-sm delete-actuador-btn"
@@ -53,6 +54,7 @@
             </tbody>
         </table>
 
+        <!-- Modal Agregar Actuador -->
         <div class="modal fade" id="newActuadorModal" tabindex="-1" aria-labelledby="modalNewActuador" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -110,26 +112,28 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="editActuadorForm" action="#" th:action="@{/actuadores/edit}" method="post" th:object="${actuador}">
+                        <form id="editActuadorForm" th:action="@{/actuadores/edit}" method="post" th:object="${actuador}">
+                            <input type="hidden" name="_method" value="put">
+                            <input type="hidden" id="actuador-id-edit" name="id">
                             <div class="mb-3">
                                 <label for="actuador-name-edit" class="col-form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="actuador-name-edit">
+                                <input type="text" class="form-control" id="actuador-name-edit" name="nombre">
                             </div>
                             <div class="mb-3">
                                 <label for="actuador-modelo-edit" class="col-form-label">Modelo:</label>
-                                <input type="text" class="form-control" id="actuador-modelo-edit">
+                                <input type="text" class="form-control" id="actuador-modelo-edit" name="modelo">
                             </div>
                             <div class="mb-3">
                                 <label for="actuador-latitud-edit" class="col-form-label">Latitud:</label>
-                                <input type="number" class="form-control" id="actuador-latitud-edit">
+                                <input type="number" class="form-control" id="actuador-latitud-edit" name="latitud">
                             </div>
                             <div class="mb-3">
                                 <label for="actuador-longitud-edit" class="col-form-label">Longitud:</label>
-                                <input type="number" class="form-control" id="actuador-longitud-edit">
+                                <input type="number" class="form-control" id="actuador-longitud-edit"  name="longitud">
                             </div>
                             <div class="mb-3">
                                 <label for="actuador-descripcion-edit" class="col-form-label">Descripción:</label>
-                                <textarea class="form-control" id="actuador-descripcion-edit"></textarea>
+                                <textarea class="form-control" id="actuador-descripcion-edit" name="descripcion"></textarea>
                             </div>
 
                             <div class="mb-3">
@@ -138,12 +142,13 @@
                                     <option th:each="tipo : ${tiposActuadores}" th:value="${tipo.id}" th:text="${tipo.descripcion}"></option>
                                 </select>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                            </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Guardar</button>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -168,6 +173,7 @@
             </div>
         </div>
     </div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".edit-actuador-btn").forEach(button => {
@@ -185,7 +191,14 @@
                 document.getElementById("actuador-latitud-edit").value = latitud;
                 document.getElementById("actuador-longitud-edit").value = longitud;
                 document.getElementById("actuador-descripcion-edit").value = descripcion;
-                document.getElementById("tipoActuador-edit").value = tipoActuadores;
+
+                // Asignar múltiples valores al select
+                const select = document.getElementById("tipoActuador-edit");
+                const idsSeleccionados = tipoActuadores.split(","); // Convierte la cadena en un array
+
+                Array.from(select.options).forEach(option => {
+                    option.selected = idsSeleccionados.includes(option.value);
+                });
 
                 // Establecer la acción del formulario
                 document.getElementById("editActuadorForm").setAttribute("action", `/actuadores/edit/${id}`);
