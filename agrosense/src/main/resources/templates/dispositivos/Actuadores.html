@@ -110,7 +110,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="#" th:action="@{/actuadores/edit}" method="post" th:object="${actuador}">
+                        <form id="editActuadorForm" action="#" th:action="@{/actuadores/edit}" method="post" th:object="${actuador}">
                             <div class="mb-3">
                                 <label for="actuador-name-edit" class="col-form-label">Nombre:</label>
                                 <input type="text" class="form-control" id="actuador-name-edit">
@@ -133,9 +133,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="tipoActuador-edit" class="col-form-label">Tipos de actuador asociados:</label>
+                                <label for="tipoActuador-edit" class="col-form-label">Tipos de actuador:</label>
                                 <select id="tipoActuador-edit" name="idsTipoActuador" class="form-select" multiple>
-                                    <option th:each="tipo : ${actuadores}" th:value="${tipo.id}" th:text="${tipo.tiposDeActuadores}"></option>
+                                    <option th:each="tipo : ${tiposActuadores}" th:value="${tipo.id}" th:text="${tipo.descripcion}"></option>
                                 </select>
                             </div>
                         </form>
@@ -178,14 +178,17 @@
                 const latitud = this.getAttribute("data-latitud");
                 const longitud = this.getAttribute("data-longitud");
                 const descripcion = this.getAttribute("data-descripcion");
-                const tipo = this.getAttribute("data-tipo");
+                const tipoActuadores = this.getAttribute("data-tipos-actuadores");
 
                 document.getElementById("actuador-name-edit").value = nombre;
                 document.getElementById("actuador-modelo-edit").value = modelo;
                 document.getElementById("actuador-latitud-edit").value = latitud;
                 document.getElementById("actuador-longitud-edit").value = longitud;
                 document.getElementById("actuador-descripcion-edit").value = descripcion;
-                document.getElementById("tipoDispositivo-edit").value = tipo;
+                document.getElementById("tipoActuador-edit").value = tipoActuadores;
+
+                // Establecer la acción del formulario
+                document.getElementById("editActuadorForm").setAttribute("action", `/actuadores/edit/${id}`);
             });
         });
     });
