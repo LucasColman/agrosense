@@ -42,7 +42,7 @@ public class ActuadorController {
 
 
     // ACTUALIZAR UN ACTUADOR
-    @PutMapping("/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<ActuadorResponseDto> actualizarActuador(@RequestBody @Valid ActuadorDto actuadorDto, @PathVariable Long id, UriComponentsBuilder uriBuilder) {
         ActuadorResponseDto actuadorResponseDto = actuadorService.actualizarActuador(id, actuadorDto);
 
