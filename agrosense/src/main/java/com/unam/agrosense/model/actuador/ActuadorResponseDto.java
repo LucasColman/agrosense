@@ -9,17 +9,11 @@ import java.util.List;
 
 public record ActuadorResponseDto(
         Long id,
-
         String nombre,
-
         String modelo,
-
         String latitud,
-
         String longitud,
-
         String descripcion,
-
         List<TipoActuador> tiposDeActuadores
 ) {
 }

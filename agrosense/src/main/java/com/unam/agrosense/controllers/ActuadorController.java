@@ -32,7 +32,7 @@ public class ActuadorController {
 
     //REGISTRAR UN ACTUADOR
     @PostMapping("/store")
-    public ResponseEntity<ActuadorResponseDto> registrarActuador(@ModelAttribute @Valid ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<ActuadorResponseDto> registrarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
 
         ActuadorResponseDto actuadorResponseDto = actuadorService.crearActuador(actuadorDto);
 
@@ -43,7 +43,7 @@ public class ActuadorController {
 
     // ACTUALIZAR UN ACTUADOR
     @PutMapping("/edit/{id}")
-    public ResponseEntity<ActuadorResponseDto> actualizarActuador(@RequestBody @Valid ActuadorDto actuadorDto, @PathVariable Long id, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ActuadorResponseDto> actualizarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto, @PathVariable Long id, UriComponentsBuilder uriBuilder) {
         ActuadorResponseDto actuadorResponseDto = actuadorService.actualizarActuador(id, actuadorDto);
 
         return ResponseEntity.ok(actuadorResponseDto);
@@ -70,7 +70,6 @@ public class ActuadorController {
     @GetMapping
     public String listarActuadores(Model model) {
         List<ActuadorResponseDto> actuadores = actuadorService.obtenerActuadores();
-
 
         model.addAttribute("actuadores", actuadores);
         model.addAttribute("tiposDispositivo", TipoDispositivo.values());
