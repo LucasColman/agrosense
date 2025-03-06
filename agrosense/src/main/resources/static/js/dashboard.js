@@ -1,3 +1,29 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const token = localStorage.getItem("authToken");
+
+    fetch("http://localhost:8080/dashboard", { // Asegúrate de usar la ruta correcta
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("No autorizado");
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("sensores-total").textContent = `Total: ${data.sensores}`;
+            document.getElementById("actuadores-total").textContent = `Total: ${data.actuadores}`;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            window.location.href = "/login"; // Si hay error, redirigir al login
+        });
+});
+
+
 
 // Función para cargar datos de sensores y actuadores
 async function loadDeviceSummary() {
