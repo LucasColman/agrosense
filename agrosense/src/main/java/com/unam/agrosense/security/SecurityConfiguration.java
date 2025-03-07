@@ -28,14 +28,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // Habilita CORS
-                .csrf(csrf -> csrf.disable()) // Deshabilita CSRF si usas JWT
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/signup", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/auth","/usuarios/registro").permitAll()
-                        .requestMatchers("/dashboard").hasRole("ADMIN")
-                        .requestMatchers("/").hasAnyRole("USER", "ADMIN")
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+//                        .requestMatchers("/login","/signup", "/css/**", "/js/**").permitAll()
+//                        .requestMatchers("/auth","/usuarios/registro").permitAll()
+//                        .requestMatchers("/dashboard").hasRole("ADMIN")
+//                        .requestMatchers("/").hasAnyRole("USER", "ADMIN")
+//                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT no usa sesiones
                 .formLogin(AbstractHttpConfigurer::disable)

@@ -23,10 +23,8 @@ async function login() {
         // Redirigir según el rol
         if (data.rol === "ADMIN") {
             window.location.href = "/dashboard";
-            await cargarDatos();
         } else {
             window.location.href = "/";
-            await cargarDatos();
         }
     } catch (error) {
         console.error("Error durante el auth", error);

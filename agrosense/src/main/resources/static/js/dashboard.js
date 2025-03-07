@@ -1,3 +1,4 @@
+/*
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem("authToken");
 
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "/login"; // Si hay error, redirigir al login
         });
 });
-
+*/
 
 
 // Función para cargar datos de sensores y actuadores
