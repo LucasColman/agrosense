@@ -24,6 +24,11 @@ public class TipoActuador {
     @Enumerated(EnumType.STRING)
     private Comportamiento comportamiento;
 
+    @ElementCollection
+    @CollectionTable(name = "estados_actuadores", joinColumns = @JoinColumn(name = "tipoActuador_id"))
+    @Column(name = "estado")
+    private List<String> estados;
+
     private boolean activo  = true;
 
     @ManyToMany
@@ -34,7 +39,5 @@ public class TipoActuador {
     )
     @JsonIgnore
     private List<Actuador> actuadores;
-
-
 
 }

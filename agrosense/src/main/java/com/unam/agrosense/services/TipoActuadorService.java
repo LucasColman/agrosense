@@ -33,6 +33,7 @@ public class TipoActuadorService {
                         tipo.getDescripcion(),
                         tipo.getComportamiento(),
                         tipo.isActivo(),
+                        tipo.getEstados(),
                         tipo.getActuadores()
                 ))
                 .toList();

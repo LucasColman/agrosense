@@ -14,6 +14,7 @@ public record ActuadorResponseDto(
         String latitud,
         String longitud,
         String descripcion,
+        String estadoActuador,
         List<TipoActuador> tiposDeActuadores
 ) {
 }
