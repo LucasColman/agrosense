@@ -43,6 +43,7 @@ public class ActuadorService {
         actuador.setLatitud(actuadorDto.latitud());
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
+        actuador.setEstadoActuador(actuadorDto.estadoActuador());
         actuador.setTipoDispositivo(TipoDispositivo.ACTUADOR);
         actuador.getTiposActuadores().addAll(tiposDeActuadores);
         tiposDeActuadores.forEach(tipoActuador -> tipoActuador.getActuadores().add(actuador));
@@ -56,6 +57,7 @@ public class ActuadorService {
                 actuador.getLatitud(),
                 actuador.getLongitud(),
                 actuador.getDescripcion(),
+                actuador.getEstadoActuador(),
                 actuador.getTiposActuadores()
         );
 
@@ -76,6 +78,7 @@ public class ActuadorService {
         actuador.setLatitud(actuadorDto.latitud());
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
+        actuador.setEstadoActuador(actuadorDto.estadoActuador());
 
         if (!tiposDeActuadores.isEmpty()) {
             actuador.getTiposActuadores().forEach(
@@ -97,6 +100,7 @@ public class ActuadorService {
                 actuador.getLatitud(),
                 actuador.getLongitud(),
                 actuador.getDescripcion(),
+                actuador.getEstadoActuador(),
                 actuador.getTiposActuadores()
         );
     }
@@ -129,6 +133,7 @@ public class ActuadorService {
                 actuador.getLatitud(),
                 actuador.getLongitud(),
                 actuador.getDescripcion(),
+                actuador.getEstadoActuador(),
                 actuador.getTiposActuadores()
         );
 
@@ -145,6 +150,7 @@ public class ActuadorService {
                         actuador.getLatitud(),
                         actuador.getLongitud(),
                         actuador.getDescripcion(),
+                        actuador.getEstadoActuador(),
                         actuador.getTiposActuadores()
                 ))
                 .toList();

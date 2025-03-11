@@ -9,6 +9,7 @@ public record TipoActuadorResponseDto(
     String descripcion,
     Comportamiento comportamiento,
     boolean activo,
+    List<String> estados,
     List<Actuador> actuadores
 ) {
 }
