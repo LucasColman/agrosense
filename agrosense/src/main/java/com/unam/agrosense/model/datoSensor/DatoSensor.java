@@ -1,4 +1,4 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.datoSensor;
 
 import com.unam.agrosense.model.sensor.Sensor;
 import jakarta.persistence.*;
@@ -25,4 +25,6 @@ public class DatoSensor {
     @ManyToOne
     @JoinColumn(name = "sensor_id", nullable = false)
     private Sensor sensor;
+
+    private boolean activo = true;
 }

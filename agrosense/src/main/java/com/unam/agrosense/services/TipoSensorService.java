@@ -46,7 +46,7 @@ public class TipoSensorService {
     @Transactional
     public TipoSensor actualizarTipoSensor(Long id, TipoSensor tipoSensor) {
         TipoSensor tipoSensorActual = tipoSensorRepository.findByIdAndActivoTrue(id).
-                orElseThrow(() -> new EntityNotFoundException("El tipoDispositivo de sensor no existe"));
+                orElseThrow(() -> new EntityNotFoundException("El tipo de sensor no existe"));
 
         tipoSensorActual.setNombre(tipoSensor.getNombre());
         tipoSensorActual.setTipoMedida(tipoSensor.getTipoMedida());
@@ -57,7 +57,7 @@ public class TipoSensorService {
     @Transactional
     public void eliminarTipoSensor(Long id) {
         TipoSensor tipoSensor = tipoSensorRepository.findByIdAndActivoTrue(id).
-                orElseThrow(() -> new EntityNotFoundException("El tipoDispositivo de sensor no existe"));
+                orElseThrow(() -> new EntityNotFoundException("El tipo de sensor no existe"));
 
         tipoSensorRepository.softDelete(id);
 

@@ -39,10 +39,8 @@ public class TipoActuadorController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<TipoActuador> actualizarComportamiento(
-            @PathVariable Long id,
-            @RequestBody Comportamiento nuevoComportamiento) {
-        return ResponseEntity.ok(tipoActuadorService.actualizarComportamiento(id, nuevoComportamiento));
+    public ResponseEntity<TipoActuador> actualizarTipoActuador(@PathVariable Long id, @ModelAttribute @RequestBody TipoActuador tipoActuador) {
+        return ResponseEntity.ok(tipoActuadorService.actualizarTipoActuador(id, tipoActuador));
     }
 
     @DeleteMapping("/delete/{id}")

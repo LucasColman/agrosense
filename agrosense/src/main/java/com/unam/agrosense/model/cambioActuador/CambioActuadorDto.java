@@ -1,6 +1,7 @@
 package com.unam.agrosense.model.cambioActuador;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -9,9 +10,9 @@ public record CambioActuadorDto(
         String estadoAnterior,
         @NotBlank
         String estadoNuevo,
-        @NotBlank
+        @NotNull
         LocalDateTime fechaCambio,
-        @NotBlank
+        @NotNull
         Long actuadorId
 ) {
 }

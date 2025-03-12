@@ -1,6 +1,6 @@
 package com.unam.agrosense.model.sensor;
 
-import com.unam.agrosense.model.DatoSensor;
+import com.unam.agrosense.model.datoSensor.DatoSensor;
 import com.unam.agrosense.model.dispositivo.Dispositivo;
 import com.unam.agrosense.model.tipoSensor.TipoSensor;
 import jakarta.persistence.*;
