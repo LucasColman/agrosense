@@ -32,7 +32,8 @@
                         data-bs-target="#editTipoActuadorModal"
                         th:data-id="${tipo.id}"
                         th:data-comportamiento="${tipo.comportamiento}"
-                        th:data-descripcion="${tipo.descripcion}">
+                        th:data-descripcion="${tipo.descripcion}"
+                        th:data-estados="${tipo.estados}">
                     Editar
                 </button>
                 <button class="btn btn-danger btn-sm delete-sensor-btn"
@@ -68,6 +69,14 @@
                             <option th:each="comportamiento : ${comportamientos}" th:value="${comportamiento}" th:text="${comportamiento}"></option>
                         </select>
                     </div>
+
+                    <div class="mb-3" id="estados-container" style="display: none;">
+                        <label for="estados-hidden" class="col-form-label">Estados:</label>
+                        <div id="estados-list" class="mb-1"></div>
+                        <input type="text" id="nuevo-estado" class="form-control mb-3" placeholder="Ingrese un estado">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="agregarEstado()">Agregar Estado</button>
+                        <input type="hidden" name="estados" id="estados-hidden">
+                    </div>
                     <button type="submit" class="btn btn-success">Guardar</button>
                 </form>
             </div>
@@ -95,6 +104,14 @@
                             <option th:each="comportamiento : ${comportamientos}" th:value="${comportamiento}" th:text="${comportamiento}"></option>
                         </select>
                     </div>
+                    <div class="mb-3" id="edit-estados-container">
+                        <label class="col-form-label">Estados:</label>
+                        <div id="edit-estados-list" class="mb-2"></div>
+                        <input type="text" id="edit-nuevo-estado" class="form-control mb-2" placeholder="Ingrese un estado">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="agregarEstadoEdit()">Agregar Estado</button>
+                        <input type="hidden" name="estados" id="edit-estados-hidden">
+                    </div>
+
                     <button type="submit" class="btn btn-success">Guardar</button>
                 </form>
             </div>
@@ -129,16 +146,92 @@
                 const id = this.getAttribute("data-id");
                 const comportamiento = this.getAttribute("data-comportamiento");
                 const descripcion = this.getAttribute("data-descripcion");
+                const estados = this.getAttribute("data-estados");
+                console.log("Estados recibidos en edición:", estados);
 
-                // Asignar correctamente los valores a los campos
+                // Limpiar los corchetes si es necesario
+                const estadosLimpiados = estados.replace(/[\[\]']+/g, '').split(',');
+
                 document.getElementById("tipo-descripcion-edit").value = descripcion;
                 document.getElementById("comportamiento-edit").value = comportamiento;
 
-                // Establecer la acción del formulario
+                const estadosList = document.getElementById("edit-estados-list");
+                const estadosHidden = document.getElementById("edit-estados-hidden");
+
+                estadosList.innerHTML = ""; // Limpiar lista de estados
+                estadosHidden.value = estados; // Asignar al input hidden
+
+                if (comportamiento === "MULTINIVEL") {
+                    document.getElementById("edit-estados-container").style.display = "block";
+                    if (estadosLimpiados.length > 0) {
+                        estadosLimpiados.forEach(estado => {
+                            agregarEstadoBadge(estado, estadosList, estadosHidden);
+                        });
+                    }
+                } else {
+                    document.getElementById("edit-estados-container").style.display = "none";
+                    estadosHidden.value = "On,Off"; // Set to default "On,Off"
+                }
+
                 document.getElementById("editTipoActuadorForm").setAttribute("action", `/tipos-actuadores/edit/${id}`);
             });
         });
     });
+
+    document.getElementById("comportamiento-edit").addEventListener("change", function () {
+        let estadosContainer = document.getElementById("edit-estados-container");
+        let estadosList = document.getElementById("edit-estados-list");
+        let estadosHidden = document.getElementById("edit-estados-hidden");
+
+        if (this.value === "ON_OFF") {
+            estadosContainer.style.display = "none";
+            estadosHidden.value = "On,Off"; // Set to default "On,Off"
+        } else if (this.value === "MULTINIVEL") {
+            estadosContainer.style.display = "block";
+            estadosList.innerHTML = "";
+            estadosHidden.value = "";
+        } else {
+            estadosContainer.style.display = "none";
+        }
+    });
+
+    function agregarEstadoEdit() {
+        const nuevoEstado = document.getElementById("edit-nuevo-estado").value.trim();
+        const estadosList = document.getElementById("edit-estados-list");
+        const estadosHidden = document.getElementById("edit-estados-hidden");
+
+        if (nuevoEstado) {
+            agregarEstadoBadge(nuevoEstado, estadosList, estadosHidden);
+            document.getElementById("edit-nuevo-estado").value = "";
+        }
+    }
+
+    function agregarEstadoBadge(estado, estadosList, estadosHidden) {
+        let span = document.createElement("span");
+        span.className = "badge bg-secondary me-2 p-2 position-relative";
+        span.textContent = estado;
+        span.style.paddingRight = "24px"; // Espacio para la X
+
+        let btnEliminar = document.createElement("button");
+        btnEliminar.type = "button";
+        btnEliminar.className = "position-absolute top-0 start-100 translate-middle btn btn-danger btn-sm rounded-circle";
+        btnEliminar.style.width = "18px";
+        btnEliminar.style.height = "18px";
+        btnEliminar.style.fontSize = "10px";
+        btnEliminar.style.padding = "0"; // Evitar que el padding distorsione el botón
+        btnEliminar.style.textAlign = "center"; // Aseguramos que el texto esté centrado
+        btnEliminar.style.lineHeight = "18px"; // Centrar la X verticalmente
+        btnEliminar.textContent = "✕";
+        btnEliminar.onclick = function () {
+            span.remove();
+            actualizarEstadosHidden(estadosList, estadosHidden);
+        };
+
+        span.appendChild(btnEliminar);
+        estadosList.appendChild(span);
+
+        actualizarEstadosHidden(estadosList, estadosHidden);
+    }
 
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -167,6 +260,69 @@
             }
         });
     });
+
+    document.getElementById("comportamiento").addEventListener("change", function () {
+        let estadosContainer = document.getElementById("estados-container");
+        let estadosList = document.getElementById("estados-list");
+        let estadosHidden = document.getElementById("estados-hidden");
+
+        if (this.value === "ON_OFF") {
+            estadosContainer.style.display = "none";
+            estadosHidden.value = "On,Off";
+        } else if (this.value === "MULTINIVEL") {
+            estadosContainer.style.display = "block";
+            estadosList.innerHTML = "";
+            estadosHidden.value = "";
+        } else {
+            estadosContainer.style.display = "none";
+        }
+    });
+
+    function agregarEstado() {
+        let nuevoEstado = document.getElementById("nuevo-estado").value.trim();
+        let estadosList = document.getElementById("estados-list");
+        let estadosHidden = document.getElementById("estados-hidden");
+
+        if (nuevoEstado) {
+            // Crear el badge (span)
+            let span = document.createElement("span");
+            span.className = "badge bg-secondary me-2 p-2 position-relative";
+            span.textContent = nuevoEstado;
+            span.style.paddingRight = "24px"; // Espacio para la X
+
+            // Crear botón de eliminar (X)
+            let btnEliminar = document.createElement("button");
+            btnEliminar.type = "button";
+            btnEliminar.className = "position-absolute top-0 start-100 translate-middle btn btn-danger btn-sm rounded-circle";
+            btnEliminar.style.width = "18px";
+            btnEliminar.style.height = "18px";
+            btnEliminar.style.display = "flex";
+            btnEliminar.style.justifyContent = "center";
+            btnEliminar.style.alignItems = "center";
+            btnEliminar.style.fontSize = "10px";
+            btnEliminar.style.lineHeight = "1";
+            btnEliminar.textContent = "✕";
+            btnEliminar.onclick = function () {
+                span.remove(); // Eliminar visualmente
+                actualizarEstadosHidden(); // Actualizar el input hidden
+            };
+
+            // Agregar el botón dentro del badge
+            span.appendChild(btnEliminar);
+            estadosList.appendChild(span);
+
+            // Actualizar el input hidden
+            actualizarEstadosHidden();
+            document.getElementById("nuevo-estado").value = "";
+        }
+    }
+
+    // Función para actualizar el input hidden con los estados actuales
+    function actualizarEstadosHidden() {
+        let estadosHidden = document.getElementById("estados-hidden");
+        let estados = Array.from(document.querySelectorAll("#estados-list span")).map(span => span.childNodes[0].nodeValue.trim());
+        estadosHidden.value = estados.join(",");
+    }
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
