@@ -23,7 +23,6 @@ public class Actuador extends Dispositivo {
     @OneToMany(mappedBy = "actuador",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CambioActuador> cambiosActuador;
 
-    @Column(nullable = false)
     private String estadoActuador;
 
     public void addTipoActuador(TipoActuador tipoActuador) {

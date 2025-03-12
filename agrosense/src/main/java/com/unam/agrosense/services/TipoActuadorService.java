@@ -43,17 +43,23 @@ public class TipoActuadorService {
         return tipoActuadorRepository.findById(id);
     }
 
-    public TipoActuador actualizarComportamiento(Long id, Comportamiento nuevoComportamiento) {
-        return tipoActuadorRepository.findById(id).map(tipoActuador -> {
-            tipoActuador.setComportamiento(nuevoComportamiento);
-            return tipoActuadorRepository.save(tipoActuador);
-        }).orElseThrow(() -> new IllegalArgumentException("Tipo de actuador no encontrado"));
+
+    @Transactional
+    public TipoActuador actualizarTipoActuador(Long id, TipoActuador tipoActuador) {
+        TipoActuador tipoActuadorActual = tipoActuadorRepository.findByIdAndActivoTrue(id).
+                orElseThrow(() -> new EntityNotFoundException("El tipo de actuador no existe"));
+
+        tipoActuadorActual.setDescripcion(tipoActuador.getDescripcion());
+        tipoActuadorActual.setComportamiento(tipoActuador.getComportamiento());
+        tipoActuadorActual.setEstados(tipoActuador.getEstados());
+
+        return tipoActuadorRepository.save(tipoActuadorActual);
     }
 
     @Transactional
     public void eliminarTipoActuador(Long id) {
         TipoActuador tipoActuador = tipoActuadorRepository.findByIdAndActivoTrue(id).
-                orElseThrow(() -> new EntityNotFoundException("El tipoDispositivo de actuador no existe"));
+                orElseThrow(() -> new EntityNotFoundException("El tipo de actuador no existe"));
 
         tipoActuadorRepository.softDelete(id);
 

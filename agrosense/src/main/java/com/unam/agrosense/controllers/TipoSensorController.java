@@ -41,7 +41,7 @@ public class TipoSensorController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<TipoSensor> actualizarTipoSensor(@ModelAttribute @Valid TipoSensor tipoSensor, @PathVariable Long id) {
+    public ResponseEntity<TipoSensor> actualizarTipoSensor(@ModelAttribute @RequestBody TipoSensor tipoSensor, @PathVariable Long id) {
         return ResponseEntity.ok(tipoSensorService.actualizarTipoSensor(id, tipoSensor));
     }
 
