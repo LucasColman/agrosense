@@ -1,4 +1,4 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.cambioActuador;
 
 import com.unam.agrosense.model.actuador.Actuador;
 import jakarta.persistence.*;
@@ -16,6 +16,9 @@ public class CambioActuador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "activo", nullable = false)
+    private Boolean activo;
 
     @Column(name = "estado_anterior", nullable = false)
     private String estadoAnterior;

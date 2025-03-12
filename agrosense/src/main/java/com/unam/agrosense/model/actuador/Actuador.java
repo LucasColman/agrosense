@@ -1,7 +1,7 @@
 package com.unam.agrosense.model.actuador;
 
 
-import com.unam.agrosense.model.CambioActuador;
+import com.unam.agrosense.model.cambioActuador.CambioActuador;
 import com.unam.agrosense.model.dispositivo.Dispositivo;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import jakarta.persistence.*;
