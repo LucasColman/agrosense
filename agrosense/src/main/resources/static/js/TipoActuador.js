@@ -85,15 +85,21 @@ function agregarEstadoBadge(estado, estadosList, estadosHidden) {
     btnEliminar.textContent = "✕";
     btnEliminar.onclick = function () {
         span.remove();
-        actualizarEstadosHidden(estadosList, estadosHidden);
+        actualizarEstadosHiddenEdit(estadosList, estadosHidden);
     };
 
     span.appendChild(btnEliminar);
     estadosList.appendChild(span);
 
-    actualizarEstadosHidden(estadosList, estadosHidden);
+    actualizarEstadosHiddenEdit(estadosList, estadosHidden);
 }
 
+function actualizarEstadosHiddenEdit() {
+    let estadosHidden = document.getElementById("edit-estados-hidden");
+    let estados = Array.from(document.querySelectorAll("#edit-estados-list span")).map(span => span.childNodes[0].nodeValue.trim());
+    console.log("Estados actualizados para el backend:", estados);
+    estadosHidden.value = estados.join(",");
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     let tipoActuadorIdToDelete = null;
@@ -182,5 +188,6 @@ function agregarEstado() {
 function actualizarEstadosHidden() {
     let estadosHidden = document.getElementById("estados-hidden");
     let estados = Array.from(document.querySelectorAll("#estados-list span")).map(span => span.childNodes[0].nodeValue.trim());
+    console.log("Estados actualizados para el backend:", estados);
     estadosHidden.value = estados.join(",");
 }

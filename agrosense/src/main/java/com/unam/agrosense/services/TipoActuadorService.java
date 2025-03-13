@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TipoActuadorService {
@@ -51,7 +52,12 @@ public class TipoActuadorService {
 
         tipoActuadorActual.setDescripcion(tipoActuador.getDescripcion());
         tipoActuadorActual.setComportamiento(tipoActuador.getComportamiento());
-        tipoActuadorActual.setEstados(tipoActuador.getEstados());
+
+        List<String> estadosLimpios = tipoActuador.getEstados().stream()
+                .map(estado -> estado.replace("[", "").replace("]", "").trim())
+                .collect(Collectors.toList());
+
+        tipoActuadorActual.setEstados(estadosLimpios);
 
         return tipoActuadorRepository.save(tipoActuadorActual);
     }

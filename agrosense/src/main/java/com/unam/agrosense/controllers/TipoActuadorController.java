@@ -40,6 +40,7 @@ public class TipoActuadorController {
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<TipoActuador> actualizarTipoActuador(@PathVariable Long id, @ModelAttribute @RequestBody TipoActuador tipoActuador) {
+        System.out.println("Estados recibidos: " + tipoActuador.getEstados());
         return ResponseEntity.ok(tipoActuadorService.actualizarTipoActuador(id, tipoActuador));
     }
 
