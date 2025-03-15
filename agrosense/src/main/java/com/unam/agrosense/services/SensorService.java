@@ -151,5 +151,4 @@ public class SensorService {
         sensorCount = sensores.size();
         return sensorCount;
     }
-
 }

@@ -1,35 +1,25 @@
-/*
-document.addEventListener("DOMContentLoaded", function () {
-    const token = localStorage.getItem("authToken");
-
-    fetch("http://localhost:8080/dashboard", { // Asegúrate de usar la ruta correcta
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("No autorizado");
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById("sensores-total").textContent = `Total: ${data.sensores}`;
-            document.getElementById("actuadores-total").textContent = `Total: ${data.actuadores}`;
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            window.location.href = "/login"; // Si hay error, redirigir al login
+// Hacer una solicitud GET al dashboard
+document.addEventListener('DOMContentLoaded', async function () {
+    try {
+        const response = await fetch("/dashboard", {
+            method: "GET"
         });
+
+        if (!response.ok) {
+            alert("No autorizado");
+            window.location.href = "/login.html";  // Redirige al login si la autenticación falla
+        } else {
+            await loadDeviceSummary();
+        }
+    } catch (error) {
+        console.error("Error al obtener los datos del dashboard:", error);
+        window.location.href = "/login.html";  // Redirige al login en caso de error
+    }
 });
-*/
 
-
-// Función para cargar datos de sensores y actuadores
+// Función para cargar la cantidad de sensores y actuadores
 async function loadDeviceSummary() {
     try {
-        // Endpoints separados que devuelven un entero
         const sensorResponse = await fetch('http://localhost:8080/sensores/cantidad');
         const actuatorResponse = await fetch('http://localhost:8080/actuadores/cantidad');
 
@@ -40,21 +30,48 @@ async function loadDeviceSummary() {
         const sensorCount = await sensorResponse.json();
         const actuatorCount = await actuatorResponse.json();
 
-        // Actualizar tarjetas con los datos recibidos
         document.getElementById('sensores-total').textContent = `Total: ${sensorCount}`;
         document.getElementById('actuadores-total').textContent = `Total: ${actuatorCount}`;
-
     } catch (error) {
         console.error('Error:', error);
-
-        // Mostrar mensaje de error en las tarjetas
-        document.getElementById('sensorTotal').textContent = 'Error al cargar';
-        document.getElementById('actuatorTotal').textContent = 'Error al cargar';
+        document.getElementById('sensores-total').textContent = 'Error al cargar';
+        document.getElementById('actuadores-total').textContent = 'Error al cargar';
     }
 }
 
-// Cargar datos cuando la página se carga
-document.addEventListener('DOMContentLoaded', loadDeviceSummary);
+
+/*
+document.addEventListener('DOMContentLoaded', async function () {
+    const token = sessionStorage.getItem('token');
+
+    console.log("Token en dashboard:", token);
+
+    if (!token) {
+        alert("Acceso denegado");
+        window.location.href = "/login";
+    } else {
+        const response= await fetch("/dashboard", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            alert("No autorizado");
+            window.location.href = "/login.html";  // Redirige al login si la autenticación falla
+        } else {
+            // Lógica para cargar el dashboard si la autenticación es exitosa
+            await loadDeviceSummary();
+        }
+
+    }
+});
+*/
+
+
+
+
 
 
 
