@@ -197,7 +197,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="changeActuadorForm" th:action="@{/actuadores/edit/estado}" method="post" th:object="${actuador}">
+                    <form id="changeActuadorForm" method="post" >
                         <input type="hidden" name="_method" value="put">
                         <input type="hidden" id="actuador-id-change" name="id">
                         <div class="mb-3">
@@ -210,7 +210,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success" id="saveEstadoBtn">Guardar</button>
+                    <button onclick="actualizarEstados()" type="button" class="btn btn-success" id="saveEstadoBtn">Guardar</button>
                 </div>
             </div>
         </div>

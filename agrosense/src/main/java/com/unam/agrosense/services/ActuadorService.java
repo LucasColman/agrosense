@@ -3,7 +3,7 @@ package com.unam.agrosense.services;
 import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
-import com.unam.agrosense.model.cambioActuador.CambioActuador;
+
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.model.sensor.Sensor;
@@ -16,6 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -196,5 +197,25 @@ public class ActuadorService {
         List<Actuador> actuadores =  actuadorRepository.findAllByActivoTrue();
         actuatorCount = actuadores.size();
         return actuatorCount;
+    }
+
+
+    //Modificar estado de actuador y luego crear un cambio actuador
+    @Transactional
+    public CambioActuadorDto modificarEstadoActuador(Long id, String estadoActuador) {
+        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
+
+        String estadoAnterior = actuador.getEstadoActuador();
+
+        actuador.setEstadoActuador(estadoActuador);
+        actuadorRepository.save(actuador);
+
+        return new CambioActuadorDto(
+                estadoAnterior,
+                estadoActuador,
+                LocalDateTime.now(),
+                actuador.getId()
+        );
     }
 }

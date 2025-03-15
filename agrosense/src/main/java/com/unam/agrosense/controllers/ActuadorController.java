@@ -3,9 +3,12 @@ package com.unam.agrosense.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
+import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
+import com.unam.agrosense.model.cambioActuador.CambioActuadorResponseDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import com.unam.agrosense.services.ActuadorService;
+import com.unam.agrosense.services.CambioActuadorService;
 import com.unam.agrosense.services.TipoActuadorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +26,12 @@ public class ActuadorController {
 
     private final ActuadorService actuadorService;
     private final TipoActuadorService tipoActuadorService;
+    private final CambioActuadorService cambioActuadorService;
 
-    public ActuadorController(ActuadorService actuadorService, TipoActuadorService tipoActuadorService) {
+    public ActuadorController(ActuadorService actuadorService, TipoActuadorService tipoActuadorService, CambioActuadorService cambioActuadorService) {
         this.actuadorService = actuadorService;
         this.tipoActuadorService = tipoActuadorService;
+        this.cambioActuadorService = cambioActuadorService;
     }
 
     //REGISTRAR UN ACTUADOR
@@ -42,7 +47,8 @@ public class ActuadorController {
 
     // ACTUALIZAR UN ACTUADOR
     @PutMapping("/edit/{id}")
-    public ResponseEntity<ActuadorResponseDto> actualizarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto, @PathVariable Long id, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ActuadorResponseDto> actualizarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto,
+                                                                  @PathVariable Long id, UriComponentsBuilder uriBuilder) {
         ActuadorResponseDto actuadorResponseDto = actuadorService.actualizarActuador(id, actuadorDto);
 
         return ResponseEntity.ok(actuadorResponseDto);
@@ -107,5 +113,15 @@ public class ActuadorController {
     @GetMapping("/cantidad")
     public ResponseEntity<Integer> cantidadDeActuadores() {
         return ResponseEntity.ok().body(actuadorService.cantidadDeActuadores());
+    }
+
+    @PutMapping("/nuevo-estado/{id}")
+    public ResponseEntity<CambioActuadorResponseDto> actualizarEstado(@ModelAttribute @PathVariable Long id, @RequestBody String estado) {
+        CambioActuadorDto cambioActuador = actuadorService.modificarEstadoActuador(id, estado);
+
+
+        CambioActuadorResponseDto cambioActuadorResponseDto = cambioActuadorService.crearCambioActuador(cambioActuador);
+
+        return ResponseEntity.ok(cambioActuadorResponseDto);
     }
 }

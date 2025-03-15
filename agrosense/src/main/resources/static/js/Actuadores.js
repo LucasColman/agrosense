@@ -91,7 +91,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 estadoSelect.appendChild(option);
             }
 
-            document.getElementById("changeActuadorForm").setAttribute("action", `/actuadores/edit/estado/${actuadorId}`);
+
+            document.getElementById('saveEstadoBtn').addEventListener('click', actualizarEstados);
+
         });
     });
 });
+
+
+async function actualizarEstados() {
+    const actuadorId = document.getElementById('actuador-id-change').value;
+    const estado = document.getElementById('estado-actuador').value;
+
+    if (actuadorId && estado) {
+        const response = await fetch(`/actuadores/nuevo-estado/${actuadorId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({estado})
+        });
+
+        if (response.ok) {
+            location.reload();
+        } else {
+            alert('Error al actualizar el estado del actuador');
+        }
+    }
+}
