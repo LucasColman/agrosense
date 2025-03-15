@@ -60,5 +60,29 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+async function obtenerSensores() {
+    const token = sessionStorage.getItem("authToken");
+
+    try {
+        const response = await fetch("/sensores", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Acceso denegado");
+        }
+
+
+    } catch (error) {
+        console.error("Error al obtener sensores:", error);
+        window.location.href = "/login.html";
+    }
+}
+
+
 
 

@@ -31,16 +31,14 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-//                        .requestMatchers("/login","/signup", "/css/**", "/js/**").permitAll()
-//                        .requestMatchers("/auth","/usuarios/registro").permitAll()
-//                        .requestMatchers("/dashboard").hasRole("ADMIN")
-//                        .requestMatchers("/").hasAnyRole("USER", "ADMIN")
-//                        .anyRequest().authenticated()
+                        //.anyRequest().permitAll()
+                        .requestMatchers("/login","/signup", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/auth","/usuarios/registro").permitAll()
+                        .requestMatchers("/dashboard").hasAuthority("ADMIN")
+                        .requestMatchers("/").hasAnyAuthority("USER", "ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT no usa sesiones
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
 

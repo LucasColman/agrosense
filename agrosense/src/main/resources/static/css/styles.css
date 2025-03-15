@@ -1,0 +1,101 @@
+
+:root {
+    --primary-green: #2e7d32;
+    --light-green: #4caf50;
+    --dark-green: #1b5e20;
+    --accent-green: #8bc34a;
+    --earth-brown: #795548;
+    --light-brown: #a1887f;
+}
+
+.navbar {
+    background-color: var(--primary-green);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #fff;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: var(--accent-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.7rem;
+    background-color: var(--earth-brown) !important;
+}
+
+.dropdown-menu {
+    min-width: 280px;
+    border-color: var(--accent-green);
+    border-top: 3px solid var(--accent-green);
+}
+
+.user-info {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: rgba(139, 195, 74, 0.1);
+}
+
+.btn-search {
+    background-color: var(--accent-green);
+    color: white;
+    border-color: var(--accent-green);
+}
+
+.btn-search:hover {
+    background-color: var(--dark-green);
+    border-color: var(--dark-green);
+}
+
+.dropdown-item:active {
+    background-color: var(--light-green);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: white;
+    background-color: var(--dark-green);
+    border-radius: 4px;
+}
+
+.dropdown-header {
+    background-color: rgba(139, 195, 74, 0.1);
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+.text-green {
+    color: var(--primary-green);
+}
+
+.text-accent {
+    color: var(--accent-green);
+}
+
+.text-earth {
+    color: var(--earth-brown);
+}
+
