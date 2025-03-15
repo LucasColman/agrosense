@@ -1,6 +1,7 @@
 package com.unam.agrosense.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
@@ -11,10 +12,12 @@ import com.unam.agrosense.services.ActuadorService;
 import com.unam.agrosense.services.CambioActuadorService;
 import com.unam.agrosense.services.TipoActuadorService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -118,8 +121,12 @@ public class ActuadorController {
     @PutMapping("/nuevo-estado/{id}")
     public ResponseEntity<CambioActuadorResponseDto> actualizarEstado(@ModelAttribute @PathVariable Long id, @RequestBody String estado) {
         CambioActuadorDto cambioActuador = actuadorService.modificarEstadoActuador(id, estado);
+
         CambioActuadorResponseDto cambioActuadorResponseDto = cambioActuadorService.crearCambioActuador(cambioActuador);
 
         return ResponseEntity.ok(cambioActuadorResponseDto);
     }
+
+
+
 }

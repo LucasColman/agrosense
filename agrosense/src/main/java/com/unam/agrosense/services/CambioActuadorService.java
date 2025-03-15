@@ -24,6 +24,7 @@ public class CambioActuadorService {
 
     @Transactional
     public CambioActuadorResponseDto crearCambioActuador(CambioActuadorDto cambioActuadorDto) {
+
         Actuador actuador = actuadorRepository.findById(cambioActuadorDto.actuadorId())
                 .orElseThrow(() -> new RuntimeException("Actuador no encontrado"));
 

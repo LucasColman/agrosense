@@ -194,7 +194,7 @@ public class ActuadorService {
 
     public int cantidadDeActuadores() {
         var actuatorCount = 0;
-        List<Actuador> actuadores =  actuadorRepository.findAllByActivoTrue();
+        List<Actuador> actuadores = actuadorRepository.findAllByActivoTrue();
         actuatorCount = actuadores.size();
         return actuatorCount;
     }
@@ -208,6 +208,7 @@ public class ActuadorService {
 
         String estadoAnterior = actuador.getEstadoActuador();
 
+
         actuador.setEstadoActuador(estadoActuador);
         actuadorRepository.save(actuador);
 
@@ -217,5 +218,7 @@ public class ActuadorService {
                 LocalDateTime.now(),
                 actuador.getId()
         );
+
+
     }
 }
