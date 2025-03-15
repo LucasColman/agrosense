@@ -122,10 +122,6 @@ public class ActuadorController {
     public ResponseEntity<CambioActuadorResponseDto> actualizarEstado(@ModelAttribute @PathVariable Long id, @RequestBody String estado) {
         CambioActuadorDto cambioActuador = actuadorService.modificarEstadoActuador(id, estado);
 
-        // Si no hubo cambio, devolvemos una respuesta indicando que no se ha realizado ningún cambio
-        if (cambioActuador == null) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-        }
         CambioActuadorResponseDto cambioActuadorResponseDto = cambioActuadorService.crearCambioActuador(cambioActuador);
 
         return ResponseEntity.ok(cambioActuadorResponseDto);

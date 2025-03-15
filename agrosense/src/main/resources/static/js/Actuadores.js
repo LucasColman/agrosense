@@ -76,27 +76,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Verificar si la lista de estados está vacía
             if (estados && estados.length > 0) {
+                // Agregar los estados como opciones del select
                 estados.forEach(estado => {
                     const option = document.createElement('option');
-                    option.value = estado;
-                    option.textContent = estado;
-                    estadoSelect.appendChild(option);
+                    option.value = estado;    // El valor del option es el estado
+                    option.textContent = estado;  // El texto del option también es el estado
+                    estadoSelect.appendChild(option);  // Agregar el option al select
                 });
             } else {
+                // Si no hay estados, puedes agregar una opción por defecto
                 const option = document.createElement('option');
                 option.value = '';
                 option.textContent = 'No hay estados disponibles';
                 estadoSelect.appendChild(option);
             }
+
+            const saveButton = document.getElementById('saveEstadoBtn');
+            saveButton.removeEventListener('click', actualizarEstados); // Eliminar cualquier listener previo
+            saveButton.addEventListener('click', function() {
+                actualizarEstados(actuadorId);
+            });
+            //document.getElementById('saveEstadoBtn').addEventListener('click', actualizarEstados);
+
         });
     });
-
-    // 🔹 SOLUCIÓN: Asignar el evento de forma segura (eliminando eventos previos)
-    const saveBtn = document.getElementById('saveEstadoBtn');
-    saveBtn.replaceWith(saveBtn.cloneNode(true)); // Clona el botón y reemplaza el original
-    document.getElementById('saveEstadoBtn').addEventListener('click', actualizarEstados);
 });
 
+/*
 async function actualizarEstados() {
     const actuadorId = document.getElementById('actuador-id-change').value;
     const estado = document.getElementById('estado-actuador').value;
@@ -110,10 +116,52 @@ async function actualizarEstados() {
             body: estado
         });
 
+        console.log("Respuesta del servidor: ", response);
+
         if (response.ok) {
-            location.reload();
+            //location.reload();
+            console.log("Estado actualizado correctamente");
         } else {
             alert('Error al actualizar el estado del actuador');
         }
+    }
+}*/
+
+function actualizarEstados(actuadorId) {
+    const estado = document.getElementById('estado-actuador').value;
+
+    if (actuadorId && estado) {
+        console.log("Estado a enviar: ", estado);
+
+        // Regresamos una Promesa con la petición fetch
+        return new Promise((resolve, reject) => {
+            fetch(`/actuadores/nuevo-estado/${actuadorId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: estado
+            })
+                .then(response => {
+                    console.log("Respuesta del servidor: ", response);
+                    if (response.ok) {
+                        console.log("Estado actualizado correctamente");
+                        resolve();  // Resolver la promesa si todo sale bien
+                    } else {
+                        reject('Error al actualizar el estado del actuador');
+                    }
+                })
+                .catch(error => {
+                    console.error("Error en la petición:", error);
+                    reject(error);
+                });
+        })
+            .then(() => {
+                // Si la promesa se resuelve, recargar la página o cualquier otra acción
+                location.reload();
+            })
+            .catch(error => {
+                alert(error); // En caso de error, mostramos el mensaje de error
+            });
     }
 }

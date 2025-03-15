@@ -25,15 +25,6 @@ public class CambioActuadorService {
     @Transactional
     public CambioActuadorResponseDto crearCambioActuador(CambioActuadorDto cambioActuadorDto) {
 
-        //Verificar que el cambio ya este creado para evitar duplicar
-
-
-
-        if (cambioActuadorDto == null) {
-            // Si el DTO es null, no guardamos el cambio
-            return null;
-        }
-
         Actuador actuador = actuadorRepository.findById(cambioActuadorDto.actuadorId())
                 .orElseThrow(() -> new RuntimeException("Actuador no encontrado"));
 
@@ -42,6 +33,7 @@ public class CambioActuadorService {
         cambioActuador.setEstadoNuevo(cambioActuadorDto.estadoNuevo());
         cambioActuador.setFechaCambio(cambioActuadorDto.fechaCambio());
         cambioActuador.setActuador(actuador);
+
         cambioActuadorRepository.save(cambioActuador);
 
         return new CambioActuadorResponseDto(
