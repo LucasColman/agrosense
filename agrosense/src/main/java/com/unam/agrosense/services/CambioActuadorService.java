@@ -32,6 +32,7 @@ public class CambioActuadorService {
         cambioActuador.setEstadoNuevo(cambioActuadorDto.estadoNuevo());
         cambioActuador.setFechaCambio(cambioActuadorDto.fechaCambio());
         cambioActuador.setActuador(actuador);
+
         cambioActuadorRepository.save(cambioActuador);
 
         return new CambioActuadorResponseDto(

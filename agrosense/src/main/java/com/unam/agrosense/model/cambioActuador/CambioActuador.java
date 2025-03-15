@@ -18,7 +18,7 @@ public class CambioActuador {
     private Long id;
 
     @Column(name = "activo")
-    private Boolean activo;
+    private Boolean activo = true;
 
     @Column(name = "estado_anterior", nullable = false)
     private String estadoAnterior;

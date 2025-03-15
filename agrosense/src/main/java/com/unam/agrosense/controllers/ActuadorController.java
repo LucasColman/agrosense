@@ -118,8 +118,6 @@ public class ActuadorController {
     @PutMapping("/nuevo-estado/{id}")
     public ResponseEntity<CambioActuadorResponseDto> actualizarEstado(@ModelAttribute @PathVariable Long id, @RequestBody String estado) {
         CambioActuadorDto cambioActuador = actuadorService.modificarEstadoActuador(id, estado);
-
-
         CambioActuadorResponseDto cambioActuadorResponseDto = cambioActuadorService.crearCambioActuador(cambioActuador);
 
         return ResponseEntity.ok(cambioActuadorResponseDto);
