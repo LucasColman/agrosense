@@ -76,28 +76,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Verificar si la lista de estados está vacía
             if (estados && estados.length > 0) {
-                // Agregar los estados como opciones del select
                 estados.forEach(estado => {
                     const option = document.createElement('option');
-                    option.value = estado;    // El valor del option es el estado
-                    option.textContent = estado;  // El texto del option también es el estado
-                    estadoSelect.appendChild(option);  // Agregar el option al select
+                    option.value = estado;
+                    option.textContent = estado;
+                    estadoSelect.appendChild(option);
                 });
             } else {
-                // Si no hay estados, puedes agregar una opción por defecto
                 const option = document.createElement('option');
                 option.value = '';
                 option.textContent = 'No hay estados disponibles';
                 estadoSelect.appendChild(option);
             }
-
-
-            document.getElementById('saveEstadoBtn').addEventListener('click', actualizarEstados);
-
         });
     });
-});
 
+    // 🔹 SOLUCIÓN: Asignar el evento de forma segura (eliminando eventos previos)
+    const saveBtn = document.getElementById('saveEstadoBtn');
+    saveBtn.replaceWith(saveBtn.cloneNode(true)); // Clona el botón y reemplaza el original
+    document.getElementById('saveEstadoBtn').addEventListener('click', actualizarEstados);
+});
 
 async function actualizarEstados() {
     const actuadorId = document.getElementById('actuador-id-change').value;
@@ -109,7 +107,7 @@ async function actualizarEstados() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({estado})
+            body: estado
         });
 
         if (response.ok) {

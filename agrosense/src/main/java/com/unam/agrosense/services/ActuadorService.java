@@ -208,14 +208,25 @@ public class ActuadorService {
 
         String estadoAnterior = actuador.getEstadoActuador();
 
-        actuador.setEstadoActuador(estadoActuador);
-        actuadorRepository.save(actuador);
+        // Verificar si el estado ha cambiado
+        if (!estadoAnterior.equals(estadoActuador)) {
+            actuador.setEstadoActuador(estadoActuador);
+            actuadorRepository.save(actuador);
 
-        return new CambioActuadorDto(
-                estadoAnterior,
-                estadoActuador,
-                LocalDateTime.now(),
-                actuador.getId()
-        );
+            // Solo si el estado ha cambiado, retornamos el DTO
+            return new CambioActuadorDto(
+                    estadoAnterior,
+                    estadoActuador,
+                    LocalDateTime.now(),
+                    actuador.getId()
+            );
+        } else {
+            // Si el estado no cambia, devolvemos null
+            return null;
+        }
+
+
+
+
     }
 }
