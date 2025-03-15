@@ -17,7 +17,7 @@ public class CambioActuador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "activo", nullable = false)
+    @Column(name = "activo")
     private Boolean activo;
 
     @Column(name = "estado_anterior", nullable = false)

@@ -55,3 +55,67 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.change-actuador-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            // Obtener el ID del actuador y los estados asociados (ya en formato JSON)
+            const actuadorId = this.getAttribute('data-id');
+            const estadosJson = this.getAttribute('data-estados');
+            const estados = JSON.parse(estadosJson).flat();  // Aplanar la lista de estados
+
+            console.log("Estados parseados: ", estados);
+            console.log("Estados JSON: ", estadosJson);
+
+            // Mostrar el ID del actuador en el campo oculto del modal
+            document.getElementById('actuador-id-change').value = actuadorId;
+
+            // Obtener el select de estados
+            const estadoSelect = document.getElementById('estado-actuador');
+            estadoSelect.innerHTML = '';  // Limpiar las opciones actuales
+
+            // Verificar si la lista de estados está vacía
+            if (estados && estados.length > 0) {
+                // Agregar los estados como opciones del select
+                estados.forEach(estado => {
+                    const option = document.createElement('option');
+                    option.value = estado;    // El valor del option es el estado
+                    option.textContent = estado;  // El texto del option también es el estado
+                    estadoSelect.appendChild(option);  // Agregar el option al select
+                });
+            } else {
+                // Si no hay estados, puedes agregar una opción por defecto
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No hay estados disponibles';
+                estadoSelect.appendChild(option);
+            }
+
+
+            document.getElementById('saveEstadoBtn').addEventListener('click', actualizarEstados);
+
+        });
+    });
+});
+
+
+async function actualizarEstados() {
+    const actuadorId = document.getElementById('actuador-id-change').value;
+    const estado = document.getElementById('estado-actuador').value;
+
+    if (actuadorId && estado) {
+        const response = await fetch(`/actuadores/nuevo-estado/${actuadorId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({estado})
+        });
+
+        if (response.ok) {
+            location.reload();
+        } else {
+            alert('Error al actualizar el estado del actuador');
+        }
+    }
+}

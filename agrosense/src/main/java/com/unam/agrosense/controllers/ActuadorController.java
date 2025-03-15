@@ -1,5 +1,6 @@
 package com.unam.agrosense.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
@@ -17,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/actuadores")
@@ -33,7 +33,6 @@ public class ActuadorController {
         this.tipoActuadorService = tipoActuadorService;
         this.cambioActuadorService = cambioActuadorService;
     }
-
 
     //REGISTRAR UN ACTUADOR
     @PostMapping("/store")
@@ -55,6 +54,11 @@ public class ActuadorController {
         return ResponseEntity.ok(actuadorResponseDto);
     }
 
+    @PutMapping("/edit/estado/{id}")
+    public ResponseEntity<ActuadorResponseDto> actualizarEstadoActuador(@PathVariable Long id, @RequestParam String estado) {
+        ActuadorResponseDto actuadorResponseDto = actuadorService.actualizarEstadoActuador(id, estado);
+        return ResponseEntity.ok(actuadorResponseDto);
+    }
 
     // ELIMINAR UN ACTUADOR
     @DeleteMapping("/delete/{id}")
@@ -77,9 +81,31 @@ public class ActuadorController {
     public String listarActuadores(Model model) {
         List<ActuadorResponseDto> actuadores = actuadorService.obtenerActuadores();
 
+        Map<Long, List<String>> estadosPorActuador = new HashMap<>();
+
+        for (ActuadorResponseDto actuador : actuadores) {
+            List<String> estadosPosibles = actuador.tiposDeActuadores()
+                    .stream()
+                    .flatMap(tipo -> tipo.getEstados().stream())
+                    .distinct()
+                    .toList();
+
+            // Serializar la lista de estados como JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                String estadosJson = objectMapper.writeValueAsString(estadosPosibles);
+                estadosPorActuador.put(actuador.id(), Collections.singletonList(estadosJson));
+            } catch (Exception e) {
+                e.printStackTrace(); // Manejo de error si la serialización falla
+            }
+        }
+
+        System.out.println(estadosPorActuador);
+
         model.addAttribute("actuadores", actuadores);
         model.addAttribute("tiposDispositivo", TipoDispositivo.values());
         model.addAttribute("tiposActuadores", tipoActuadorService.obtenerTiposActuadores());
+        model.addAttribute("estadosPorActuador", estadosPorActuador);
         return "dispositivos/Actuadores";
     }
 
@@ -89,9 +115,11 @@ public class ActuadorController {
         return ResponseEntity.ok().body(actuadorService.cantidadDeActuadores());
     }
 
-    @PutMapping("/nuevo-estado")
-    public ResponseEntity<CambioActuadorResponseDto> actualizarEstado(@RequestBody Long id, String estado) {
+    @PutMapping("/nuevo-estado/{id}")
+    public ResponseEntity<CambioActuadorResponseDto> actualizarEstado(@ModelAttribute @PathVariable Long id, @RequestBody String estado) {
         CambioActuadorDto cambioActuador = actuadorService.modificarEstadoActuador(id, estado);
+
+
         CambioActuadorResponseDto cambioActuadorResponseDto = cambioActuadorService.crearCambioActuador(cambioActuador);
 
         return ResponseEntity.ok(cambioActuadorResponseDto);

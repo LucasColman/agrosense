@@ -3,6 +3,7 @@ package com.unam.agrosense.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -36,6 +37,12 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth","/usuarios/registro").permitAll()
                         .requestMatchers("/dashboard").hasAuthority("ADMIN")
                         .requestMatchers("/").hasAnyAuthority("USER", "ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/actuadores/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/actuadores/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/actuadores/**").hasAuthority("ADMIN")
+
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT no usa sesiones

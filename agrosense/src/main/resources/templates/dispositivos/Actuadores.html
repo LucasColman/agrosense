@@ -21,6 +21,7 @@
             <th>Descripcion</th>
             <th>Latitud</th>
             <th>Longitud</th>
+            <th>Estado</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -32,6 +33,7 @@
             <td th:text="${actuador.descripcion}"></td>
             <td th:text="${actuador.latitud}"></td>
             <td th:text="${actuador.longitud}"></td>
+            <td th:text="${actuador.estadoActuador}"></td>
             <td>
                 <button class="btn btn-sm btn-warning edit-actuador-btn"
                         data-bs-toggle="modal"
@@ -55,8 +57,9 @@
                 <button class="btn btn-info btn-sm change-actuador-btn"
                         data-bs-toggle="modal"
                         data-bs-target="#changeActuadorModal"
-                        th:data-id="${actuador.id}">
-                    Cambio Estado
+                        th:data-id="${actuador.id}"
+                        th:data-estados="${estadosPorActuador[actuador.id]}">
+                    Cambiar Estado
                 </button>
             </td>
         </tr>
@@ -180,6 +183,34 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" id="confirm-delete-btn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para cambiar el estado del actuador -->
+    <div class="modal fade" id="changeActuadorModal" tabindex="-1" aria-labelledby="modalChangeActuador" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalChangeActuador">Cambiar Estado del Actuador</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changeActuadorForm" method="post" >
+                        <input type="hidden" name="_method" value="put">
+                        <input type="hidden" id="actuador-id-change" name="id">
+                        <div class="mb-3">
+                            <label for="estado-actuador" class="col-form-label">Seleccionar Estado:</label>
+                            <select id="estado-actuador" name="estado" class="form-select">
+                                <option selected>Seleccione el estado</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button onclick="actualizarEstados()" type="button" class="btn btn-success" id="saveEstadoBtn">Guardar</button>
                 </div>
             </div>
         </div>
