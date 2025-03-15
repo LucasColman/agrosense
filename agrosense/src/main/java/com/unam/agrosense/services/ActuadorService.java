@@ -3,6 +3,8 @@ package com.unam.agrosense.services;
 import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
+import com.unam.agrosense.model.cambioActuador.CambioActuador;
+import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.model.sensor.Sensor;
 import com.unam.agrosense.model.sensor.SensorResponseDto;
@@ -21,10 +23,12 @@ public class ActuadorService {
 
     private final ActuadorRepository actuadorRepository;
     private final TipoActuadorRepository tipoActuadorRepository;
+    private final CambioActuadorService cambioActuadorService;
 
-    public ActuadorService(ActuadorRepository actuadorRepository, TipoActuadorRepository tipoActuadorRepository) {
+    public ActuadorService(ActuadorRepository actuadorRepository, TipoActuadorRepository tipoActuadorRepository, CambioActuadorService cambioActuadorService) {
         this.actuadorRepository = actuadorRepository;
         this.tipoActuadorRepository = tipoActuadorRepository;
+        this.cambioActuadorService = cambioActuadorService;
     }
 
 
@@ -43,7 +47,7 @@ public class ActuadorService {
         actuador.setLatitud(actuadorDto.latitud());
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
-        actuador.setEstadoActuador(actuadorDto.estadoActuador());
+        actuador.setEstadoActuador("No definido");
         actuador.setTipoDispositivo(TipoDispositivo.ACTUADOR);
         actuador.getTiposActuadores().addAll(tiposDeActuadores);
         tiposDeActuadores.forEach(tipoActuador -> tipoActuador.getActuadores().add(actuador));
@@ -60,7 +64,38 @@ public class ActuadorService {
                 actuador.getEstadoActuador(),
                 actuador.getTiposActuadores()
         );
+    }
 
+    //Actualizar estado de un actuador
+    @Transactional
+    public ActuadorResponseDto actualizarEstadoActuador(Long id, String estado) {
+        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
+
+        String estadoAnterior = actuador.getEstadoActuador();
+
+        actuador.setEstadoActuador(estado);
+        actuadorRepository.save(actuador);
+
+        CambioActuadorDto cambioActuadorDto = new CambioActuadorDto(
+                estadoAnterior,
+                estado,
+                java.time.LocalDateTime.now(),
+                id
+        );
+
+        cambioActuadorService.crearCambioActuador(cambioActuadorDto);
+
+        return new ActuadorResponseDto(
+                actuador.getId(),
+                actuador.getNombre(),
+                actuador.getModelo(),
+                actuador.getLatitud(),
+                actuador.getLongitud(),
+                actuador.getDescripcion(),
+                actuador.getEstadoActuador(),
+                actuador.getTiposActuadores()
+        );
     }
 
     //ACTUALIZAR UN ACTUADOR
