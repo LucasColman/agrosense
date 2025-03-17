@@ -23,10 +23,9 @@ async function login() {
         const data = await response.json();
 
         // Al recibir la respuesta del backend:
-        setCookie('authToken', data.token, 1);  // Guarda el token por 1 día (ajústalo según convenga)
+        setCookie('authToken', data.token, 1);
         setCookie('role', data.rol, 1);
 
-        // Esperar un poco antes de redirigir
         if (data.rol === "ADMIN") {
             window.location.href = "/dashboard";
         } else if(data.rol === "USER") {

@@ -9,8 +9,10 @@ import com.unam.agrosense.repository.UsuarioRepository;
 import com.unam.agrosense.security.SecurityConfiguration;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -126,7 +128,6 @@ public class UsuarioService {
                 usuario.getRol()
         );
     }
-
 
 
 }

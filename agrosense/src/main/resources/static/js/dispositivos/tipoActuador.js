@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".edit-sensor-btn").forEach(button => {
         button.addEventListener("click", function () {

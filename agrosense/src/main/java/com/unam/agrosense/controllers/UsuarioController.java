@@ -8,6 +8,7 @@ import com.unam.agrosense.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -70,5 +71,14 @@ public class UsuarioController {
 
         return ResponseEntity.ok("✅ El usuario ahora es ADMIN");
     }
+
+
+    @GetMapping("/perfil")
+    public ResponseEntity<UsuarioResponseDto> obtenerPerfil(@AuthenticationPrincipal Usuario usuario){
+        UsuarioResponseDto usuarioResponseDto = usuarioService.buscarUsuario(usuario.getId());
+        return ResponseEntity.ok(usuarioResponseDto);
+    }
+
+
 }
 
