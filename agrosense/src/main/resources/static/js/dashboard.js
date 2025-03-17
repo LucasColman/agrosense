@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             window.location.href = "/login.html";  // Redirige al login si la autenticación falla
         } else {
             await loadDeviceSummary();
+            await cargarPerfil();
+
         }
     } catch (error) {
         console.error("Error al obtener los datos del dashboard:", error);
@@ -39,35 +41,30 @@ async function loadDeviceSummary() {
     }
 }
 
-
-/*
-document.addEventListener('DOMContentLoaded', async function () {
-    const token = sessionStorage.getItem('token');
-
-    console.log("Token en dashboard:", token);
-
-    if (!token) {
-        alert("Acceso denegado");
-        window.location.href = "/login";
-    } else {
-        const response= await fetch("/dashboard", {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
+async function cargarPerfil(){
+    try {
+        const response = await fetch('/usuarios/perfil', {
+            method: 'GET'
         });
+
         if (!response.ok) {
-            alert("No autorizado");
-            window.location.href = "/login.html";  // Redirige al login si la autenticación falla
-        } else {
-            // Lógica para cargar el dashboard si la autenticación es exitosa
-            await loadDeviceSummary();
+            throw new Error('Error al cargar los datos del perfil');
         }
 
+        const perfil = await response.json();
+
+        // Actualiza todos los elementos con la clase "nombre-usuario"
+        document.querySelectorAll('.nombre-usuario').forEach(elemento => {
+            elemento.textContent = perfil.username;
+        });
+        document.getElementById('email-usuario').textContent = perfil.email;
+    } catch (error) {
+        console.error('Error al cargar el perfil:', error);
+        document.querySelectorAll('.nombre-usuario').forEach(elemento => {
+            elemento.textContent = 'Error al cargar';
+        });
     }
-});
-*/
+}
 
 
 

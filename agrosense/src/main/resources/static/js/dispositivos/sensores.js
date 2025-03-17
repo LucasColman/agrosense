@@ -66,10 +66,6 @@ async function obtenerSensores() {
     try {
         const response = await fetch("/sensores", {
             method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
         });
 
         if (!response.ok) {
