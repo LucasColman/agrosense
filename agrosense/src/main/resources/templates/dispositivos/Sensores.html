@@ -48,6 +48,10 @@
                         data-bs-target="#deleteSensorModal" th:data-id="${sensor.id}">
                     Eliminar
                 </button>
+                <button class="btn btn-info btn-sm medicion-sensor-btn" data-bs-toggle="modal"
+                        data-bs-target="#medicionSensorModal">
+                    Enviar Medicion
+                </button>
 
             </td>
         </tr>
@@ -171,6 +175,57 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" id="confirm-delete-btn">Eliminar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal Enviar Medicion del Sensor -->
+<div class="modal fade" id="medicionSensorModal" tabindex="-1" aria-labelledby="modalMedicionSensor" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalMedicionSensor">Editar Sensor</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="enviarMedicionSensorForm" th:action="@{/datos-sensores/store}" method="post" th:object="${datoSensor}">
+                    <input type="hidden" name="_method" value="put">
+                    <input type="hidden" id="sensor-id-edit" name="id">
+                    <div class="mb-3">
+                        <label for="sensor-name-edit" class="col-form-label">Valor:</label>
+                        <input type="text" class="form-control" id="sensor-name-edit" name="nombre">
+                    </div>
+                    <div class="mb-3">
+                        <label for="sensor-modelo-edit" class="col-form-label">Unidad de Medida:</label>
+                        <input type="text" class="form-control" id="sensor-modelo-edit" name="modelo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="sensor-latitud-edit" class="col-form-label">Latitud:</label>
+                        <input type="number" class="form-control" id="sensor-latitud-edit" name="latitud">
+                    </div>
+                    <div class="mb-3">
+                        <label for="sensor-longitud-edit" class="col-form-label">Longitud:</label>
+                        <input type="number" class="form-control" id="sensor-longitud-edit" name="longitud">
+                    </div>
+                    <div class="mb-3">
+                        <label for="sensor-descripcion-edit" class="col-form-label">Descripción:</label>
+                        <textarea class="form-control" id="sensor-descripcion-edit" name="descripcion"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipoSensor-edit" class="col-form-label">Tipos de sensor:</label>
+                        <select id="tipoSensor-edit" name="idsTipoSensor" class="form-select" multiple>
+                            <option th:each="tipo : ${tiposSensores}" th:value="${tipo.id}" th:text="${tipo.nombre}"></option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>

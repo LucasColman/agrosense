@@ -2,6 +2,7 @@ package com.unam.agrosense.controllers;
 
 import com.unam.agrosense.model.datoSensor.DatoSensorDto;
 import com.unam.agrosense.model.datoSensor.DatoSensorResponseDto;
+import com.unam.agrosense.model.datoSensor.MedicionDto;
 import com.unam.agrosense.services.DatoSensorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
-@RestController
 @RequestMapping("/dato-sensor")
 public class DatoSensorController {
     private final DatoSensorService datoSensorService;
@@ -34,7 +34,7 @@ public class DatoSensorController {
     }
     // Actualizar un dato de sensor
     @PutMapping("/edit/{id}")
-    public ResponseEntity<DatoSensorResponseDto> actualizarDatoSensor(@ModelAttribute @RequestBody @Valid DatoSensorDto datoSensorDto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<DatoSensorResponseDto> actualizarDatoSensor(@ModelAttribute @PathVariable Long id,  @RequestBody @Valid DatoSensorDto datoSensorDto, UriComponentsBuilder uriBuilder) {
         DatoSensorResponseDto datoSensorResponseDto = datoSensorService.crearDatoSensor(datoSensorDto);
         return ResponseEntity.ok(datoSensorResponseDto);
     }
@@ -59,4 +59,21 @@ public class DatoSensorController {
         model.addAttribute("sensores", datoSensorService.obtenerSensores());
         return "datosSensor";
     }
+
+
+//    @GetMapping("/historial")
+//    public ResponseEntity<List<MedicionDto>> obtenerHistorialMediciones(){
+//        List<MedicionDto> historial = datoSensorService.obtenerHistorialMediciones();
+//        return ResponseEntity.ok(historial);
+//    }
+
+
+    @GetMapping("/historial")
+    public String obtenerHistorialMediciones(Model model) {
+        List<MedicionDto> historial = datoSensorService.obtenerHistorialMediciones();
+        model.addAttribute("historial", historial);
+        return "historial_mediciones";
+    }
+
+
 }

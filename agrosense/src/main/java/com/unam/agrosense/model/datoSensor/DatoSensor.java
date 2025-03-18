@@ -4,6 +4,7 @@ import com.unam.agrosense.model.sensor.Sensor;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +18,7 @@ public class DatoSensor {
     private Long id;
 
     @Column(nullable = false)
-    private Double valor;
+    private BigDecimal valor;
 
     @Column(nullable = false)
     private LocalDateTime fechaHora;
@@ -27,4 +28,9 @@ public class DatoSensor {
     private Sensor sensor;
 
     private boolean activo = true;
+
+    public Long getSensorId(){
+        return this.getSensor().getId();
+
+    }
 }
