@@ -32,18 +32,22 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        //.anyRequest().permitAll()
-                        .requestMatchers("/login","/signup", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/auth","/usuarios/registro", "/usuarios/perfil").permitAll()
-                        .requestMatchers("/dashboard").hasAuthority("ADMIN")
-                        .requestMatchers("/").hasAnyAuthority("USER", "ADMIN")
-
-                        .requestMatchers(HttpMethod.GET, "/actuadores/**").hasAnyAuthority("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/actuadores/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/actuadores/**").hasAuthority("ADMIN")
-
-
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+//                        .requestMatchers("/login","/signup", "/css/**", "/js/**").permitAll()
+//                        .requestMatchers("/auth","/usuarios/registro", "/usuarios/perfil").permitAll()
+//                        .requestMatchers("/dashboard").hasAuthority("ADMIN")
+//                        .requestMatchers("/").hasAnyAuthority("USER", "ADMIN")
+//
+//                        .requestMatchers(HttpMethod.GET, "/actuadores/**").hasAnyAuthority("USER", "ADMIN")
+//                        .requestMatchers(HttpMethod.POST, "/actuadores/**").hasAuthority("ADMIN")
+//                        .requestMatchers(HttpMethod.PUT, "/actuadores/**").hasAuthority("ADMIN")
+//
+//                        .requestMatchers(HttpMethod.GET, "/dato-sensor/**").hasAnyAuthority("USER", "ADMIN")
+//                        .requestMatchers(HttpMethod.POST, "/dato-sensor/**").hasAuthority("ADMIN")
+//                        .requestMatchers(HttpMethod.PUT, "/dato-sensor/**").hasAuthority("ADMIN")
+//
+//
+//                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT no usa sesiones
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

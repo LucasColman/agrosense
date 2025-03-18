@@ -1,27 +1,37 @@
 package com.unam.agrosense.services;
 
+import com.unam.agrosense.model.datoSensor.DatoSensor;
+import com.unam.agrosense.model.datoSensor.DatoSensorDto;
+import com.unam.agrosense.model.datoSensor.DatoSensorResponseDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.model.sensor.Sensor;
 import com.unam.agrosense.model.sensor.SensorDto;
 import com.unam.agrosense.model.sensor.SensorResponseDto;
+import com.unam.agrosense.model.tipoSensor.TipoMedida;
 import com.unam.agrosense.model.tipoSensor.TipoSensor;
 import com.unam.agrosense.repository.SensorRepository;
 import com.unam.agrosense.repository.TipoSensorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class SensorService {
 
     private final SensorRepository sensorRepository;
     private final TipoSensorRepository tipoSensorRepository;
+    private final DatoSensorService datoSensorService;
 
-    public SensorService(SensorRepository sensorRepository, TipoSensorRepository tipoSensorRepository) {
+    public SensorService(SensorRepository sensorRepository, TipoSensorRepository tipoSensorRepository, DatoSensorService datoSensorService) {
         this.sensorRepository = sensorRepository;
         this.tipoSensorRepository = tipoSensorRepository;
+        this.datoSensorService = datoSensorService;
     }
 
 
