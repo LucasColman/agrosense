@@ -39,12 +39,20 @@ body {
     z-index: 2;
 }
 
-.phone-container {
+.cultivo-container {
     position: absolute;
     top: 50%;
     left: 40%;
     transform: translate(-50%, -50%);
     z-index: 3;
+}
+
+.cultivo-container-logo{
+    width: 200px;
+    height: 200px;
+    background-color: #2ecc91;
+    border-radius: 50%;
+    position: relative;
 }
 
 .phone {
