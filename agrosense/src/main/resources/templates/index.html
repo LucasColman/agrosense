@@ -1,18 +1,88 @@
-<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroSense</title>
+    
+    <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-    <h1>Bienvenido al home</h1>
+    <div class="header">
+        <div class="logo-container">
+            <img src="/img/plantando2.png" alt="Logo AgroSense" class="logo">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#home">Inicio</a></li>
+                <li><a href="#about">Acerca de</a></li>
+                <li><a href="#services">Servicios</a></li>
+                <li><a href="#contact">Contacto</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Bienvenido a AgroSense</h1>
+            <p>Monitorea y gestiona tus dispositivos agrícolas de manera eficiente.</p>
+            <a href="/login" class="cta-btn">Iniciar Sesión</a>
+            <a href="/signup" class="cta-btn">Registrate</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="section-title">
+            <h2>¿Qué es AgroSense?</h2>
+            <p>Un sistema inteligente para la producción hortícola.</p>
+            <p>AgroSense facilita el monitoreo en tiempo real de tus dispositivos, sensores y actuadores. Con nuestra plataforma, puedes obtener datos precisos y mantener el control sobre el estado de tus cultivos.</p>
+
+        </div>
+        
+    </section>
+
+    <section id="services" class="services">
+        <div class="section-title">
+            <h2>Servicios</h2>
+        </div>
+        <div class="service-cards">
+            <div class="service-card">
+                <h3>Gestión de Dispositivos</h3>
+                <p>Administra tus sensores y actuadores desde un solo lugar.</p>
+            </div>
+            <div class="service-card">
+                <h3>Historial de Datos</h3>
+                <p>Accede a registros detallados de las mediciones y cambios de estado.</p>
+            </div>
+            <div class="service-card">
+                <h3>Monitoreo en Tiempo Real</h3>
+                <p>Visualiza datos en tiempo real para tomar decisiones rápidas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="section-title">
+            <h2>Contacto</h2>
+        </div>
+        <form class="contact-form">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" placeholder="Tu nombre">
+            
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" placeholder="Tu correo">
+
+            <label for="message">Mensaje</label>
+            <textarea id="message" placeholder="Escribe tu mensaje..."></textarea>
+            
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 AgroSense. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/home.js"></script>
 </body>
-
-<script src="/js/interceptor.js"></script>
-<script src="/js/home.js"></script>
-
 </html>
