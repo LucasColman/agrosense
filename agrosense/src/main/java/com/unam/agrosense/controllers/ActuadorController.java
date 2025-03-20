@@ -15,11 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/actuadores")
@@ -64,14 +63,8 @@ public class ActuadorController {
                                     BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            // Captura los mensajes de error y los agrega a los atributos de redirección
-            List<String> errores = bindingResult.getFieldErrors().stream()
-                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                    .toList();
-            redirectAttributes.addFlashAttribute("errores", errores);
-            redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
-
-            return "redirect:/actuadores"; // Redirige para mostrar el mensaje en la vista
+            capturarErrores(bindingResult,redirectAttributes);
+            return "redirect:/actuadores";
         }
 
         try {
@@ -89,15 +82,38 @@ public class ActuadorController {
     }
 
 
-
-
     // ACTUALIZAR UN ACTUADOR
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<ActuadorResponseDto> actualizarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto,
-                                                                  @PathVariable Long id, UriComponentsBuilder uriBuilder) {
-        ActuadorResponseDto actuadorResponseDto = actuadorService.actualizarActuador(id, actuadorDto);
+//    @PutMapping("/edit/{id}")
+//    public ResponseEntity<ActuadorResponseDto> actualizarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto,
+//                                                                  @PathVariable Long id, UriComponentsBuilder uriBuilder) {
+//        ActuadorResponseDto actuadorResponseDto = actuadorService.actualizarActuador(id, actuadorDto);
+//
+//        return ResponseEntity.ok(actuadorResponseDto);
+//    }
 
-        return ResponseEntity.ok(actuadorResponseDto);
+
+    @PutMapping("/edit/{id}")
+    public String actualizarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto,
+                                     @PathVariable Long id, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            capturarErrores(bindingResult,redirectAttributes);
+            return "redirect:/actuadores";
+        }
+
+        try {
+            actuadorService.actualizarActuador(id, actuadorDto);
+
+            redirectAttributes.addFlashAttribute("mensaje", "Actuador actualizado exitosamente.");
+            redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+        } catch (Exception e) {
+            System.out.println("Error al actualizar el actuador: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("mensaje", "Error al actualizar el actuador.");
+            redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+        }
+
+        return "redirect:/actuadores";
+
     }
 
     @PutMapping("/edit/estado/{id}")
@@ -112,7 +128,6 @@ public class ActuadorController {
         actuadorService.eliminarActuador(id);
         return ResponseEntity.noContent().build();
     }
-
 
     // OBTENER UN ACTUADOR
 
@@ -170,6 +185,15 @@ public class ActuadorController {
         return ResponseEntity.ok(cambioActuadorResponseDto);
     }
 
+
+    public void capturarErrores(BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        // Captura los mensajes de error y los agrega a los atributos de redirección
+        List<String> errores = bindingResult.getFieldErrors().stream()
+                .map(error -> String.format("El campo %s %s", error.getField(), error.getDefaultMessage()))
+                .collect(Collectors.toList());
+        redirectAttributes.addFlashAttribute("errores", errores);
+        redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+    }
 
 
 }

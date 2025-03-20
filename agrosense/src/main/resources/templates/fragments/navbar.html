@@ -1,0 +1,171 @@
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <!-- Logo y Nombre -->
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-leaf me-2"></i>AgroSense
+        </a>
+
+        <!-- Botón para móviles -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenido del navbar -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Menú principal -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i>Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-seedling me-1"></i>Cultivos</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-warehouse me-1"></i>Inventario
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-boxes me-2 text-green"></i>Productos</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-dolly me-2 text-green"></i>Pedidos</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-plus-circle me-2 text-green"></i>Nuevo
+                            Producto</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-chart-line me-1"></i>Informes</a>
+                </li>
+            </ul>
+
+            <!-- Buscador -->
+            <form class="d-flex mx-auto">
+                <div class="input-group">
+                    <input class="form-control" type="search" placeholder="Buscar cultivos..." aria-label="Buscar">
+                    <button class="btn btn-search" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+
+            <!-- Menú del usuario -->
+            <ul class="navbar-nav ms-auto">
+                <!-- Notificaciones -->
+                <li class="nav-item dropdown me-2">
+                    <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-bell fa-lg"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill notification-badge">
+                                3
+                            </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <h6 class="dropdown-header">Notificaciones</h6>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-water text-accent"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <p class="mb-0">Alerta de riego en Sector B</p>
+                                    <small class="text-muted">Hace 5 minutos</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-truck text-green"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <p class="mb-0">Pedido #102 listo para envío</p>
+                                    <small class="text-muted">Hace 30 minutos</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-triangle text-earth"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <p class="mb-0">Nivel bajo de fertilizante</p>
+                                    <small class="text-muted">Hace 2 horas</small>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-center small" href="#">Ver todas</a>
+                    </div>
+                </li>
+
+                <!-- Mensajes -->
+                <li class="nav-item dropdown me-2">
+                    <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-envelope fa-lg"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill notification-badge">
+                                2
+                            </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <h6 class="dropdown-header">Mensajes</h6>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="avatar">JL</div>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <p class="mb-0">Juan López</p>
+                                    <small class="text-muted">¿Llegó el envío de semillas?</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="avatar">MR</div>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <p class="mb-0">María Rodríguez</p>
+                                    <small class="text-muted">Revisión de cosecha a las 15:00</small>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-center small" href="#">Ver todos</a>
+                    </div>
+                </li>
+
+                <!-- Perfil de usuario -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                       data-bs-toggle="dropdown">
+                        <div class="avatar me-2">US</div>
+                        <span class="d-none d-lg-inline nombre-usuario">Usuario</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <div class="user-info">
+                                <h6 class="mb-0 nombre-usuario">Usuario Ejemplo</h6>
+                                <small id="email-usuario" class="text-muted ">usuario@horticultiva.com</small>
+                            </div>
+                        </li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2 text-green"></i>Mi Perfil</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#"><i
+                                class="fas fa-cog me-2 text-green"></i>Configuración</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-clipboard-list me-2 text-green"></i>Actividad</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle me-2 text-green"></i>Ayuda</a>
+                        </li>
+                        <li><a onclick="logout()" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt me-2"></i>Cerrar
+                            Sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

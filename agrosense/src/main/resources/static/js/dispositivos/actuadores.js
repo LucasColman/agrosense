@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const idsSeleccionados = tipoActuadores.split(","); // Convierte la cadena en un array
 
             Array.from(select.options).forEach(option => {
-                option.selected = idsSeleccionados.includes(option.value);
+                option = idsSeleccionados.includes(option.value);
             });
 
             // Establecer la acción del formulario

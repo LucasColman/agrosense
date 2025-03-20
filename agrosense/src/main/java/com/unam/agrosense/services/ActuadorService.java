@@ -114,7 +114,6 @@ public class ActuadorService {
         actuador.setLatitud(actuadorDto.latitud());
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
-        actuador.setEstadoActuador(actuadorDto.estadoActuador());
 
         if (!tiposDeActuadores.isEmpty()) {
             actuador.getTiposActuadores().forEach(
