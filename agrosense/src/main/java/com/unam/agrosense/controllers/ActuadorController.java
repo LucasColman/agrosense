@@ -1,26 +1,24 @@
 package com.unam.agrosense.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorResponseDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
-import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import com.unam.agrosense.services.ActuadorService;
 import com.unam.agrosense.services.CambioActuadorService;
 import com.unam.agrosense.services.TipoActuadorService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.*;
 
 @Controller
@@ -38,14 +36,59 @@ public class ActuadorController {
     }
 
     //REGISTRAR UN ACTUADOR
+//    @PostMapping("/store")
+//    public ResponseEntity<ActuadorResponseDto> registrarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
+//
+//        ActuadorResponseDto actuadorResponseDto = actuadorService.crearActuador(actuadorDto);
+//
+//        URI url = uriBuilder.path("/actuadores/{id}").buildAndExpand(actuadorResponseDto.id()).toUri();
+//        return ResponseEntity.created(url).body(actuadorResponseDto);
+//    }
+
+//    @PostMapping("/store")
+//    public ModelAndView registrarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
+//
+//        ActuadorResponseDto actuadorResponseDto = actuadorService.crearActuador(actuadorDto);
+//
+//        ModelAndView mav = new ModelAndView("redirect:/actuadores");
+//        mav.addObject("mensaje","Actuador creado");
+//
+//
+//        return mav;
+//
+//    }
+
+
     @PostMapping("/store")
-    public ResponseEntity<ActuadorResponseDto> registrarActuador(@ModelAttribute @RequestBody @Valid ActuadorDto actuadorDto, UriComponentsBuilder uriBuilder){
+    public String registrarActuador(@ModelAttribute @Valid ActuadorDto actuadorDto,
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            // Captura los mensajes de error y los agrega a los atributos de redirección
+            List<String> errores = bindingResult.getFieldErrors().stream()
+                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                    .toList();
+            redirectAttributes.addFlashAttribute("errores", errores);
+            redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
 
-        ActuadorResponseDto actuadorResponseDto = actuadorService.crearActuador(actuadorDto);
+            return "redirect:/actuadores"; // Redirige para mostrar el mensaje en la vista
+        }
 
-        URI url = uriBuilder.path("/actuadores/{id}").buildAndExpand(actuadorResponseDto.id()).toUri();
-        return ResponseEntity.created(url).body(actuadorResponseDto);
+        try {
+            actuadorService.crearActuador(actuadorDto);
+            redirectAttributes.addFlashAttribute("mensaje", "Actuador registrado exitosamente.");
+            redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+
+        } catch (Exception e) {
+            System.out.println("Error al registrar el actuador: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("mensaje", "Error al registrar el actuador.");
+            redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+        }
+
+        return "redirect:/actuadores";
     }
+
+
 
 
     // ACTUALIZAR UN ACTUADOR
