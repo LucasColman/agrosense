@@ -12,6 +12,19 @@
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newActuadorModal">Nuevo
         Actuador
     </button>
+    <!-- Mensaje de éxito o error general -->
+    <div th:if="${mensaje}" class="alert" th:classappend="${tipoMensaje == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
+        <span th:text="${mensaje}"></span>
+    </div>
+
+    <!-- Lista de errores de validación -->
+    <div th:if="${errores}" class="alert alert-danger" role="alert">
+        <ul>
+            <li th:each="error : ${errores}" th:text="${error}"></li>
+        </ul>
+    </div>
+
+
     <table class="table">
         <thead>
         <tr>
