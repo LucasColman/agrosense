@@ -3,6 +3,7 @@ package com.unam.agrosense.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuadorDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorResponseDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
@@ -181,6 +182,30 @@ public class ActuadorController {
 //
 //        return ResponseEntity.ok(cambioActuadorResponseDto);
 //    }
+
+
+@PostMapping("/agregarTipoActuador")
+public String agregarTipoActuador(@ModelAttribute @RequestBody @Valid ActuadorTipoActuadorDto actuadorTipoActuadorDto, BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+
+    if (bindingResult.hasErrors()) {
+        capturarErrores(bindingResult,redirectAttributes);
+        return "redirect:/actuadores";
+    }
+
+    try {
+        actuadorService.agregarTipoActuador(actuadorTipoActuadorDto);
+        redirectAttributes.addFlashAttribute("mensaje", "Tipo de actuador agregado exitosamente.");
+        redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+
+    } catch (Exception e) {
+        System.out.println("Error al agregar el tipo de actuador: " + e.getMessage());
+        redirectAttributes.addFlashAttribute("mensaje", "Error al agregar el tipo de actuador.");
+        redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+    }
+    return "redirect:/actuadores";
+}
+
 
 
     public void capturarErrores(BindingResult bindingResult, RedirectAttributes redirectAttributes) {

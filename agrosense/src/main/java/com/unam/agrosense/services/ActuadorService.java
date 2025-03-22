@@ -1,24 +1,22 @@
 package com.unam.agrosense.services;
 
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuador;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuadorDto;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuadorId;
 import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
 
-import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
-import com.unam.agrosense.model.sensor.Sensor;
-import com.unam.agrosense.model.sensor.SensorResponseDto;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
-import com.unam.agrosense.model.tipoSensor.TipoSensor;
 import com.unam.agrosense.repository.ActuadorRepository;
+import com.unam.agrosense.repository.ActuadorTipoActuadorRepository;
 import com.unam.agrosense.repository.TipoActuadorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ActuadorService {
@@ -26,11 +24,13 @@ public class ActuadorService {
     private final ActuadorRepository actuadorRepository;
     private final TipoActuadorRepository tipoActuadorRepository;
     private final CambioActuadorService cambioActuadorService;
+    private final ActuadorTipoActuadorRepository actuadorTipoActuadorRepository;
 
-    public ActuadorService(ActuadorRepository actuadorRepository, TipoActuadorRepository tipoActuadorRepository, CambioActuadorService cambioActuadorService) {
+    public ActuadorService(ActuadorRepository actuadorRepository, TipoActuadorRepository tipoActuadorRepository, CambioActuadorService cambioActuadorService, ActuadorTipoActuadorRepository actuadorTipoActuadorRepository) {
         this.actuadorRepository = actuadorRepository;
         this.tipoActuadorRepository = tipoActuadorRepository;
         this.cambioActuadorService = cambioActuadorService;
+        this.actuadorTipoActuadorRepository = actuadorTipoActuadorRepository;
     }
 
 
@@ -193,6 +193,27 @@ public class ActuadorService {
         actuatorCount = actuadores.size();
         return actuatorCount;
     }
+
+    @Transactional
+    public void agregarTipoActuador(ActuadorTipoActuadorDto actuadorTipoActuadorDto) {
+        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(actuadorTipoActuadorDto.actuadorId())
+                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
+
+        TipoActuador tipoActuador = tipoActuadorRepository.findById(actuadorTipoActuadorDto.tipoActuadorId())
+                .orElseThrow(() -> new EntityNotFoundException("Tipo de actuador no existe"));
+
+        ActuadorTipoActuadorId id = new ActuadorTipoActuadorId(tipoActuador.getId(), actuador.getId());
+
+        ActuadorTipoActuador actuadorTipo = new ActuadorTipoActuador();
+        actuadorTipo.setId(id);
+        actuadorTipo.setActuador(actuador);
+        actuadorTipo.setTipoActuador(tipoActuador);
+        actuadorTipo.setEstadoActual(actuadorTipoActuadorDto.estadoActual());
+
+        actuadorTipoActuadorRepository.save(actuadorTipo);
+    }
+
+
 
 
     //Modificar estado de actuador y luego crear un cambio actuador

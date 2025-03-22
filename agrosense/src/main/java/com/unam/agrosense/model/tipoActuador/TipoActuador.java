@@ -1,8 +1,6 @@
 package com.unam.agrosense.model.tipoActuador;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.unam.agrosense.model.ActuadorTipoActuador;
-import com.unam.agrosense.model.actuador.Actuador;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuador;
 import jakarta.persistence.*;
 import lombok.*;
 
