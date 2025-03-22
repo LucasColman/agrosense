@@ -1,6 +1,7 @@
 package com.unam.agrosense.model.actuador;
 
 
+import com.unam.agrosense.model.ActuadorTipoActuador;
 import com.unam.agrosense.model.cambioActuador.CambioActuador;
 import com.unam.agrosense.model.dispositivo.Dispositivo;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
@@ -17,19 +18,13 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true) // Incluye los atributos de la clase padre en el cálculo del hash
 public class Actuador extends Dispositivo {
 
-    @ManyToMany(mappedBy = "actuadores")
-    private List<TipoActuador> tiposActuadores = new ArrayList<>();
+//    @ManyToMany(mappedBy = "actuadores")
+//    private List<TipoActuador> tiposActuadores = new ArrayList<>();
+
+    @OneToMany(mappedBy = "actuador")
+    private List<ActuadorTipoActuador> actuadorTipoActuadores;
 
     @OneToMany(mappedBy = "actuador",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CambioActuador> cambiosActuador;
 
-    private String estadoActuador;
-
-    public void addTipoActuador(TipoActuador tipoActuador) {
-        this.tiposActuadores.add(tipoActuador);
-    }
-
-    public void removeTipoActuador(TipoActuador tipoActuador) {
-        this.tiposActuadores.remove(tipoActuador);
-    }
 }
