@@ -34,8 +34,8 @@ public class TipoActuadorService {
                         tipo.getDescripcion(),
                         tipo.getComportamiento(),
                         tipo.isActivo(),
-                        tipo.getEstados(),
-                        tipo.getActuadores()
+                        tipo.getEstados()
+//                        tipo.getActuadores()
                 ))
                 .toList();
     }
@@ -69,9 +69,9 @@ public class TipoActuadorService {
 
         tipoActuadorRepository.softDelete(id);
 
-        for (Actuador actuador : tipoActuador.getActuadores()) {
-            actuador.getTiposActuadores().remove(tipoActuador);
-        }
-        tipoActuador.getActuadores().clear();
+//        for (Actuador actuador : tipoActuador.getActuadores()) {
+//            actuador.getTiposActuadores().remove(tipoActuador);
+//        }
+//        tipoActuador.getActuadores().clear();
     }
 }

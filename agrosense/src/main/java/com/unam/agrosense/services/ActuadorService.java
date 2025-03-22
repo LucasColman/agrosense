@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ActuadorService {
@@ -48,10 +49,9 @@ public class ActuadorService {
         actuador.setLatitud(actuadorDto.latitud());
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
-        actuador.setEstadoActuador("No definido");
         actuador.setTipoDispositivo(TipoDispositivo.ACTUADOR);
-        actuador.getTiposActuadores().addAll(tiposDeActuadores);
-        tiposDeActuadores.forEach(tipoActuador -> tipoActuador.getActuadores().add(actuador));
+//        actuador.getTiposActuadores().addAll(tiposDeActuadores);
+//        tiposDeActuadores.forEach(tipoActuador -> tipoActuador.getActuadores().add(actuador));
 
         actuadorRepository.save(actuador);
 
@@ -61,43 +61,42 @@ public class ActuadorService {
                 actuador.getModelo(),
                 actuador.getLatitud(),
                 actuador.getLongitud(),
-                actuador.getDescripcion(),
-                actuador.getEstadoActuador(),
-                actuador.getTiposActuadores()
+                actuador.getDescripcion()
+//                actuador.getTiposActuadores()
         );
     }
 
     //Actualizar estado de un actuador
-    @Transactional
-    public ActuadorResponseDto actualizarEstadoActuador(Long id, String estado) {
-        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
-
-        String estadoAnterior = actuador.getEstadoActuador();
-
-        actuador.setEstadoActuador(estado);
-        actuadorRepository.save(actuador);
-
-        CambioActuadorDto cambioActuadorDto = new CambioActuadorDto(
-                estadoAnterior,
-                estado,
-                java.time.LocalDateTime.now(),
-                id
-        );
-
-        cambioActuadorService.crearCambioActuador(cambioActuadorDto);
-
-        return new ActuadorResponseDto(
-                actuador.getId(),
-                actuador.getNombre(),
-                actuador.getModelo(),
-                actuador.getLatitud(),
-                actuador.getLongitud(),
-                actuador.getDescripcion(),
-                actuador.getEstadoActuador(),
-                actuador.getTiposActuadores()
-        );
-    }
+//    @Transactional
+//    public ActuadorResponseDto actualizarEstadoActuador(Long id, String estado) {
+//        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
+//
+//        String estadoAnterior = actuador.getEstadoActuador();
+//
+//        actuador.setEstadoActuador(estado);
+//        actuadorRepository.save(actuador);
+//
+//        CambioActuadorDto cambioActuadorDto = new CambioActuadorDto(
+//                estadoAnterior,
+//                estado,
+//                java.time.LocalDateTime.now(),
+//                id
+//        );
+//
+//        cambioActuadorService.crearCambioActuador(cambioActuadorDto);
+//
+//        return new ActuadorResponseDto(
+//                actuador.getId(),
+//                actuador.getNombre(),
+//                actuador.getModelo(),
+//                actuador.getLatitud(),
+//                actuador.getLongitud(),
+//                actuador.getDescripcion(),
+//                actuador.getEstadoActuador(),
+//                actuador.getTiposActuadores()
+//        );
+//    }
 
     //ACTUALIZAR UN ACTUADOR
     @Transactional
@@ -115,17 +114,17 @@ public class ActuadorService {
         actuador.setLongitud(actuadorDto.longitud());
         actuador.setDescripcion(actuadorDto.descripcion());
 
-        if (!tiposDeActuadores.isEmpty()) {
-            actuador.getTiposActuadores().forEach(
-                    tipoActuador -> tipoActuador.getActuadores().remove(actuador)
-            );
-            actuador.getTiposActuadores().clear();
-
-            tiposDeActuadores.forEach(tipoActuador -> {
-                actuador.getTiposActuadores().add(tipoActuador);
-                tipoActuador.getActuadores().add(actuador);
-            });
-        }
+//        if (!tiposDeActuadores.isEmpty()) {
+//            actuador.getTiposActuadores().forEach(
+//                    tipoActuador -> tipoActuador.getActuadores().remove(actuador)
+//            );
+//            actuador.getTiposActuadores().clear();
+//
+//            tiposDeActuadores.forEach(tipoActuador -> {
+//                actuador.getTiposActuadores().add(tipoActuador);
+//                tipoActuador.getActuadores().add(actuador);
+//            });
+//        }
         actuadorRepository.save(actuador);
 
         return new ActuadorResponseDto(
@@ -134,9 +133,8 @@ public class ActuadorService {
                 actuador.getModelo(),
                 actuador.getLatitud(),
                 actuador.getLongitud(),
-                actuador.getDescripcion(),
-                actuador.getEstadoActuador(),
-                actuador.getTiposActuadores()
+                actuador.getDescripcion()
+//                actuador.getTiposActuadores()
         );
     }
 
@@ -148,10 +146,10 @@ public class ActuadorService {
                 .orElseThrow(() -> new EntityNotFoundException("El actuador no existe"));
 
         actuadorRepository.softDelete(id);
-        for (TipoActuador tipoActuador : actuador.getTiposActuadores()) {
-            tipoActuador.getActuadores().remove(actuador);
-        }
-        actuador.getTiposActuadores().clear();
+//        for (TipoActuador tipoActuador : actuador.getTiposActuadores()) {
+//            tipoActuador.getActuadores().remove(actuador);
+//        }
+//        actuador.getTiposActuadores().clear();
 
     }
 
@@ -167,9 +165,8 @@ public class ActuadorService {
                 actuador.getModelo(),
                 actuador.getLatitud(),
                 actuador.getLongitud(),
-                actuador.getDescripcion(),
-                actuador.getEstadoActuador(),
-                actuador.getTiposActuadores()
+                actuador.getDescripcion()
+//                actuador.getTiposActuadores()
         );
 
     }
@@ -184,9 +181,8 @@ public class ActuadorService {
                         actuador.getModelo(),
                         actuador.getLatitud(),
                         actuador.getLongitud(),
-                        actuador.getDescripcion(),
-                        actuador.getEstadoActuador(),
-                        actuador.getTiposActuadores()
+                        actuador.getDescripcion()
+//                        actuador.getTiposActuadores()
                 ))
                 .toList();
     }
@@ -200,24 +196,37 @@ public class ActuadorService {
 
 
     //Modificar estado de actuador y luego crear un cambio actuador
-    @Transactional
-    public CambioActuadorDto modificarEstadoActuador(Long id, String estadoActuador) {
-        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
+//    @Transactional
+//    public CambioActuadorDto modificarEstadoActuador(Long id, String estadoActuador) {
+//        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
+//
+//        String estadoAnterior = actuador.getEstadoActuador();
+//
+//
+//        actuador.setEstadoActuador(estadoActuador);
+//        actuadorRepository.save(actuador);
+//
+//        return new CambioActuadorDto(
+//                estadoAnterior,
+//                estadoActuador,
+//                LocalDateTime.now(),
+//                actuador.getId()
+//        );
+//
+//    }
 
-        String estadoAnterior = actuador.getEstadoActuador();
+    // OBTENER LOS ESTADOS POSIBLES DE UN ACTUADOR y los nombres de los tipos de actuadores
+//    public List<Map.Entry<String, String>> obtenerEstadosPosibles(Long id) {
+//        Actuador actuador = actuadorRepository.findByIdAndActivoTrue(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Actuador no existe"));
+//
+//        return actuador.getTiposActuadores()
+//                .stream()
+//                .flatMap(tipo -> tipo.getEstados().stream()
+//                        .map(estado -> Map.entry(tipo.getDescripcion(), estado))) // Asocia estado con tipo de actuador
+//                .distinct()
+//                .toList();
+//    }
 
-
-        actuador.setEstadoActuador(estadoActuador);
-        actuadorRepository.save(actuador);
-
-        return new CambioActuadorDto(
-                estadoAnterior,
-                estadoActuador,
-                LocalDateTime.now(),
-                actuador.getId()
-        );
-
-
-    }
 }

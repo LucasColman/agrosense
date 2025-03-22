@@ -1,6 +1,7 @@
 package com.unam.agrosense.model.tipoActuador;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unam.agrosense.model.ActuadorTipoActuador;
 import com.unam.agrosense.model.actuador.Actuador;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,15 +30,21 @@ public class TipoActuador {
     @Column(name = "estado")
     private List<String> estados;
 
+
+    @OneToMany(mappedBy = "tipoActuador")
+    private List<ActuadorTipoActuador> actuadorTipoActuadores;
+
     private boolean activo  = true;
 
-    @ManyToMany
-    @JoinTable(
-            name = "actuadores_x_tipos_actuadores",
-            joinColumns = @JoinColumn(name = "tipo_actuador_id"),
-            inverseJoinColumns = @JoinColumn(name = "actuador_id")
-    )
-    @JsonIgnore
-    private List<Actuador> actuadores;
+
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "actuadores_x_tipos_actuadores",
+//            joinColumns = @JoinColumn(name = "tipo_actuador_id"),
+//            inverseJoinColumns = @JoinColumn(name = "actuador_id")
+//    )
+//    @JsonIgnore
+//    private List<Actuador> actuadores;
 
 }

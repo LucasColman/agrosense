@@ -116,11 +116,11 @@ public class ActuadorController {
 
     }
 
-    @PutMapping("/edit/estado/{id}")
-    public ResponseEntity<ActuadorResponseDto> actualizarEstadoActuador(@PathVariable Long id, @RequestParam String estado) {
-        ActuadorResponseDto actuadorResponseDto = actuadorService.actualizarEstadoActuador(id, estado);
-        return ResponseEntity.ok(actuadorResponseDto);
-    }
+//    @PutMapping("/edit/estado/{id}")
+//    public ResponseEntity<ActuadorResponseDto> actualizarEstadoActuador(@PathVariable Long id, @RequestParam String estado) {
+//        ActuadorResponseDto actuadorResponseDto = actuadorService.actualizarEstadoActuador(id, estado);
+//        return ResponseEntity.ok(actuadorResponseDto);
+//    }
 
     // ELIMINAR UN ACTUADOR
     @DeleteMapping("/delete/{id}")
@@ -137,36 +137,33 @@ public class ActuadorController {
         return ResponseEntity.ok(actuadorResponseDto);
     }
 
-    // OBTENER TODOS LOS ACTUADORES
+     //OBTENER TODOS LOS ACTUADORES
     @GetMapping
     public String listarActuadores(Model model) {
         List<ActuadorResponseDto> actuadores = actuadorService.obtenerActuadores();
 
-        Map<Long, List<String>> estadosPorActuador = new HashMap<>();
-
-        for (ActuadorResponseDto actuador : actuadores) {
-            List<String> estadosPosibles = actuador.tiposDeActuadores()
-                    .stream()
-                    .flatMap(tipo -> tipo.getEstados().stream())
-                    .distinct()
-                    .toList();
-
-            // Serializar la lista de estados como JSON
-            ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                String estadosJson = objectMapper.writeValueAsString(estadosPosibles);
-                estadosPorActuador.put(actuador.id(), Collections.singletonList(estadosJson));
-            } catch (Exception e) {
-                e.printStackTrace(); // Manejo de error si la serialización falla
-            }
-        }
-
-        System.out.println(estadosPorActuador);
+//        Map<Long, List<String>> estadosPorActuador = new HashMap<>();
+//
+//        for (ActuadorResponseDto actuador : actuadores) {
+//            // Obtener los estados posibles de cada actuador y los nombres de los tipos de actuadores
+//            List<Map.Entry<String, String>> estadosPosibles = actuadorService.obtenerEstadosPosibles(actuador.id());
+//
+//            // Serializar la lista de estados como JSON
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            try {
+//                String estadosJson = objectMapper.writeValueAsString(estadosPosibles);
+//                estadosPorActuador.put(actuador.id(), Collections.singletonList(estadosJson));
+//            } catch (Exception e) {
+//                e.printStackTrace(); // Manejo de error si la serialización falla
+//            }
+//        }
+//
+//        System.out.println(estadosPorActuador);
 
         model.addAttribute("actuadores", actuadores);
         model.addAttribute("tiposDispositivo", TipoDispositivo.values());
         model.addAttribute("tiposActuadores", tipoActuadorService.obtenerTiposActuadores());
-        model.addAttribute("estadosPorActuador", estadosPorActuador);
+        //model.addAttribute("estadosPorActuador", estadosPorActuador);
         return "dispositivos/Actuadores";
     }
 
@@ -176,14 +173,14 @@ public class ActuadorController {
         return ResponseEntity.ok().body(actuadorService.cantidadDeActuadores());
     }
 
-    @PutMapping("/nuevo-estado/{id}")
-    public ResponseEntity<CambioActuadorResponseDto> actualizarEstado(@ModelAttribute @PathVariable Long id, @RequestBody String estado) {
-        CambioActuadorDto cambioActuador = actuadorService.modificarEstadoActuador(id, estado);
-
-        CambioActuadorResponseDto cambioActuadorResponseDto = cambioActuadorService.crearCambioActuador(cambioActuador);
-
-        return ResponseEntity.ok(cambioActuadorResponseDto);
-    }
+//    @PutMapping("/nuevo-estado/{id}")
+//    public ResponseEntity<CambioActuadorResponseDto> actualizarEstado(@ModelAttribute @PathVariable Long id, @RequestBody String estado) {
+//        CambioActuadorDto cambioActuador = actuadorService.modificarEstadoActuador(id, estado);
+//
+//        CambioActuadorResponseDto cambioActuadorResponseDto = cambioActuadorService.crearCambioActuador(cambioActuador);
+//
+//        return ResponseEntity.ok(cambioActuadorResponseDto);
+//    }
 
 
     public void capturarErrores(BindingResult bindingResult, RedirectAttributes redirectAttributes) {
