@@ -1,4 +1,4 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.actuadorTipoActuador;
 
 import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
@@ -13,6 +13,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class ActuadorTipoActuador {
+
     @EmbeddedId
     private ActuadorTipoActuadorId id;
 

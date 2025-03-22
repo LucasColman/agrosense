@@ -1,4 +1,4 @@
-package com.unam.agrosense.model;
+package com.unam.agrosense.model.actuadorTipoActuador;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;

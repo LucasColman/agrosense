@@ -1,14 +1,12 @@
 package com.unam.agrosense.model.actuador;
 
 
-import com.unam.agrosense.model.ActuadorTipoActuador;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuador;
 import com.unam.agrosense.model.cambioActuador.CambioActuador;
 import com.unam.agrosense.model.dispositivo.Dispositivo;
-import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
