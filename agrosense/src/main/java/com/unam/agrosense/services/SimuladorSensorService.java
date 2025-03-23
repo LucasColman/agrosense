@@ -23,7 +23,7 @@ public class SimuladorSensorService {
     private final Random random = new Random();
 
     @Transactional
-    @Scheduled(fixedRate = 1200000) // Cada 20 minutos
+    @Scheduled(fixedRate = 2000000) // Cada 20 minutos
     public void simularMediciones() {
         System.out.println("Ejecutando simulación de mediciones...");
 

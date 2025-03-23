@@ -28,14 +28,16 @@
                     <h1 class="h3 text-green mb-3 mb-sm-0">
                         <i class="fas fa-cogs me-2"></i>Actuadores
                     </h1>
-                    <button type="button" class="btn btn-success btn-add" data-bs-toggle="modal" data-bs-target="#newActuadorModal">
+                    <button type="button" class="btn btn-success btn-add" data-bs-toggle="modal"
+                            data-bs-target="#newActuadorModal">
                         <i class="fas fa-plus me-2"></i> Nuevo Actuador
                     </button>
                 </div>
 
                 <div th:if="${mensaje}" class="alert"
                      th:classappend="${tipoMensaje == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
-                    <i class="fas" th:classappend="${tipoMensaje == 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <i class="fas"
+                       th:classappend="${tipoMensaje == 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
                     <span class="ms-2" th:text="${mensaje}"></span>
                 </div>
 
@@ -54,7 +56,8 @@
                                 <i class="fas fa-list me-2"></i>Lista de Actuadores
                             </h5>
                             <div class="input-group input-group-sm" style="max-width: 300px;">
-                                <input type="text" id="searchInput" class="form-control" placeholder="Buscar actuador...">
+                                <input type="text" id="searchInput" class="form-control"
+                                       placeholder="Buscar actuador...">
                                 <button class="btn btn-search" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -63,7 +66,8 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover table-striped text-center align-middle mb-0" id="actuadoresTable">
+                            <table class="table table-hover table-striped text-center align-middle mb-0"
+                                   id="actuadoresTable">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
@@ -102,7 +106,8 @@
                                                     data-bs-toggle="modal" data-bs-target="#editActuadorModal"
                                                     th:data-id="${actuador.id}" th:data-nombre="${actuador.nombre}"
                                                     th:data-modelo="${actuador.modelo}"
-                                                    th:data-latitud="${actuador.latitud}" th:data-longitud="${actuador.longitud}"
+                                                    th:data-latitud="${actuador.latitud}"
+                                                    th:data-longitud="${actuador.longitud}"
                                                     th:data-descripcion="${actuador.descripcion}"
                                                     th:data-tipos-actuadores="${#strings.listJoin(actuador.tiposDeActuadores.![id], ',')}"
                                                     title="Editar" aria-label="Editar">
@@ -115,7 +120,8 @@
                                             </button>
                                             <button class="btn btn-info btn-sm action-btn change-actuador-btn"
                                                     data-bs-toggle="modal" data-bs-target="#changeActuadorModal"
-                                                    th:data-id="${actuador.id}" th:data-estados="${estadosPorActuador[actuador.id]}"
+                                                    th:data-id="${actuador.id}"
+                                                    th:data-estados="${estadosPorActuador[actuador.id]}"
                                                     title="Cambiar Estado" aria-label="Cambiar Estado">
                                                 <i class="fas fa-sync-alt"></i>
                                             </button>
