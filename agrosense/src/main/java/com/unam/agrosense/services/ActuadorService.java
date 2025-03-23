@@ -7,6 +7,7 @@ import com.unam.agrosense.model.actuador.Actuador;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
 
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuadorResponseDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.model.tipoActuador.TipoActuador;
 import com.unam.agrosense.repository.ActuadorRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActuadorService {
@@ -185,6 +187,45 @@ public class ActuadorService {
 //                        actuador.getTiposActuadores()
                 ))
                 .toList();
+    }
+    /*
+    public List<ActuadorTipoActuadorResponseDto> obtenerActuadoresTipoActuador(){
+        List<ActuadorTipoActuador> actuadoresTipoActuador = actuadorTipoActuadorRepository.findAll();
+        return actuadoresTipoActuador.stream()
+                .map(actuadorTipoActuador -> new ActuadorTipoActuadorResponseDto(
+                        actuadorTipoActuador.getId().getTipoActuadorId(),
+                        actuadorTipoActuador.getId().getActuadorId(),
+                        actuadorTipoActuador.getEstadoActual()
+                ))
+                .toList();
+    }*/
+
+    public List<ActuadorTipoActuadorResponseDto> obtenerActuadoresTipoActuadorByActuadorId(Long actuadorId) {
+        List<ActuadorTipoActuador> actuadoresTipoActuador = actuadorTipoActuadorRepository.findByActuadorId(actuadorId);
+
+        return actuadoresTipoActuador.stream()
+                .map(actuadorTipoActuador -> new ActuadorTipoActuadorResponseDto(
+                        actuadorTipoActuador.getTipoActuador().getId(),  // Obtener el ID del tipo de actuador
+                        actuadorTipoActuador.getActuador().getId(),  // Obtener el ID del actuador
+                        actuadorTipoActuador.getEstadoActual(),  // Estado actual
+                        actuadorTipoActuador.getTipoActuador().getDescripcion() // Obtener descripción del tipo de actuador
+                ))
+                .toList();
+    }
+
+    public void cambiarEstadoActuadorTipoActuador(Long actuadorId, Long tipoActuadorId, String nuevoEstado) {
+        // Buscar la relación en la tabla intermedia
+        ActuadorTipoActuadorId id = new ActuadorTipoActuadorId(actuadorId, tipoActuadorId);
+        Optional<ActuadorTipoActuador> actuadorTipoActuadorOpt = actuadorTipoActuadorRepository.findById(id);
+
+        if (actuadorTipoActuadorOpt.isPresent()) {
+            // Actualizar el estado actual
+            ActuadorTipoActuador actuadorTipoActuador = actuadorTipoActuadorOpt.get();
+            actuadorTipoActuador.setEstadoActual(nuevoEstado);
+            actuadorTipoActuadorRepository.save(actuadorTipoActuador); // Guardar los cambios
+        } else {
+            throw new RuntimeException("La relación entre actuador y tipo de actuador no existe.");
+        }
     }
 
     public int cantidadDeActuadores() {

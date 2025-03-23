@@ -91,11 +91,18 @@
                                     <td th:text="${actuador.latitud}"></td>
                                     <td th:text="${actuador.longitud}"></td>
                                     <td>
-                                        <button class="btn btn-sm btn-info tipos-actuadores-btn" data-bs-toggle="modal"
+                                        <button class="btn btn-sm btn-primary ver-tipo-actuador-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#tipoActuadorModal"
+                                                th:data-actuador-id="${actuador.id}">
+                                            <i class="fas fa-eye"></i> Ver Tipos
+                                        </button>
+
+                                        <!-- <button class="btn btn-sm btn-info tipos-actuadores-btn" data-bs-toggle="modal"
                                                 data-bs-target="#tipoActuadorModal" th:data-id="${actuador.id}"
                                         >
                                             <i class="fas fa-eye"></i> Ver Tipos
-                                        </button>
+                                        </button>-->
                                         <button class="btn btn-sm btn-success new-tipo-actuador-btn" data-bs-toggle="modal"
                                                 data-bs-target="#newTipoActuadorModal" th:data-id="${actuador.id}"
                                                 th:data-tipos-actuadores="${#strings.listJoin(tiposActuadores.![id], ',')}"
@@ -330,22 +337,67 @@
     </div>
 </div>
 
-<!-- Modal Ver Tipos de actuadores -->
+<!-- Modal Ver Tipos de Actuadores -->
 <div class="modal fade" id="tipoActuadorModal" tabindex="-1" aria-labelledby="modalTipoActuadorModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalTipoActuadorModal">
-                    <i class="fas fa-eye me-2"></i>Tipos de Actuadores Asociados
+                    <i class="fas fa-eye me-2"></i> Tipos de Actuadores Asociados
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped text-center align-middle mb-0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Descripción</th>
+                            <th>Estado Actual</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tiposActuadoresBody">
+                        <tr>
+                            <td colspan="3">Seleccione un actuador para ver sus tipos asociados</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Modal para Cambiar el Estado -->
+<div class="modal fade" id="cambiarEstadoModal" tabindex="-1" aria-labelledby="cambiarEstadoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cambiarEstadoModalLabel">Cambiar Estado del Actuador</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="nuevoEstado" class="form-label">Seleccione un Nuevo Estado</label>
+                    <select id="nuevoEstado" class="form-select">
+                        <option value="">Seleccione un estado</option>
+                        <!-- Opciones de estado se cargarán aquí dinámicamente -->
+                    </select>
+                </div>
+                <button id="guardarEstadoBtn" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <script src="/js/dispositivos/actuadores.js"></script>
 <script src="/js/navbar.js"></script>
