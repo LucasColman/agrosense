@@ -161,16 +161,28 @@ public class ActuadorController {
         return actuadorService.obtenerActuadoresTipoActuadorByActuadorId(actuadorId);
     }
 
-    @PutMapping("/{actuadorId}/tipos/{tipoActuadorId}/estado")
-    public ResponseEntity<String> cambiarEstadoActuadorTipoActuador(
-            @PathVariable Long actuadorId,
-            @PathVariable Long tipoActuadorId,
-            @RequestBody String nuevoEstado) {
+    @PutMapping("/cambiar-estado/{actuadorId}/{tipoActuadorId}")
+    public ResponseEntity<?>cambiarEstadoActuadorTipoActuador(@PathVariable Long actuadorId, @PathVariable Long tipoActuadorId, @RequestBody Map<String, String> requestBody) {
+
         try {
+            // Obtener el estado desde el cuerpo de la solicitud
+            String nuevoEstado = requestBody.get("estado");
+
+            // Validar que el estado no sea nulo
+            if (nuevoEstado == null || nuevoEstado.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Estado no puede estar vacío"));
+            }
+
+            // Llamar al servicio para cambiar el estado
             actuadorService.cambiarEstadoActuadorTipoActuador(actuadorId, tipoActuadorId, nuevoEstado);
-            return ResponseEntity.ok("Estado actualizado correctamente.");
+
+            // Responder con un mensaje de éxito
+            return ResponseEntity.ok(Map.of("success", true, "message", "Estado cambiado exitosamente"));
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el estado.");
+            System.out.println("Error al cambiar el estado: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("success", false, "message", "Error al cambiar el estado"));
         }
     }
 

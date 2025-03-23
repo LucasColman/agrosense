@@ -1,3 +1,5 @@
+
+// Editar actuador
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".edit-actuador-btn").forEach(button => {
         button.addEventListener("click", function () {
@@ -29,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+//Elimminar actuador
 document.addEventListener("DOMContentLoaded", function () {
     let actuadorIdToDelete = null;
 
@@ -55,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
+/*
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.change-actuador-btn').forEach(button => {
         button.addEventListener('click', function () {
@@ -101,6 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+*/
+
 
 /*
 async function actualizarEstados() {
@@ -126,7 +131,7 @@ async function actualizarEstados() {
         }
     }
 }*/
-
+/*
 function actualizarEstados(actuadorId) {
     const estado = document.getElementById('estado-actuador').value;
 
@@ -165,6 +170,9 @@ function actualizarEstados(actuadorId) {
             });
     }
 }
+
+*/
+
 
 // Función para buscar en la tabla de actuadores
 document.addEventListener('DOMContentLoaded', function () {
@@ -206,6 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 */
 
+//BOTON ASOCIAR TIPOS
 document.addEventListener("DOMContentLoaded", function () {
     const newTipoActuadorButtons = document.querySelectorAll(".new-tipo-actuador-btn");
     const actuadorIdInput = document.getElementById("actuador-id");
@@ -260,6 +269,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+//BOTON VER TIPOS DE ACTUADORES
 document.addEventListener("DOMContentLoaded", function () {
     const verTipoActuadorButtons = document.querySelectorAll(".ver-tipo-actuador-btn");
 
@@ -352,12 +363,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (nuevoEstado && actuadorIdGlobal && tipoActuadorIdGlobal) {
             // Realizar el cambio de estado con una petición PUT
-            fetch(`/actuadores/${actuadorIdGlobal}/tipos/${tipoActuadorIdGlobal}/estado`, {
+            fetch(`/actuadores/cambiar-estado/${actuadorIdGlobal}/${tipoActuadorIdGlobal}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(nuevoEstado)
+                body: JSON.stringify({ estado: nuevoEstado }) // Enviar JSON correctamente
             })
                 .then(response => {
                     if (response.ok) {
