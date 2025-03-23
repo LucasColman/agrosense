@@ -7,6 +7,8 @@ import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuadorDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorResponseDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
+import com.unam.agrosense.model.tipoActuador.TipoActuador;
+import com.unam.agrosense.model.tipoActuador.TipoActuadorResponseDto;
 import com.unam.agrosense.services.ActuadorService;
 import com.unam.agrosense.services.CambioActuadorService;
 import com.unam.agrosense.services.TipoActuadorService;
@@ -206,7 +208,15 @@ public String agregarTipoActuador(@ModelAttribute @RequestBody @Valid ActuadorTi
     return "redirect:/actuadores";
 }
 
-
+    @GetMapping("/{id}/estados")
+    public ResponseEntity<List<String>> obtenerEstadosPorTipoActuador(@PathVariable Long id) {
+        TipoActuador tipoActuador = tipoActuadorService.obtenerPorId(id);
+        if (tipoActuador != null) {
+            return ResponseEntity.ok(tipoActuador.getEstados());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     public void capturarErrores(BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         // Captura los mensajes de error y los agrega a los atributos de redirección

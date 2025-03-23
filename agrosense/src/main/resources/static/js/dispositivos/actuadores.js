@@ -190,3 +190,72 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+/*
+document.addEventListener("DOMContentLoaded", function () {
+    const tipoActuadorSelect = document.getElementById("tipoActuador");
+    const estadoActualDiv = document.getElementById("estadoActualDiv");
+
+    tipoActuadorSelect.addEventListener("change", function () {
+        if (this.value) {
+            estadoActualDiv.style.display = "block"; // Mostrar el select de estado
+        } else {
+            estadoActualDiv.style.display = "none"; // Ocultar si no hay selección
+        }
+    });
+});
+*/
+
+document.addEventListener("DOMContentLoaded", function () {
+    const newTipoActuadorButtons = document.querySelectorAll(".new-tipo-actuador-btn");
+    const actuadorIdInput = document.getElementById("actuador-id");
+
+    newTipoActuadorButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const actuadorId = this.getAttribute("data-id");
+            actuadorIdInput.value = actuadorId; // Asigna el ID al input oculto
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const tipoActuadorSelect = document.getElementById("tipoActuador");
+    const estadoActualDiv = document.getElementById("estadoActualDiv");
+    const estadoActualSelect = document.getElementById("estadoActual");
+
+    tipoActuadorSelect.addEventListener("change", function () {
+        const tipoActuadorId = this.value;
+
+        if (tipoActuadorId) {
+            // Hacer la petición AJAX
+            fetch(`/actuadores/${tipoActuadorId}/estados`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Error al obtener los estados");
+                    }
+                    return response.json();
+                })
+                .then(estados => {
+                    // Limpiar opciones previas
+                    estadoActualSelect.innerHTML = '<option value="">Seleccione un estado</option>';
+
+                    // Agregar las nuevas opciones
+                    estados.forEach(estado => {
+                        const option = document.createElement("option");
+                        option.value = estado;
+                        option.textContent = estado;
+                        estadoActualSelect.appendChild(option);
+                    });
+
+                    // Mostrar el select de estados
+                    estadoActualDiv.style.display = "block";
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    estadoActualDiv.style.display = "none";
+                });
+        } else {
+            estadoActualDiv.style.display = "none"; // Ocultar si no hay selección
+        }
+    });
+});

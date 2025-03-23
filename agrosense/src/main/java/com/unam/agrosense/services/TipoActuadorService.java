@@ -74,4 +74,8 @@ public class TipoActuadorService {
 //        }
 //        tipoActuador.getActuadores().clear();
     }
+
+    public TipoActuador obtenerPorId(Long id) {
+        return tipoActuadorRepository.findById(id).orElse(null);
+    }
 }

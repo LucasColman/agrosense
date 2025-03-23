@@ -28,16 +28,14 @@
                     <h1 class="h3 text-green mb-3 mb-sm-0">
                         <i class="fas fa-cogs me-2"></i>Actuadores
                     </h1>
-                    <button type="button" class="btn btn-success btn-add" data-bs-toggle="modal"
-                            data-bs-target="#newActuadorModal">
+                    <button type="button" class="btn btn-success btn-add" data-bs-toggle="modal" data-bs-target="#newActuadorModal">
                         <i class="fas fa-plus me-2"></i> Nuevo Actuador
                     </button>
                 </div>
 
                 <div th:if="${mensaje}" class="alert"
                      th:classappend="${tipoMensaje == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
-                    <i class="fas"
-                       th:classappend="${tipoMensaje == 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <i class="fas" th:classappend="${tipoMensaje == 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
                     <span class="ms-2" th:text="${mensaje}"></span>
                 </div>
 
@@ -56,8 +54,7 @@
                                 <i class="fas fa-list me-2"></i>Lista de Actuadores
                             </h5>
                             <div class="input-group input-group-sm" style="max-width: 300px;">
-                                <input type="text" id="searchInput" class="form-control"
-                                       placeholder="Buscar actuador...">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Buscar actuador...">
                                 <button class="btn btn-search" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -66,19 +63,18 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover table-striped text-center align-middle mb-0"
-                                   id="actuadoresTable">
+                            <table class="table table-hover table-striped text-center align-middle mb-0" id="actuadoresTable">
                                 <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Modelo</th>
-                                    <th>Descripción</th>
-                                    <th>Latitud</th>
-                                    <th>Longitud</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Modelo</th>
+                                        <th>Descripción</th>
+                                        <th>Latitud</th>
+                                        <th>Longitud</th>
+                                        <th>Tipos de Actuadores</th>
+                                        <th>Acciones</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:if="${#lists.isEmpty(actuadores)}">
@@ -95,21 +91,36 @@
                                     <td th:text="${actuador.latitud}"></td>
                                     <td th:text="${actuador.longitud}"></td>
                                     <td>
-                            <span class="badge badge-status"
-                                  th:classappend="${actuador.estadoActuador == 'Activo' ? 'bg-success' : (actuador.estadoActuador == 'Inactivo' ? 'bg-secondary' : 'bg-warning')}"
-                                  th:text="${actuador.estadoActuador}">
-                            </span>
+                                        <button class="btn btn-sm btn-info tipos-actuadores-btn" data-bs-toggle="modal"
+                                                data-bs-target="#tipoActuadorModal" th:data-id="${actuador.id}"
+                                        >
+                                            <i class="fas fa-eye"></i> Ver Tipos
+                                        </button>
+                                        <button class="btn btn-sm btn-success new-tipo-actuador-btn" data-bs-toggle="modal"
+                                                data-bs-target="#newTipoActuadorModal" th:data-id="${actuador.id}"
+                                                th:data-tipos-actuadores="${#strings.listJoin(tiposActuadores.![id], ',')}"
+                                        >
+                                            <i class="fas fa-plus"></i> Asociar Tipos
+                                        </button>
                                     </td>
                                     <td>
                                         <div class="action-buttons">
+                                            <!-- <button class="btn btn-warning btn-sm action-btn edit-actuador-btn"
+                                                     data-bs-toggle="modal" data-bs-target="#editActuadorModal"
+                                                     th:data-id="${actuador.id}" th:data-nombre="${actuador.nombre}"
+                                                     th:data-modelo="${actuador.modelo}"
+                                                     th:data-latitud="${actuador.latitud}" th:data-longitud="${actuador.longitud}"
+                                                     th:data-descripcion="${actuador.descripcion}"
+                                                     th:data-tipos-actuadores="${#strings.listJoin(actuador.tiposDeActuadores.![id], ',')}"
+                                                     title="Editar" aria-label="Editar">
+                                                 <i class="fas fa-edit"></i>
+                                             </button>-->
                                             <button class="btn btn-warning btn-sm action-btn edit-actuador-btn"
                                                     data-bs-toggle="modal" data-bs-target="#editActuadorModal"
                                                     th:data-id="${actuador.id}" th:data-nombre="${actuador.nombre}"
                                                     th:data-modelo="${actuador.modelo}"
-                                                    th:data-latitud="${actuador.latitud}"
-                                                    th:data-longitud="${actuador.longitud}"
+                                                    th:data-latitud="${actuador.latitud}" th:data-longitud="${actuador.longitud}"
                                                     th:data-descripcion="${actuador.descripcion}"
-                                                    th:data-tipos-actuadores="${#strings.listJoin(actuador.tiposDeActuadores.![id], ',')}"
                                                     title="Editar" aria-label="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </button>
@@ -117,13 +128,6 @@
                                                     data-bs-toggle="modal" data-bs-target="#deleteActuadorModal"
                                                     th:data-id="${actuador.id}" title="Eliminar" aria-label="Eliminar">
                                                 <i class="fas fa-trash"></i>
-                                            </button>
-                                            <button class="btn btn-info btn-sm action-btn change-actuador-btn"
-                                                    data-bs-toggle="modal" data-bs-target="#changeActuadorModal"
-                                                    th:data-id="${actuador.id}"
-                                                    th:data-estados="${estadosPorActuador[actuador.id]}"
-                                                    title="Cambiar Estado" aria-label="Cambiar Estado">
-                                                <i class="fas fa-sync-alt"></i>
                                             </button>
                                         </div>
                                     </td>
@@ -193,14 +197,6 @@
                     <div class="mb-3">
                         <label for="actuador-descripcion" class="col-form-label">Descripción:</label>
                         <textarea class="form-control" id="actuador-descripcion" name="descripcion" required></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="tipoActuador" class="form-label">Tipos de Actuadores</label>
-                        <select class="form-select" id="tipoActuador" name="idsTipoActuador" multiple required>
-                            <option th:each="tipo : ${tiposActuadores}" th:value="${tipo.id}"
-                                    th:text="${tipo.descripcion}"></option>
-                        </select>
                     </div>
                 </div>
 
@@ -294,36 +290,59 @@
     </div>
 </div>
 
-<!-- Modal Cambiar Estado Actuador -->
-<div class="modal fade" id="changeActuadorModal" tabindex="-1" aria-labelledby="modalChangeActuador" aria-hidden="true">
+<!-- Modal Nuevo Tipo -->
+<div class="modal fade" id="newTipoActuadorModal" tabindex="-1" aria-labelledby="modalNewTipoActuador" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalChangeActuador">
-                    <i class="fas fa-sync-alt me-2"></i>Cambiar Estado del Actuador
+                <h5 class="modal-title" id="modalNewTipoActuador">
+                    <i class="fas fa-sync-alt me-2"></i>Nuevo Tipo de Actuador
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <form th:action="@{/actuadores/agregarTipoActuador}" method="post" th:object="${actuador}">
+                <input type="hidden" id="actuador-id" name="actuadorId">
+
+                <!-- Select de Tipo de Actuador -->
+                <div class="mb-3">
+                    <label for="tipoActuador" class="form-label">Tipos de Actuadores</label>
+                    <select class="form-select" id="tipoActuador" name="tipoActuadorId" required>
+                        <option value="">Seleccione un tipo de actuador</option>
+                        <option th:each="tipo : ${tiposActuadores}" th:value="${tipo.id}" th:text="${tipo.descripcion}"></option>
+                    </select>
+                </div>
+
+                <!-- Select para el Estado Actual (inicialmente oculto) -->
+                <div class="mb-3" id="estadoActualDiv" style="display:none;">
+                    <label for="estadoActual" class="form-label">Estado Actual</label>
+                    <select class="form-select" id="estadoActual" name="estadoActual" required>
+                        <option value="">Seleccione un estado</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ver Tipos de actuadores -->
+<div class="modal fade" id="tipoActuadorModal" tabindex="-1" aria-labelledby="modalTipoActuadorModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTipoActuadorModal">
+                    <i class="fas fa-eye me-2"></i>Tipos de Actuadores Asociados
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
 
-            <form id="changeActuadorForm" method="post">
-                <input type="hidden" name="_method" value="put">
-                <input type="hidden" id="actuador-id-change" name="id">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="estado-actuador" class="form-label">Nuevo Estado</label>
-                        <select id="estado-actuador" name="estado" class="form-select" required>
-                            <option selected>Seleccione el estado</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button onclick="actualizarEstados()" type="button" class="btn btn-success" id="saveEstadoBtn">
-                        Guardar
-                    </button>
-                </div>
-            </form>
+
         </div>
     </div>
 </div>
