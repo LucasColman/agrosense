@@ -16,8 +16,6 @@ public record ActuadorDto(
         @NotBlank
         String longitud,
         @NotBlank
-        String descripcion,
-        @NotNull
-        List<Long> idsTipoActuador
+        String descripcion
 ) {
 }

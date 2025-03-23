@@ -11,5 +11,4 @@ import java.util.Optional;
 @Repository
 public interface ActuadorTipoActuadorRepository extends JpaRepository<ActuadorTipoActuador, ActuadorTipoActuadorId> {
     List<ActuadorTipoActuador> findByActuadorId(Long actuadorId);
-    Optional<ActuadorTipoActuador> findById(ActuadorTipoActuadorId id);
 }
