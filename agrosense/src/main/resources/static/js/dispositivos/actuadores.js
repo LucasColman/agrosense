@@ -259,3 +259,122 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const verTipoActuadorButtons = document.querySelectorAll(".ver-tipo-actuador-btn");
+
+    verTipoActuadorButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            const actuadorId = this.getAttribute("data-actuador-id");
+
+            fetch(`/actuadores/${actuadorId}/tipos`)
+                .then(response => response.json())
+                .then(tiposAsociados => {
+                    const tbody = document.getElementById("tiposActuadoresBody");
+                    tbody.innerHTML = ""; // Limpiar la tabla antes de agregar nuevos datos
+
+                    if (tiposAsociados.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="empty-state">
+                                    <i class="fas fa-info-circle fa-2x mb-3"></i>
+                                    <p>No hay tipos de actuadores asociados a este actuador.</p>
+                                </td>
+                            </tr>`;
+                        return;
+                    }
+
+                    // Agregar los nuevos datos
+                    tiposAsociados.forEach(tipo => {
+                        // Crear una fila con el botón de "Cambiar Estado" solo si el actuador tiene un tipo asignado
+                        const row = `
+                            <tr>
+                                <td>${tipo.tipoActuadorId}</td>
+                                <td>${tipo.descripcion}</td>
+                                <td>${tipo.estadoActual}</td>
+                                <td>
+                                    <!-- Mostrar el botón solo si hay estado actual -->
+                                    ${tipo.estadoActual ? `<button type="button" class="btn btn-warning btn-sm cambiarEstadoBtn" data-actuador-id="${actuadorId}" data-tipo-actuador-id="${tipo.tipoActuadorId}">Cambiar Estado</button>` : ''}
+                                </td>
+                            </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => console.error("Error al obtener los tipos:", error));
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Modal de cambiar estado
+    const cambiarEstadoModal = new bootstrap.Modal(document.getElementById('cambiarEstadoModal'));
+    const nuevoEstadoSelect = document.getElementById("nuevoEstado");
+    const guardarEstadoBtn = document.getElementById("guardarEstadoBtn");
+
+    let actuadorIdGlobal = null; // Variable global para guardar el ID del actuador seleccionado
+    let tipoActuadorIdGlobal = null; // Variable global para guardar el ID del tipo de actuador seleccionado
+
+    // Función para cargar los estados posibles para un tipo de actuador
+    function cargarEstados(tipoActuadorId) {
+        fetch(`/actuadores/${tipoActuadorId}/estados`) // Obtener los estados por tipo de actuador
+            .then(response => response.json())
+            .then(estados => {
+                nuevoEstadoSelect.innerHTML = '<option value="">Seleccione un estado</option>';
+                estados.forEach(estado => {
+                    const option = document.createElement("option");
+                    option.value = estado;
+                    option.textContent = estado;
+                    nuevoEstadoSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error al cargar los estados:", error);
+            });
+    }
+
+    // Función para abrir el modal de cambio de estado
+    document.getElementById("tiposActuadoresBody").addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("cambiarEstadoBtn")) {
+            actuadorIdGlobal = e.target.getAttribute("data-actuador-id");
+            tipoActuadorIdGlobal = e.target.getAttribute("data-tipo-actuador-id");
+
+            // Cargar los estados para el tipo de actuador
+            cargarEstados(tipoActuadorIdGlobal);
+
+            // Mostrar el modal
+            cambiarEstadoModal.show();
+        }
+    });
+
+    // Guardar el nuevo estado seleccionado
+    guardarEstadoBtn.addEventListener("click", function () {
+        const nuevoEstado = nuevoEstadoSelect.value;
+
+        if (nuevoEstado && actuadorIdGlobal && tipoActuadorIdGlobal) {
+            // Realizar el cambio de estado con una petición PUT
+            fetch(`/actuadores/${actuadorIdGlobal}/tipos/${tipoActuadorIdGlobal}/estado`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(nuevoEstado)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Estado actualizado correctamente');
+                        cambiarEstadoModal.hide();
+                        // Aquí puedes hacer algo para actualizar la tabla o el contenido mostrado
+                    } else {
+                        alert('Error al actualizar el estado');
+                    }
+                })
+                .catch(error => {
+                    console.error("Error al guardar el estado:", error);
+                });
+        } else {
+            alert("Por favor, seleccione un estado.");
+        }
+    });
+});
+
+

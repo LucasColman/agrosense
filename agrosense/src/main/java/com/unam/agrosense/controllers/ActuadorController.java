@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unam.agrosense.model.actuador.ActuadorDto;
 import com.unam.agrosense.model.actuador.ActuadorResponseDto;
 import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuadorDto;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuadorResponseDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorResponseDto;
 import com.unam.agrosense.model.dispositivo.TipoDispositivo;
@@ -13,6 +14,7 @@ import com.unam.agrosense.services.ActuadorService;
 import com.unam.agrosense.services.CambioActuadorService;
 import com.unam.agrosense.services.TipoActuadorService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -144,30 +146,32 @@ public class ActuadorController {
     @GetMapping
     public String listarActuadores(Model model) {
         List<ActuadorResponseDto> actuadores = actuadorService.obtenerActuadores();
-
-//        Map<Long, List<String>> estadosPorActuador = new HashMap<>();
-//
-//        for (ActuadorResponseDto actuador : actuadores) {
-//            // Obtener los estados posibles de cada actuador y los nombres de los tipos de actuadores
-//            List<Map.Entry<String, String>> estadosPosibles = actuadorService.obtenerEstadosPosibles(actuador.id());
-//
-//            // Serializar la lista de estados como JSON
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            try {
-//                String estadosJson = objectMapper.writeValueAsString(estadosPosibles);
-//                estadosPorActuador.put(actuador.id(), Collections.singletonList(estadosJson));
-//            } catch (Exception e) {
-//                e.printStackTrace(); // Manejo de error si la serialización falla
-//            }
-//        }
-//
-//        System.out.println(estadosPorActuador);
+        //List<ActuadorTipoActuadorResponseDto> actuadorTipoActuadores = actuadorService.obtenerActuadoresTipoActuador();
 
         model.addAttribute("actuadores", actuadores);
         model.addAttribute("tiposDispositivo", TipoDispositivo.values());
         model.addAttribute("tiposActuadores", tipoActuadorService.obtenerTiposActuadores());
-        //model.addAttribute("estadosPorActuador", estadosPorActuador);
+        //model.addAttribute("actuadorTipoActuadores", actuadorTipoActuadores);
         return "dispositivos/Actuadores";
+    }
+
+    @GetMapping("/{actuadorId}/tipos")
+    @ResponseBody
+    public List<ActuadorTipoActuadorResponseDto> obtenerTiposDeActuador(@PathVariable Long actuadorId) {
+        return actuadorService.obtenerActuadoresTipoActuadorByActuadorId(actuadorId);
+    }
+
+    @PutMapping("/{actuadorId}/tipos/{tipoActuadorId}/estado")
+    public ResponseEntity<String> cambiarEstadoActuadorTipoActuador(
+            @PathVariable Long actuadorId,
+            @PathVariable Long tipoActuadorId,
+            @RequestBody String nuevoEstado) {
+        try {
+            actuadorService.cambiarEstadoActuadorTipoActuador(actuadorId, tipoActuadorId, nuevoEstado);
+            return ResponseEntity.ok("Estado actualizado correctamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el estado.");
+        }
     }
 
 
