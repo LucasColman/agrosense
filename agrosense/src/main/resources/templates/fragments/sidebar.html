@@ -1,11 +1,170 @@
 <!-- Sidebar -->
-<div th:fragment ="sidebar" class="bg-dark text-white p-3" style="width: 250px; min-height: 100vh;">
-    <h4>Admin Panel</h4>
-    <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link text-white" href="/sensores">Sensores</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="/actuadores">Actuadores</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="/tipos-sensores">Tipos de Sensores</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="/tipos-actuadores">Tipos de Actuadores</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="/dato-sensor/historial">Datos de sensores</a></li>
+<div th:fragment="sidebar" class="sidebar-container">
+    <style>
+        .sidebar-container {
+            background: linear-gradient(180deg, #1E5631 0%, #2E7D32 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            padding: 20px 15px;
+            height: calc(100vh - 40px);
+            position: sticky;
+            top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #2E7D32;
+            font-size: 20px;
+        }
+
+        .sidebar-title {
+            font-weight: 600;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 8px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-nav-item:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .sidebar-nav-item.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-nav-link:hover {
+            color: white;
+        }
+
+        .sidebar-icon {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+            margin: 15px 0;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Responsive sidebar */
+        @media (max-width: 992px) {
+            .sidebar-container {
+                height: auto;
+                position: relative;
+                margin-bottom: 20px;
+            }
+
+            .sidebar-footer {
+                display: none;
+            }
+        }
+    </style>
+
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <i class="fas fa-leaf"></i>
+        </div>
+        <h4 class="sidebar-title">AgroSense</h4>
+    </div>
+
+    <ul class="sidebar-nav">
+        <li class="sidebar-nav-item active">
+            <a class="sidebar-nav-link" href="/dashboard">
+                <i class="fas fa-home sidebar-icon"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li class="sidebar-nav-item">
+            <a class="sidebar-nav-link" href="/sensores">
+                <i class="fas fa-microchip sidebar-icon"></i>
+                Sensores
+            </a>
+        </li>
+
+        <li class="sidebar-nav-item">
+            <a class="sidebar-nav-link" href="/actuadores">
+                <i class="fas fa-cogs sidebar-icon"></i>
+                Actuadores
+            </a>
+        </li>
+
+        <div class="sidebar-divider"></div>
+
+        <li class="sidebar-nav-item">
+            <a class="sidebar-nav-link" href="/tipos-sensores">
+                <i class="fas fa-sitemap sidebar-icon"></i>
+                Tipos de Sensores
+            </a>
+        </li>
+
+        <li class="sidebar-nav-item">
+            <a class="sidebar-nav-link" href="/tipos-actuadores">
+                <i class="fas fa-project-diagram sidebar-icon"></i>
+                Tipos de Actuadores
+            </a>
+        </li>
+
+        <div class="sidebar-divider"></div>
+
+        <li class="sidebar-nav-item">
+            <a class="sidebar-nav-link" href="/dato-sensor/historial">
+                <i class="fas fa-history sidebar-icon"></i>
+                Historial de mediciones
+            </a>
+        </li>
+
     </ul>
+
+    <div class="sidebar-footer">
+        <small>AgroSense <3</small>
+    </div>
 </div>

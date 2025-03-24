@@ -1,0 +1,174 @@
+
+:root {
+    --primary-color: #2E7D32;
+    --secondary-color: #81C784;
+    --accent-color: #4CAF50;
+    --light-green: #E8F5E9;
+    --dark-text: #212121;
+    --light-text: #FFFFFF;
+}
+
+body {
+    background-color: #F5F7FA;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-container {
+    padding: 20px;
+}
+
+.content-card {
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    padding: 25px;
+    margin-bottom: 25px;
+    background-color: white;
+    border: none;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.dashboard-date {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.stat-card {
+    border-radius: 12px;
+    border: none;
+    transition: transform 0.3s;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card .card-body {
+    padding: 20px;
+    z-index: 1;
+}
+
+.stat-card .stat-icon {
+    font-size: 50px;
+    opacity: 0.2;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.stat-card .card-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.stat-card .card-text {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.stat-card .stat-change {
+    display: block;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.sensor-card {
+    background: linear-gradient(135deg, #4FC3F7, #29B6F6);
+}
+
+.actuator-card {
+    background: linear-gradient(135deg, #66BB6A, #43A047);
+}
+
+.weather-card {
+    background: linear-gradient(135deg, #FFD54F, #FFC107);
+}
+
+.alert-card {
+    background: linear-gradient(135deg, #FF8A65, #FF5722);
+}
+
+.chart-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.chart-title {
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 0;
+}
+
+.recent-activity {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.activity-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+}
+
+.activity-icon {
+    background-color: var(--light-green);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: var(--primary-color);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.activity-time {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .main-container {
+        padding: 10px;
+    }
+}

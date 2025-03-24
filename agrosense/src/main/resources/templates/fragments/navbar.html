@@ -1,5 +1,104 @@
 
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark">
+    <style>
+        .navbar {
+            background-color: var(--primary-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.7rem;
+            background-color: var(--earth-brown) !important;
+        }
+
+        .dropdown-menu {
+            min-width: 280px;
+            border-color: var(--accent-green);
+            border-top: 3px solid var(--accent-green);
+        }
+
+        .user-info {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e9ecef;
+            background-color: rgba(139, 195, 74, 0.1);
+        }
+
+        .btn-search {
+            background-color: var(--accent-green);
+            color: white;
+            border-color: var(--accent-green);
+        }
+
+        .btn-search:hover {
+            background-color: var(--dark-green);
+            border-color: var(--dark-green);
+        }
+
+        .dropdown-item:active {
+            background-color: var(--light-green);
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: white;
+            background-color: var(--dark-green);
+            border-radius: 4px;
+        }
+
+        .dropdown-header {
+            background-color: rgba(139, 195, 74, 0.1);
+            color: var(--dark-green);
+            font-weight: bold;
+        }
+
+        .text-green {
+            color: var(--primary-green);
+        }
+
+        .text-accent {
+            color: var(--accent-green);
+        }
+
+        .text-earth {
+            color: var(--earth-brown);
+        }
+
+        .page-header {
+            border-bottom: 2px solid var(--accent-green);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+
     <div class="container">
         <!-- Logo y Nombre -->
         <a class="navbar-brand" href="/dashboard">
@@ -18,6 +117,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="/dashboard"><i class="fas fa-home me-1"></i>Inicio</a>
                 </li>
+                <!--
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="fas fa-seedling me-1"></i>Cultivos</a>
                 </li>
@@ -25,27 +125,31 @@
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-warehouse me-1"></i>Inventario
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-boxes me-2 text-green"></i>Productos</a>
-                        </li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-dolly me-2 text-green"></i>Pedidos</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-plus-circle me-2 text-green"></i>Nuevo
-                            Producto</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-chart-line me-1"></i>Informes</a>
-                </li>
-            </ul>
 
-            <!-- Buscador -->
+                   <ul class="dropdown-menu">
+                       <li><a class="dropdown-item" href="#"><i class="fas fa-boxes me-2 text-green"></i>Productos</a>
+                       </li>
+                       <li><a class="dropdown-item" href="#"><i class="fas fa-dolly me-2 text-green"></i>Pedidos</a>
+                       </li>
+                       <li>
+                           <hr class="dropdown-divider">
+                       </li>
+                       <li><a class="dropdown-item" href="#"><i class="fas fa-plus-circle me-2 text-green"></i>Nuevo
+                           Producto</a></li>
+                   </ul>
+                    </li>
+
+
+               <li class="nav-item">
+                   <a class="nav-link" href="#"><i class="fas fa-chart-line me-1"></i>Informes</a>
+               </li>
+                -->
+           </ul>
+
+           <!-- Buscador -->
             <form class="d-flex mx-auto">
                 <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Buscar cultivos..." aria-label="Buscar">
+                    <input class="form-control" type="search" placeholder="Buscar..." aria-label="Buscar">
                     <button class="btn btn-search" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
@@ -53,6 +157,7 @@
             <!-- Menú del usuario -->
             <ul class="navbar-nav ms-auto">
                 <!-- Notificaciones -->
+                <!--
                 <li class="nav-item dropdown me-2">
                     <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-bell fa-lg"></i>
@@ -99,8 +204,10 @@
                         <a class="dropdown-item text-center small" href="#">Ver todas</a>
                     </div>
                 </li>
+                -->
 
                 <!-- Mensajes -->
+                <!--
                 <li class="nav-item dropdown me-2">
                     <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-envelope fa-lg"></i>
@@ -136,6 +243,7 @@
                         <a class="dropdown-item text-center small" href="#">Ver todos</a>
                     </div>
                 </li>
+                -->
 
                 <!-- Perfil de usuario -->
                 <li class="nav-item dropdown">
