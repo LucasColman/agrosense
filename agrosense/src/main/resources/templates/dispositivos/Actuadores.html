@@ -35,7 +35,6 @@
                 </div>
 
                 <div class="row">
-
                     <div th:if="${mensaje}" class="alert"
                          th:classappend="${tipoMensaje == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
                         <i class="fas"
@@ -264,13 +263,6 @@
                             <textarea class="form-control" id="actuador-descripcion-edit" name="descripcion"
                                       required></textarea>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tipoActuador-edit" class="col-form-label">Tipos de actuador:</label>
-                        <select id="tipoActuador-edit" name="idsTipoActuador" class="form-select" multiple required>
-                            <option th:each="tipo : ${tiposActuadores}" th:value="${tipo.id}"
-                                    th:text="${tipo.descripcion}"></option>
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

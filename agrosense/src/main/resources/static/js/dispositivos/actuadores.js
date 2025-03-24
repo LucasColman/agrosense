@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const latitud = this.getAttribute("data-latitud");
             const longitud = this.getAttribute("data-longitud");
             const descripcion = this.getAttribute("data-descripcion");
-            const tipoActuadores = this.getAttribute("data-tipos-actuadores");
 
             document.getElementById("actuador-name-edit").value = nombre;
             document.getElementById("actuador-modelo-edit").value = modelo;
@@ -17,13 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("actuador-longitud-edit").value = longitud;
             document.getElementById("actuador-descripcion-edit").value = descripcion;
 
-            // Asignar múltiples valores al select
-            const select = document.getElementById("tipoActuador-edit");
-            const idsSeleccionados = tipoActuadores.split(","); // Convierte la cadena en un array
-
-            Array.from(select.options).forEach(option => {
-                option = idsSeleccionados.includes(option.value);
-            });
 
             // Establecer la acción del formulario
             document.getElementById("editActuadorForm").setAttribute("action", `/actuadores/edit/${id}`);
