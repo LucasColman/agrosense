@@ -17,5 +17,7 @@ public record ActuadorDto(
         String longitud,
         @NotBlank
         String descripcion
+
+
 ) {
 }

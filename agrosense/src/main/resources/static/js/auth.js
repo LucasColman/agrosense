@@ -1,8 +1,15 @@
 
 
-async function login() {
+async function login(event) {
+    event.preventDefault();
+
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
+
+    if (!username || !password) {
+        alert('Por favor, ingrese usuario y contraseña');
+        return;
+    }
     try {
         const response = await fetch('/auth', {
             method: 'POST',
@@ -26,10 +33,8 @@ async function login() {
         setCookie('authToken', data.token, 1);
         setCookie('role', data.rol, 1);
 
-        if (data.rol === "ADMIN") {
+        if (data.rol === "ADMIN" || data.rol === "USER") {
             window.location.href = "/dashboard";
-        } else if(data.rol === "USER") {
-            window.location.href = "/";
         }
     } catch (error) {
         console.error("Error durante el auth", error);

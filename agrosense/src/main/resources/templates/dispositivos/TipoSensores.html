@@ -10,117 +10,196 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<div class="container">
-    <!-- Importar el navbar -->
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
-    <h1 class="mt-3">Tipos de Sensores</h1>
-    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#newTipoSensorModal">
-        Nuevo Tipo de Sensor
-    </button>
 
-    <!-- Mensaje de éxito o error general -->
-    <div th:if="${mensaje}" class="alert" th:classappend="${tipoMensaje == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
-        <span th:text="${mensaje}"></span>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="main-container">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="container mt-4">
+                <div class="page-header d-sm-flex justify-content-between align-items-center">
+                    <h1 class="h3 text-green mb-3 mb-sm-0">
+                        <i class="fas fa-cogs me-2"></i>Tipos de sensores
+                    </h1>
+                    <button type="button" class="btn btn-success btn-add" data-bs-toggle="modal"
+                            data-bs-target="#newTipoSensorModal">
+                        <i class="fas fa-plus me-2"></i> Nuevo Tipo de Sensor
+                    </button>
+                </div>
+
+                <div th:if="${mensaje}" class="alert"
+                     th:classappend="${tipoMensaje == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
+                    <i class="fas"
+                       th:classappend="${tipoMensaje == 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span class="ms-2" th:text="${mensaje}"></span>
+                </div>
+
+                <div th:if="${errores}" class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Se encontraron los siguientes errores:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li th:each="error : ${errores}" th:text="${error}"></li>
+                    </ul>
+                </div>
+
+                <div class="card content-card">
+                    <div class="card-header bg-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 text-earth">
+                                <i class="fas fa-list me-2"></i>Lista de Tipos de Sensores
+                            </h5>
+                            <div class="input-group input-group-sm" style="max-width: 300px;">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Buscar sensor...">
+                                <button class="btn btn-search" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-card card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped text-center align-middle mb-0"
+                                   id="tipoSensorTable">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo de Medida</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${#lists.isEmpty(tiposSensores)}">
+                                    <td colspan="8" class="empty-state">
+                                        <i class="fas fa-info-circle fa-2x mb-3"></i>
+                                        <p>No hay tipos de sensores disponibles. Comience creando uno nuevo.</p>
+                                    </td>
+                                </tr>
+                                <tr th:each="tipo : ${tiposSensores}">
+                                    <td th:text="${tipo.id}"></td>
+                                    <td th:text="${tipo.nombre}"></td>
+                                    <td th:text="${tipo.tipoMedida}"></td>
+
+                                    <td>
+                                        <button class="btn btn-sm btn-warning edit-tipoSensor-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editTipoSensorModal"
+                                                th:data-id="${tipo.id}"
+                                                th:data-nombre="${tipo.nombre}"
+                                                th:data-tipoMedida="${tipo.tipoMedida}"
+                                        >
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm delete-tipoSensor-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteTipoSensorModal"
+                                                th:data-id="${tipo.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+                        <div>
+                            <span class="text-muted">Total: </span>
+                            <span class="badge bg-primary" th:text="${#lists.size(tiposSensores)}">0</span>
+                        </div>
+                        <nav aria-label="Navegación de páginas" th:if="${#lists.size(tiposSensores) > 10}">
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Lista de errores de validación -->
-    <div th:if="${errores}" class="alert alert-danger" role="alert">
-        <ul>
-            <li th:each="error : ${errores}" th:text="${error}"></li>
-        </ul>
-    </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Tipo de Medida</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="tipo : ${tiposSensores}">
-            <td th:text="${tipo.id}"></td>
-            <td th:text="${tipo.nombre}"></td>
-            <td th:text="${tipo.tipoMedida}"></td>
 
-            <td>
-                <button class="btn btn-sm btn-warning edit-tipoSensor-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editTipoSensorModal"
-                        th:data-id="${tipo.id}"
-                        th:data-nombre="${tipo.nombre}"
-                        th:data-tipoMedida="${tipo.tipoMedida}"
-                >
-                    Editar
-                </button>
-                <button class="btn btn-danger btn-sm delete-tipoSensor-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteTipoSensorModal"
-                        th:data-id="${tipo.id}">
-                    Eliminar
-                </button>
 
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+
 
 <!-- Modal para agregar Tipo de Sensor -->
 <div class="modal fade" id="newTipoSensorModal" tabindex="-1" aria-labelledby="modalNewTipoSensor" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modalNewTipoSensor">Nuevo Tipo de Sensor</h1>
+                <h5 class="modal-title" id="newTipoSensorModalLabel">
+                    <i class="fas fa-plus-circle me-2"></i> Nuevo Tipo de Sensor
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form th:action="@{/tipos-sensores/store}" method="post" th:object="${tipo}">
-                    <div class="mb-3">
-                        <label for="tipo-nombre" class="col-form-label">Nombre:</label>
-                        <input type="text" class="form-control" id="tipo-nombre" name="nombre" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tipo-medida" class="col-form-label">Tipo de Medida:</label>
-                        <select id="tipo-medida" name="tipoMedida" class="form-select"
-                                aria-label="Select Tipo de medida">
-                            <option >Seleccione el tipo de medida</option>
-                            <option th:each="tipo : ${tiposMedidas}" th:value="${tipo}" th:text="${tipo}"></option>
-                        </select>
-                    </div>
+            <form th:action="@{/tipos-sensores/store}" method="post" th:object="${tipo}">
+                <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tipo-nombre" class="col-form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="tipo-nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo-medida" class="col-form-label">Tipo de Medida:</label>
+                            <select id="tipo-medida" name="tipoMedida" class="form-select"
+                                    aria-label="Select Tipo de medida">
+                                <option >Seleccione el tipo de medida</option>
+                                <option th:each="tipo : ${tiposMedidas}" th:value="${tipo}" th:text="${tipo}"></option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-success">Guardar</button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <!-- Modal Editar Tipo de Sensor -->
 <div class="modal fade" id="editTipoSensorModal" tabindex="-1" aria-labelledby="modalEditTipoSensor" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="modalEditTipoSensor">Editar Tipo de Sensor</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="editTipoSensorForm" th:action="@{/tipos-sensor/edit}" method="post" th:object="${tipoSensor}">
-                    <input type="hidden" name="_method" value="put">
-                    <input type="hidden" id="tipoSensor-id-edit" name="id">
+            <form id="editTipoSensorForm" th:action="@{/tipos-sensor/edit}" method="post" th:object="${tipoSensor}">
+                <div class="modal-body">
+                        <input type="hidden" name="_method" value="put">
+                        <input type="hidden" id="tipoSensor-id-edit" name="id">
 
-                    <div class="mb-3">
-                        <label for="tipoSensor-nombre-edit" class="col-form-label">Nombre:</label>
-                        <input type="text" class="form-control" id="tipoSensor-nombre-edit" name="nombre">
-                    </div>
-                    <div class="mb-3">
-                        <label for="tipoSensor-tipoMedida-edit" class="col-form-label">Tipo de Medida:</label>
-                        <textarea class="form-control" id="tipoSensor-tipoMedida-edit" name="tipoMedida"></textarea>
-                    </div>
+                        <div class="mb-3">
+                            <label for="tipoSensor-nombre-edit" class="col-form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="tipoSensor-nombre-edit" name="nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipoSensor-tipoMedida-edit" class="col-form-label">Tipo de Medida:</label>
+                            <textarea class="form-control" id="tipoSensor-tipoMedida-edit" name="tipoMedida"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-success">Guardar Cambios</button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -129,14 +208,16 @@
 <!-- Modal de Confirmación para Eliminar -->
 <div class="modal fade" id="deleteTipoSensorModal" tabindex="-1" aria-labelledby="modalDeleteTipoSensor"
      aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modalDeleteTipoSensor">Confirmar Eliminación</h1>
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteTipoSensorModalLabel">
+                    <i class="fas fa-trash-alt me-2"></i>Eliminar Tipo de Sensor
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>¿Estás seguro de que deseas eliminar este sensor?</p>
+                <p>¿Estás seguro de que deseas eliminar este sensor? Esta acción no se puede deshacer</p>
                 <input type="hidden" id="tipoSensor-id-delete">
             </div>
             <div class="modal-footer">
