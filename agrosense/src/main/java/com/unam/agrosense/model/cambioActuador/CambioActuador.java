@@ -1,6 +1,7 @@
 package com.unam.agrosense.model.cambioActuador;
 
 import com.unam.agrosense.model.actuador.Actuador;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuador;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,8 +30,15 @@ public class CambioActuador {
     @Column(name = "fecha_cambio", nullable = false)
     private LocalDateTime fechaCambio;
 
+//    @ManyToOne
+//    @JoinColumn(name = "actuador_id")
+//    private Actuador actuador;
+
     @ManyToOne
-    @JoinColumn(name = "actuador_id")
-    private Actuador actuador;
+    @JoinColumns({
+            @JoinColumn(name = "actuador_id", referencedColumnName = "actuador_id"),
+            @JoinColumn(name = "tipo_actuador_id", referencedColumnName = "tipo_actuador_id")
+    })
+    private ActuadorTipoActuador actuadorTipoActuador;
 
 }

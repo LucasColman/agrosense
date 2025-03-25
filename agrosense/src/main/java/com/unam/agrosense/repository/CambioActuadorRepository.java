@@ -20,4 +20,5 @@ public interface CambioActuadorRepository extends JpaRepository<CambioActuador, 
     List<CambioActuador> findByActivoTrue();
 
     List<CambioActuador> findAllByActivoTrue();
+
 }

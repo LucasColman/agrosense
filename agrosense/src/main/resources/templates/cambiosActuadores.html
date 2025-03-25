@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Historial de Mediciones</title>
+    <title>Cambios de actuadores</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="main-container">
@@ -26,7 +27,7 @@
             <div class="container mt-4">
                 <div class="page-header d-sm-flex justify-content-between align-items-center">
                     <h1 class="h3 text-green mb-3 mb-sm-0">
-                        <i class="fas fa-cogs me-2"></i>Historial de mediciones
+                        <i class="fas fa-cogs me-2"></i> Cambios de actuadores
                     </h1>
                 </div>
 
@@ -35,7 +36,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="input-group input-group-sm" style="max-width: 300px;">
                                 <input type="text" id="searchInput" class="form-control"
-                                       placeholder="Buscar medicion...">
+                                       placeholder="Buscar cambio...">
                                 <button class="btn btn-search" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -47,32 +48,35 @@
                     <div class="main-card card-body p-0">
                         <div class="table-responsive">
                             <table class=" table table-hover table-striped text-center align-middle mb-0"
-                                   id="historialMedTable">
+                                   id="cambioActuadorTable">
                                 <thead>
                                 <tr>
-                                    <th>ID Sensor</th>
-                                    <th>ID Tipo Sensor</th>
-                                    <th>Tipo Medida</th>
-                                    <th>Valor</th>
-                                    <th>Fecha</th>
+                                    <th>ID</th>
+                                    <th>Fecha de cambio</th>
+                                    <th>Actuador</th>
+                                    <th>Tipo de Actuador</th>
+                                    <th>Estado anterior</th>
+                                    <th>Estado nuevo</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:if="${#lists.isEmpty(historial)}">
+                                <tr th:if="${#lists.isEmpty(cambiosActuadores)}">
                                     <td colspan="8" class="empty-state">
                                         <i class="fas fa-info-circle fa-2x mb-3"></i>
-                                        <p>Ninguna medicion registrada.</p>
+                                        <p>Ninguna cambio registrado.</p>
                                     </td>
                                 </tr>
-                                <tr th:each="medicion : ${historial}">
-                                    <td th:text="${medicion.idSensor}"></td>
-                                    <td th:text="${medicion.idTipoSensor}"></td>
-                                    <td th:text="${medicion.tipoMedida}"></td>
-                                    <td th:text="${medicion.valor}"></td>
-                                    <td th:text="${medicion.fecha}"></td>
+                                <tr th:each="cambioActuador : ${cambiosActuadores}">
+                                    <td th:text="${cambioActuador.id()}"></td>
+                                    <td th:text="${cambioActuador.fechaCambio()}"></td>
+                                    <td th:text="${cambioActuador.actuador()}"></td>
+                                    <td th:text="${cambioActuador.tipoActuador()}"></td>
+                                    <td th:text="${cambioActuador.estadoAnterior()}"></td>
+                                    <td th:text="${cambioActuador.estadoNuevo()}"></td>
+
                                 </tr>
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
@@ -80,9 +84,9 @@
                     <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
                         <div>
                             <span class="text-muted">Total: </span>
-                            <span class="badge bg-primary" th:text="${#lists.size(historial)}">0</span>
+                            <span class="badge bg-primary" th:text="${#lists.size(cambiosActuadores)}">0</span>
                         </div>
-                        <nav aria-label="Navegación de páginas" th:if="${#lists.size(historial) > 10}">
+                        <nav aria-label="Navegación de páginas" th:if="${#lists.size(cambiosActuadores) > 10}">
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item disabled">
                                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
@@ -103,7 +107,7 @@
     </div>
 </div>
 
-<script src="/js/historial_mediciones.js"></script>
+
 <script src="/js/interceptor.js"></script>
 <script src="/js/navbar.js"></script>
 <script src="/js/logout.js"></script>
@@ -112,6 +116,4 @@
         crossorigin="anonymous"></script>
 
 </body>
-
 </html>
-
