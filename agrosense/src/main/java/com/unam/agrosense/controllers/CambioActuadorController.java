@@ -1,9 +1,7 @@
 package com.unam.agrosense.controllers;
 
-import com.unam.agrosense.model.actuador.ActuadorResponseDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorResponseDto;
-import com.unam.agrosense.model.dispositivo.TipoDispositivo;
 import com.unam.agrosense.services.CambioActuadorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +24,7 @@ public class CambioActuadorController {
 
     //REGISTRAR UN CAMBIO DE ACTUADOR
     @PostMapping("/store")
-    public ResponseEntity<CambioActuadorResponseDto> registrarCambioActuador(@ModelAttribute @RequestBody @Valid CambioActuadorDto cambioActuadorDto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<CambioActuadorResponseDto> registrarCambioActuador(@ModelAttribute @RequestBody @Valid CambioActuadorDto cambioActuadorDto, UriComponentsBuilder uriBuilder) {
 
         CambioActuadorResponseDto cambioActuadorResponseDto = cambioActuadorService.crearCambioActuador(cambioActuadorDto);
 
@@ -50,12 +48,13 @@ public class CambioActuadorController {
     }
 
     // OBTENER TODOS LOS CAMBIOS DE ACTUADORES
-    @GetMapping
+    @GetMapping("/historialCambios")
     public String listarCambiosActuadores(Model model) {
-        List<CambioActuadorResponseDto> cambiosActuadores = cambioActuadorService.obtenerCambiosActuadores();
 
-        model.addAttribute("cambiosActuadores", cambiosActuadores);
-        return "dispositivos/CambiosActuadores";
+        List<CambioActuadorResponseDto> historialDeCambios = cambioActuadorService.obtenerCambiosActuadores();
+
+        model.addAttribute("cambiosActuadores", historialDeCambios);
+        return "cambiosActuadores";
     }
 
     // OBTENER UN CAMBIO DE ACTUADOR POR ID

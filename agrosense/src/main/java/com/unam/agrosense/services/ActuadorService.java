@@ -232,7 +232,7 @@ public class ActuadorService {
         TipoActuador tipoActuador = tipoActuadorRepository.findById(tipoActuadorId)
                 .orElseThrow(() -> new EntityNotFoundException("Tipo de actuador no existe"));
 
-        ActuadorTipoActuadorId id = new ActuadorTipoActuadorId(tipoActuador.getId(), actuador.getId());
+        ActuadorTipoActuadorId id = new ActuadorTipoActuadorId(actuador.getId(),tipoActuador.getId());
 
         ActuadorTipoActuador actuadorTipo = actuadorTipoActuadorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("La relación entre actuador y tipo de actuador no existe."));
@@ -242,7 +242,8 @@ public class ActuadorService {
                 estadoAnterior,
                 nuevoEstado,
                 LocalDateTime.now(),
-                actuador.getId()
+                actuadorTipo.getActuador().getId(),
+                actuadorTipo.getTipoActuador().getId()
         );
 
 

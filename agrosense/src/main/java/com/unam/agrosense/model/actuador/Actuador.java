@@ -22,7 +22,9 @@ public class Actuador extends Dispositivo {
     @OneToMany(mappedBy = "actuador")
     private List<ActuadorTipoActuador> actuadorTipoActuadores;
 
-    @OneToMany(mappedBy = "actuador",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CambioActuador> cambiosActuador;
+//    @OneToMany(mappedBy = "actuador",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    private List<CambioActuador> cambiosActuador;
+
+
 
 }

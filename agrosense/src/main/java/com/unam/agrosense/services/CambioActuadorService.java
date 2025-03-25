@@ -1,10 +1,13 @@
 package com.unam.agrosense.services;
 
 import com.unam.agrosense.model.actuador.Actuador;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuador;
+import com.unam.agrosense.model.actuadorTipoActuador.ActuadorTipoActuadorId;
 import com.unam.agrosense.model.cambioActuador.CambioActuador;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorDto;
 import com.unam.agrosense.model.cambioActuador.CambioActuadorResponseDto;
 import com.unam.agrosense.repository.ActuadorRepository;
+import com.unam.agrosense.repository.ActuadorTipoActuadorRepository;
 import com.unam.agrosense.repository.CambioActuadorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,23 +19,29 @@ import java.util.List;
 public class CambioActuadorService {
     private final CambioActuadorRepository cambioActuadorRepository;
     private final ActuadorRepository actuadorRepository;
+    private final ActuadorTipoActuadorRepository actuadorTipoActuadorRepository;
 
-    public CambioActuadorService(CambioActuadorRepository cambioActuadorRepository, ActuadorRepository actuadorRepository) {
+    public CambioActuadorService(CambioActuadorRepository cambioActuadorRepository, ActuadorRepository actuadorRepository, ActuadorTipoActuadorRepository actuadorTipoActuadorRepository) {
         this.cambioActuadorRepository = cambioActuadorRepository;
         this.actuadorRepository = actuadorRepository;
+        this.actuadorTipoActuadorRepository = actuadorTipoActuadorRepository;
     }
 
     @Transactional
     public CambioActuadorResponseDto crearCambioActuador(CambioActuadorDto cambioActuadorDto) {
 
-        Actuador actuador = actuadorRepository.findById(cambioActuadorDto.actuadorId())
-                .orElseThrow(() -> new RuntimeException("Actuador no encontrado"));
+        // Buscar el ActuadorTipoActuador por su ID
+        ActuadorTipoActuadorId id = new ActuadorTipoActuadorId(cambioActuadorDto.actuadorId(), cambioActuadorDto.tipoActuadorId());
+
+        ActuadorTipoActuador actuadorTipoActuador = actuadorTipoActuadorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ActuadorTipoActuador no encontrado"));
+
 
         CambioActuador cambioActuador = new CambioActuador();
         cambioActuador.setEstadoAnterior(cambioActuadorDto.estadoAnterior());
         cambioActuador.setEstadoNuevo(cambioActuadorDto.estadoNuevo());
         cambioActuador.setFechaCambio(cambioActuadorDto.fechaCambio());
-        cambioActuador.setActuador(actuador);
+        cambioActuador.setActuadorTipoActuador(actuadorTipoActuador);
 
         cambioActuadorRepository.save(cambioActuador);
 
@@ -41,7 +50,8 @@ public class CambioActuadorService {
                 cambioActuador.getEstadoAnterior(),
                 cambioActuador.getEstadoNuevo(),
                 cambioActuador.getFechaCambio(),
-                cambioActuador.getActuador().getId()
+                cambioActuador.getActuadorTipoActuador().getActuador().getNombre(),
+                cambioActuador.getActuadorTipoActuador().getTipoActuador().getDescripcion()
         );
     }
 
@@ -51,13 +61,16 @@ public class CambioActuadorService {
         CambioActuador cambioActuador = cambioActuadorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cambio de actuador no existe"));
 
-        Actuador actuador = actuadorRepository.findById(cambioActuadorDto.actuadorId())
-                .orElseThrow(() -> new RuntimeException("Actuador no encontrado"));
+        // Buscar el ActuadorTipoActuador por su ID
+        ActuadorTipoActuadorId idActuadorTipo = new ActuadorTipoActuadorId(cambioActuadorDto.actuadorId(), cambioActuadorDto.tipoActuadorId());
+
+        ActuadorTipoActuador actuadorTipoActuador = actuadorTipoActuadorRepository.findById(idActuadorTipo)
+                .orElseThrow(() -> new RuntimeException("ActuadorTipoActuador no encontrado"));
 
         cambioActuador.setEstadoAnterior(cambioActuadorDto.estadoAnterior());
         cambioActuador.setEstadoNuevo(cambioActuadorDto.estadoNuevo());
         cambioActuador.setFechaCambio(cambioActuadorDto.fechaCambio());
-        cambioActuador.setActuador(actuador);
+        cambioActuador.setActuadorTipoActuador(actuadorTipoActuador);
 
         cambioActuadorRepository.save(cambioActuador);
 
@@ -66,7 +79,8 @@ public class CambioActuadorService {
                 cambioActuador.getEstadoAnterior(),
                 cambioActuador.getEstadoNuevo(),
                 cambioActuador.getFechaCambio(),
-                cambioActuador.getActuador().getId()
+                cambioActuador.getActuadorTipoActuador().getActuador().getNombre(),
+                cambioActuador.getActuadorTipoActuador().getTipoActuador().getDescripcion()
         );
     }
 
@@ -88,7 +102,8 @@ public class CambioActuadorService {
                         cambioActuador.getEstadoAnterior(),
                         cambioActuador.getEstadoNuevo(),
                         cambioActuador.getFechaCambio(),
-                        cambioActuador.getActuador().getId()
+                        cambioActuador.getActuadorTipoActuador().getActuador().getNombre(),
+                        cambioActuador.getActuadorTipoActuador().getTipoActuador().getDescripcion()
                 ))
                 .toList();
     }
@@ -103,8 +118,15 @@ public class CambioActuadorService {
                 cambioActuador.getEstadoAnterior(),
                 cambioActuador.getEstadoNuevo(),
                 cambioActuador.getFechaCambio(),
-                cambioActuador.getActuador().getId()
+                cambioActuador.getActuadorTipoActuador().getActuador().getNombre(),
+                cambioActuador.getActuadorTipoActuador().getTipoActuador().getDescripcion()
         );
-
     }
+
+    public List<ActuadorTipoActuador> obtenerActuadoresTipoActuador() {
+        return actuadorTipoActuadorRepository.findAll();
+    }
+
+
+
 }
